@@ -3,6 +3,7 @@ pacman::p_load(
   lubridate,
   janitor,
   rvest,
+  here,
   fs
 )
 
@@ -28,6 +29,6 @@ endorse <-
   clean_names()
 
 write_csv(
-  x = polls,
-  path = here("data", paste(today(), "endorese.csv", sep = "_"))
+  x = endorse,
+  path = here("data", paste(today(), "endorse.csv", sep = "_"))
 )
