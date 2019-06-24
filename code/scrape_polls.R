@@ -31,5 +31,5 @@ polls <-
 
 write_csv(
   x = polls,
-  path = here("data", paste(today(), "polls.csv", sep = "_"))
+  path = here("data", "polling", paste(today(), "polls.csv", sep = "_"))
 )

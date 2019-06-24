@@ -35,7 +35,7 @@ market <-
 dir_create("data")
 write_csv(
   x = market,
-  path = here("data", paste(today(), "market.csv", sep = "_"))
+  path = here("data", "markets", paste(today(), "market.csv", sep = "_"))
 )
 
 market %>%
