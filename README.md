@@ -6,7 +6,7 @@
 This project is a collection of data tracking the 2020 Democratic
 Primary.
 
-Instead of relying on polling alone, this project contains three types
+Instead of relying on polling alone, this project contains many types
 of data:
 
   - Market data from
