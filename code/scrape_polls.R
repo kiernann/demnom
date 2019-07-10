@@ -3,16 +3,20 @@ pacman::p_load(
   lubridate,
   janitor,
   rvest,
+  glue,
   here,
   fs
 )
 
 polls <-
-  read_html("https://www.realclearpolitics.com/epolls/2020/president/us/2020_democratic_presidential_nomination-6730.html") %>%
+  read_html("http://bit.ly/2LdZIpm") %>%
   html_node("table.data:nth-child(2)") %>%
   html_table(fill = TRUE) %>%
-  as_tibble() %>%
-  clean_names() %>%
+  as_tibble(.name_repair = make_clean_names) %>%
+  select(-spread) %>%
+  slice(-1)
+
+polls <- polls %>%
   gather(
     -poll, -date,
     key = "name",
@@ -24,10 +28,20 @@ polls <-
     sep = "\\s-\\s"
   ) %>%
   mutate(
-    start = mdy(str_c(start, "/19")),
-    end = mdy(str_c(end, "/19"))
+    points = as.double(na_if(points, "--")),
+    start = mdy(glue("{start}/19")),
+    end = mdy(glue("{end}/19")),
+    length = end - start
   ) %>%
-  filter(name != "spread")
+  arrange(poll, start) %>%
+  select(
+    name,
+    poll,
+    points,
+    start,
+    end,
+    length
+  )
 
 write_csv(
   x = polls,

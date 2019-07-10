@@ -1,8 +1,10 @@
 pacman::p_load(
   tidyverse,
   lubridate,
+  snakecase,
   janitor,
   rvest,
+  glue,
   here,
   fs
 )
@@ -26,9 +28,14 @@ endorse <-
       points = col_double()
     )
   ) %>%
-  clean_names()
+  clean_names() %>%
+  mutate(
+    endorsee = endorsee %>%
+      word(2, -1) %>%
+      to_snake_case()
+  )
 
 write_csv(
   x = endorse,
-  path = here("data", "endorse", paste(today(), "endorse.csv", sep = "_"))
+  path = here("data", "endorsements", glue("{today()}_endorsements.csv"))
 )

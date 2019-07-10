@@ -1,17 +1,16 @@
 pacman::p_load(
   tidyverse,
   lubridate,
+  snakecase,
   here,
+  glue,
   fs
 )
-
+mid <- 3633
+span <- "90d"
 market <-
-  paste0(
-    "https://www.predictit.org/Resource/DownloadMarketChartData",
-    "?marketid=", "3633",
-    "&timespan=", "90d"
-  ) %>%
   read_csv(
+    file = glue("https://www.predictit.org/Resource/DownloadMarketChartData?marketid={mid}&timespan={span}"),
     col_types = cols(
       ContractName = col_character(),
       Date = col_date("%m/%d/%Y %H:%M:%S %p"),
@@ -30,19 +29,11 @@ market <-
     low    = LowSharePrice,
     close  = CloseSharePrice,
     volume = TradeVolume
-  )
+  ) %>%
+  mutate(name = to_snake_case(name))
 
-dir_create("data")
 write_csv(
   x = market,
-  path = here("data", "markets", paste(today(), "market.csv", sep = "_"))
+  path = here::here("data", "markets", glue("{today()}_markets.csv"))
 )
 
-market %>%
-  filter(close > 0.03) %>%
-  ggplot(mapping = aes(date, close)) +
-  geom_line(mapping = aes(color = name)) +
-  geom_label(
-    data = filter(market, date == max(date)),
-    mapping = aes(label = name, y = close)
-  )
