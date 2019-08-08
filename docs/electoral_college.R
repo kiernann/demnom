@@ -1,6 +1,9 @@
 library(rvest)
+library(campfin)
+library(openintro)
 library(jsonlite)
 library(tidyverse)
+library(magrittr)
 
 # get past election results
 past_results <-
@@ -38,42 +41,6 @@ for (i in seq_along(ne) - 1) {
 }
 
 # scrape PredictIt markets on battleground states
-all_markets <- as_tibble(fromJSON("https://www.predictit.org/api/marketdata/all/")$markets)
-ec_markets <- all_markets %>%
-  filter(name %>% str_detect("Which party will win (.*) in the 2020 presidential election?")) %>%
-  mutate(state = shortName %>% str_extract("[:upper:]{2}")) %>%
-  select(state, id)
-
-build_url <- function(id, span = c("24h", "7d", "30d", "90d")) {
-  glue("https://www.predictit.org/Resource/DownloadMarketChartData?marketid={id}&timespan={span}")
-}
-
-markets_data <- map(
-  .x = build_url(ec_markets$id, "7d"),
-  .f = read_csv,
-  col_types = cols(
-    ContractName = col_character(),
-    Date = col_date("%m/%d/%Y %H:%M:%S %p"),
-    OpenSharePrice = col_number(),
-    HighSharePrice = col_number(),
-    LowSharePrice = col_number(),
-    CloseSharePrice = col_number(),
-    TradeVolume = col_number()
-  )
-)
-
-bind_rows(markets_data) %>%
-  mutate(MarketID = rep(ec_markets$id, each = 14)) %>%
-  filter(ContractName == "Democratic") %>%
-  select(
-    id = MarketID,
-    close = CloseSharePrice,
-    vol = TradeVolume
-  )
-
-x <- all_markets %>%
-  filter(name %>% str_detect("Which party will win (.*) in the 2020 presidential election?"))
-
 ec_markets <-
   fromJSON("https://www.predictit.org/api/marketdata/all/") %>%
   use_series(markets) %>%
@@ -83,3 +50,31 @@ ec_markets <-
   filter(shortName...11 == "Democratic") %>%
   select(state = shortName...3, price = lastTradePrice) %>%
   mutate(state = str_extract(state, "[:upper:]{2}"))
+
+# compare
+left_join(past_results, ec_markets)
+
+# get votes
+ec_votes <-
+  read_html("https://en.wikipedia.org/wiki/United_States_Electoral_College") %>%
+  html_node("table.wikitable:nth-child(122)") %>%
+  html_table(fill = TRUE, header = TRUE) %>%
+  as_tibble(.name_repair = "unique") %>%
+  slice(4:54) %>%
+  select(2, 36) %>%
+  na_if("") %>%
+  set_names(c("state", "votes")) %>%
+  mutate(
+    state = abrev_state(str_replace(state, "D.C.", "District of Columbia")),
+    votes = as.double(votes)
+  )
+
+# compare
+x <- past_results %>%
+  left_join(ec_markets) %>%
+  left_join(ec_votes) %>%
+  mutate(
+    price = if_else(!is.na(price), price, if_else(dem > 0.5, 1.0, 0.0)),
+    dem = price > 0.5
+  ) %>%
+  arrange(votes)
