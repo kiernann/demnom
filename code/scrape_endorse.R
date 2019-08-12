@@ -37,5 +37,5 @@ endorse <-
 
 write_csv(
   x = endorse,
-  path = here("data", "endorsements", glue("{today()}_endorsements.csv"))
+  path = here::here("data", "endorsements", glue("{today()}_endorsements.csv"))
 )

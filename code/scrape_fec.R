@@ -186,14 +186,7 @@ dem_ccl <- dem_cn %>%
 dem_indiv <- indiv %>%
   right_join(dem_ccl, by = "cmte_id")
 
-dem_indiv %>%
-  ggplot() +
-  geom_boxplot(
-    mapping = aes(x = cand_name, y = transaction_amt),
-    varwidth = TRUE
-  ) +
-  scale_y_log10() +
-  coord_flip()
+file_delete("data/fec/raw/itcont.txt")
 
 # write --------------------------------------------------------------------------------------
 

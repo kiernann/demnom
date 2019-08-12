@@ -45,5 +45,5 @@ polls <- polls %>%
 
 write_csv(
   x = polls,
-  path = here("data", "polling", paste(today(), "polls.csv", sep = "_"))
+  path = here::here("data", "polling", glue("{today()}_polls.csv"))
 )

@@ -12,12 +12,10 @@ pacman::p_load(
 
 candidates <-
   read_html("https://en.wikipedia.org/wiki/2020_Democratic_Party_presidential_primaries") %>%
-  html_node("table.wikitable:nth-child(23)") %>%
+  html_node(".wikitable") %>%
   html_table() %>%
   pull(Name) %>%
-  unique() %>%
-  word(2, -1) %>%
-  to_snake_case()
+  unique()
 
 trends <-
   trendy(
@@ -25,9 +23,10 @@ trends <-
     from = floor_date(today(), "year"),
     to = today()
   ) %>%
-  get_interest()
+  get_interest() %>%
+  mutate(keyword = to_snake_case(word(keyword, 2, -1)))
 
 write_csv(
   x = trends,
-  path = here("data", "trends", glue("{today()}_trends.csv"))
+  path = here::here("data", "trends", glue("{today()}_trends.csv"))
 )
