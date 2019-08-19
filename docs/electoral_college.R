@@ -72,6 +72,15 @@ ec_votes <-
 # compare
 x <- past_results %>%
   left_join(ec_markets) %>%
-  left_join(ec_votes)
+  left_join(ec_votes) %>%
+  arrange(desc(price), desc(past))
 
-sum(x$votes[x$z > 0.5], na.rm = TRUE)
+x$votes[x$state == "ME1"] <- 1
+x$votes[x$state == "ME2"] <- 1
+x$votes[x$state == "ME0"] <- 2
+x$votes[x$state == "NE1"] <- 1
+x$votes[x$state == "NE2"] <- 1
+x$votes[x$state == "NE3"] <- 1
+x$votes[x$state == "NE0"] <- 2
+
+sum(x$votes) == 538
