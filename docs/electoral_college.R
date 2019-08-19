@@ -1,9 +1,9 @@
 library(rvest)
 library(campfin)
-library(openintro)
 library(jsonlite)
 library(tidyverse)
 library(magrittr)
+library(usmap)
 
 # get past election results
 past_results <-
@@ -18,9 +18,9 @@ past_results <-
   mutate(
     dem = parse_number(dem),
     rep = parse_number(rep),
-    dem = dem/(dem + rep)
+    past = dem/(dem + rep)
   ) %>%
-  select(-rep) %>%
+  select(-dem, -rep) %>%
   arrange(state)
 
 # format state names,
@@ -29,7 +29,7 @@ ne <- str_which(past_results$state, "Nebraska")
 
 state.name <- c(state.name, "District of Columbia")
 state.abb <- c(state.abb, "DC")
-past_results$state <- state2abbr(past_results$state)
+past_results$state <- abrev_state(past_results$state)
 
 # append ME and NE with district number
 for (i in seq_along(me) - 1) {
@@ -39,6 +39,9 @@ for (i in seq_along(me) - 1) {
 for (i in seq_along(ne) - 1) {
   past_results$state[ne][i + 1] <- paste0("NE", i)
 }
+
+plot_usmap(data = past_results, values = "prob") +
+  scale_fill_gradient2(mid = 0.5)
 
 # scrape PredictIt markets on battleground states
 ec_markets <-
@@ -50,9 +53,6 @@ ec_markets <-
   filter(shortName...11 == "Democratic") %>%
   select(state = shortName...3, price = lastTradePrice) %>%
   mutate(state = str_extract(state, "[:upper:]{2}"))
-
-# compare
-left_join(past_results, ec_markets)
 
 # get votes
 ec_votes <-
@@ -72,9 +72,6 @@ ec_votes <-
 # compare
 x <- past_results %>%
   left_join(ec_markets) %>%
-  left_join(ec_votes) %>%
-  mutate(
-    price = if_else(!is.na(price), price, if_else(dem > 0.5, 1.0, 0.0)),
-    dem = price > 0.5
-  ) %>%
-  arrange(votes)
+  left_join(ec_votes)
+
+sum(x$votes[x$z > 0.5], na.rm = TRUE)
