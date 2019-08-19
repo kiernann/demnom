@@ -84,3 +84,5 @@ x$votes[x$state == "NE3"] <- 1
 x$votes[x$state == "NE0"] <- 2
 
 sum(x$votes) == 538
+
+write_csv(x, "data/electoral_college.csv")
