@@ -131,7 +131,20 @@ states_base <-
 
 states_base +
   geom_polygon(mapping = aes(fill = prob), data = states_ec %>% filter(!market)) +
-  scale_fill_gradient(low = "white", high = "black") +
+  scale_fill_distiller(type = "seq", palette = "Greys") +
+  labs(fill = "2016-based") +
   new_scale_fill() +
   geom_polygon(mapping = aes(fill = prob), data = states_ec %>% filter(market)) +
-  scale_fill_gradient2(low = "red", high = "blue", midpoint = 0.50)
+  scale_fill_distiller(type = "div", palette = "RdBu", direction = -1) +
+  labs(
+    title = "Predicting the 2020 Presidential Election",
+    subtitle = "Using Betting Markets for 15 Battleground States",
+    fill = "Market-based",
+    x = "",
+    y = ""
+  )
+
+x <- mutate(ec, x = prob * votes)
+sum(x$x)
+
+ggsave("~/Pictures/ec_pi_map.png", dpi = "retina", height = 5, width = 9)
