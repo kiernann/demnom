@@ -86,3 +86,52 @@ x$votes[x$state == "NE0"] <- 2
 sum(x$votes) == 538
 
 write_csv(x, "data/electoral_college.csv")
+
+library(ggnewscale)
+
+ec <- read_csv("data/electoral_college.csv")
+
+set.seed(5)
+
+ec <- mutate(ec, prob = NA)
+
+for (i in seq_along(ec$prob)) {
+  sims <- rnorm(n = 1000000, mean = ec$past[i], sd = 0.10)
+  wins <- sims > 0.5
+  ec$prob[i] <- round(mean(wins), digits = 5)
+}
+
+ec <- ec %>%
+  mutate(
+    market = !is.na(price),
+    prob = coalesce(price, prob)
+  ) %>%
+  select(state, prob, market, votes)
+
+plot_usmap(data = ec, values = "prob") +
+  scale_fill_gradient2(low = "red", high = "blue", midpoint = 0.50)
+
+usa <- map_data("usa")
+ggplot() +
+  geom_polygon(data = usa, aes(x = long, y = lat, group = group)) +
+  coord_quickmap()
+
+states_ec <-
+  left_join(
+    x = map_data("state") %>% mutate(region = abrev_state(region)),
+    y = ec,
+    by = c("region" = "state")
+  )
+
+states_base <-
+  states_ec %>%
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", alpha = 0) +
+  coord_quickmap()
+
+states_base +
+  geom_polygon(mapping = aes(fill = prob), data = states_ec %>% filter(!market)) +
+  scale_fill_gradient(low = "white", high = "black") +
+  new_scale_fill() +
+  geom_polygon(mapping = aes(fill = prob), data = states_ec %>% filter(market)) +
+  scale_fill_gradient2(low = "red", high = "blue", midpoint = 0.50)
