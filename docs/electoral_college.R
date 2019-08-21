@@ -148,3 +148,42 @@ x <- mutate(ec, x = prob * votes)
 sum(x$x)
 
 ggsave("~/Pictures/ec_pi_map.png", dpi = "retina", height = 5, width = 9)
+
+sims <- tibble(
+  n = seq(1, 100000),
+  votes = NA,
+  dem = NA
+)
+
+for (k in seq_along(sims$n)) {
+  dem_votes <- 0
+  for (i in seq_along(ec$state)) {
+    state_prob <- ec$prob[i]
+    state_votes <- ec$votes[i]
+    dem_win <- sample(
+      x = c(TRUE, FALSE),
+      size = 1,
+      prob = c(state_prob, 1 - state_prob)
+    )
+    if (dem_win) {
+      dem_votes <- dem_votes + state_votes
+    }
+  }
+  sims$votes[k] <- dem_votes
+  sims$dem[k]   <- dem_votes > 269
+}
+
+ggplot(sims, aes(x = votes)) +
+  geom_histogram(aes(fill = dem)) +
+  labs(
+    title = "Simulating the 2020 Presidential Race",
+    subtitle = "Using betting markets for 15 key battleground states",
+    x = "Electoral College Votes",
+    caption = "Source: PredictIt.org and 2016 Results",
+    fill = "Democratic Winner",
+    y = "Number of Simulations"
+  ) +
+  scale_fill_manual(values = c("#B2182B", "#2166AC")) +
+  theme(legend.position = "bottom")
+
+ggsave(filename = "~/Pictures/sim.png", dpi = "retina", height = 5, width = 9)
