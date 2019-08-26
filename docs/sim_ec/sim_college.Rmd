@@ -244,25 +244,103 @@ past_results %>%
 ```
 
 For those states without a market, we need to convert these vote shares to probabilities. In
-reality, a even a 5% edge results in a significant advantage and a probability difference much
-greater than 5%.
+reality, a even a 5% edge in the popular vote results in a significant advantage and a probability
+difference much greater than 5%.
 
-To make this conversion, we simulate many new election using the 2016 result. These simulated
-elections are normally distributed around the 2016 results with a standard deviation of 0.5 to
-account for the uncertainty that's developed in the last 3 years. Below you can see the results of 1,000 simulated elections in Maryland, which voted
-`r scales::percent(past_results$past[past_results$state == "MD"])` for the Democratic candidate in
-the last election. The area under the curve past 50% is the _probability_ of a democrat winning
-again in the next election.
+To make this conversion, we simulate many new election using the 2016 result. We make these
+simulations using a normal distribution around the 2016 result. The standard deviation of such a 
+distribution is where uncertainty is introduced, converting our popular vote to a probability.
+
+More complicated forecasting models like those released by FiveThirtyEight use proprietary models
+to calculate this degree of uncertainty. We know these models incorperate a number of historically 
+predictive variables (partisanship, fundraising, incumbency, etc). For this simple demonstration,
+I will calculate the standard deviation of the past 11 Presidential elections in each state.
+
+The MIT Dataverse contains a dataset of Presidential contests since 1976 with party vote counts in
+each state. We can read the file using `readr::read_tsv()` and calulating the standard deviation
+with `dplyr::group_by()` and `dplyr::summarize()`.
+
+```{r read_mit}
+mit_url <- "https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/42MVDX/MFU99O"
+# MIT Election Data and Science Lab, 2017, "1976-2016-president.tab"
+# https://doi.org/10.7910/DVN/42MVDX/MFU99O, Harvard Dataverse, V5
+
+potus <- read_delim(
+    file = mit_url,
+    delim = "\t",
+    escape_double = FALSE,
+    escape_backslash = TRUE
+  )
+```
+
+```{r summarize_sd}
+states_sd <- potus %>%
+  filter(candidatevotes > 1000) %>% 
+  filter(party %in% c("democrat")) %>%
+  mutate(prop = candidatevotes/totalvotes,) %>%
+  select(year, state = state_po, prop) %>%
+  group_by(state) %>%
+  summarize(sd = sd(prop))
+```
+
+Standard deviation is the variation in election results. A state with little change year to year
+will have a lower standard deviation, increasing our confidence and decreasing uncertainty in the
+next election/.
+
+```{r}
+left_join(usa_map, states_sd) %>%
+  filter(state != "DC") %>% 
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", mapping = aes(fill = sd)) +
+  coord_quickmap() +
+  scale_fill_distiller(
+    type = "seq", palette = 5, direction = 1
+  ) +
+  theme(
+    legend.position = c(0.9, 0.35),
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(hjust = 0.5),
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(
+    title = "Variation in Presidential Elections 1976-2016",
+    fill = "Standard\nDeviation"
+    )
+```
+
+Using this standard deviation, we can generate 10,000 values from this random normal distribution.
+We can think of each of these values as a simulated election. The percentage of simulated elections
+won is the same as the _probability_ of winning.
+
+```{r add_sd_rnorm}
+past_results <- past_results %>% 
+  left_join(states_sd) %>%
+  rowwise() %>% 
+  mutate(prob = mean(rnorm(10000, past, sd) > 0.50))
+```
+
+If we visualize this process, we can see how the 2016 result and a standard deviation is used
+to simulate many elections and calculate a probability.
+
+Below you can see the results of 1,000 simulated elections in Maryland, where
+`r scales::percent(past_results$past[past_results$state == "MD"])` of votes were cast for the
+Democratic candidate in the last election. The area under the curve past 50% is the _probability_
+of a democrat winning again in the next election.
 
 ```{r example_range_md, echo=FALSE}
 ex_past <- past_results$past[past_results$state == "MD"]
-ggplot(data = NULL, mapping = aes(x = rnorm(n = 1000, mean = ex_past, sd = 0.05))) + 
+ex_sd <- past_results$sd[past_results$state == "MD"]
+n <- 1000
+ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_past, sd = ex_sd))) + 
   geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[3]) +
   geom_vline(xintercept = 0.5, size = 1) +
   geom_vline(xintercept = ex_past, linetype = 2, size = 1) +
   scale_x_continuous(labels = scales::percent) +
   labs(
-    title = "Maryland 2020 Simulated 1000 Times",
+    title = sprintf("Maryland 2020 Simulated %s Times", comma(n)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
   ) +
@@ -281,13 +359,15 @@ democratic candidate.
 
 ```{r example_range_fl, echo=FALSE}
 ex_past <- past_results$past[past_results$state == "FL"]
-ggplot(data = NULL, mapping = aes(x = rnorm(n = 1000, mean = ex_past, sd = 0.05))) + 
-  geom_density(fill = RColorBrewer::brewer.pal(7, "Dark2")[7]) +
+ex_sd <- past_results$sd[past_results$state == "FL"]
+n <- 1000
+ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_past, sd = ex_sd))) + 
+  geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[2]) +
   geom_vline(xintercept = 0.5, size = 1) +
   geom_vline(xintercept = ex_past, linetype = 2, size = 1) +
   scale_x_continuous(labels = scales::percent) +
   labs(
-    title = "Florida 2020 Simulated 1000 Times",
+    title = sprintf("Folrida 2020 Simulated %s Times", comma(n)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
   ) +
@@ -305,21 +385,10 @@ the democrat. Below, we see how this is done by simulating the Connecticut elect
 
 ```{r example_process}
 (ex_past <- past_results$past[past_results$state == "CT"])
-(ex_sims <- round(x = rnorm(n = 30, mean = ex_past, sd = 0.05), digits = 4))
+(ex_sd <- past_results$sd[past_results$state == "CT"])
+(ex_sims <- round(x = rnorm(n = 30, mean = ex_past, sd = ex_sd), digits = 2))
 (ex_wins <- ex_sims > 0.5)
 mean(ex_wins)
-```
-
-We can perform such random normal simulations for _every_ state. We'll generate
-_10,000_ simulated elections and calculate the percent of those simulated elections where the
-democrat won.
-
-```{r simulate_elections}
-past_results <- mutate(past_results, prob = NA)
-for (i in seq_along(past_results$state)) {
-  sims <- rnorm(n = 10000, mean = past_results$past[i], sd = 0.05)
-  past_results$prob[i] <- mean(sims > 0.5)
-}
 ```
 
 Below, you can see how the 2016 vote results result in more extreme probabilities.
@@ -480,12 +549,12 @@ sim1_result <- if_else(
 )
 ```
 
-In the above election, `r cat(sim1_result)`. 
+In the above election, `r sim1_result`. 
 
 To best understand the _range_ of possible outcomes, we can perform the same simulation many times.
 
 ```{r}
-n <- 10000
+n <- 100000
 sims <- rep(NA, n)
 for (i in seq(1, n)) {
   state_outcomes <- map_lgl(ec$dem, sim_race)

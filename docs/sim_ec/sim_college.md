@@ -158,17 +158,101 @@ those states *with* 2020 markets and those without.
 ![](sim_college_files/figure-gfm/vote_range-1.png)<!-- -->
 
 For those states without a market, we need to convert these vote shares
-to probabilities. In reality, a even a 5% edge results in a significant
-advantage and a probability difference much greater than 5%.
+to probabilities. In reality, a even a 5% edge in the popular vote
+results in a significant advantage and a probability difference much
+greater than 5%.
 
 To make this conversion, we simulate many new election using the 2016
-result. These simulated elections are normally distributed around the
-2016 results with a standard deviation of 0.5 to account for the
-uncertainty that’s developed in the last 3 years. Below you can see the
-results of 1,000 simulated elections in Maryland, which voted 64.0% for
-the Democratic candidate in the last election. The area under the curve
-past 50% is the *probability* of a democrat winning again in the next
-election.
+result. We make these simulations using a normal distribution around the
+2016 result. The standard deviation of such a distribution is where
+uncertainty is introduced, converting our popular vote to a probability.
+
+More complicated forecasting models like those released by
+FiveThirtyEight use proprietary models to calculate this degree of
+uncertainty. We know these models incorperate a number of historically
+predictive variables (partisanship, fundraising, incumbency, etc). For
+this simple demonstration, I will calculate the standard deviation of
+the past 11 Presidential elections in each state.
+
+The MIT Dataverse contains a dataset of Presidential contests since 1976
+with party vote counts in each state. We can read the file using
+`readr::read_tsv()` and calulating the standard deviation with
+`dplyr::group_by()` and `dplyr::summarize()`.
+
+``` r
+mit_url <- "https://dataverse.harvard.edu/api/access/datafile/:persistentId?persistentId=doi:10.7910/DVN/42MVDX/MFU99O"
+# MIT Election Data and Science Lab, 2017, "1976-2016-president.tab"
+# https://doi.org/10.7910/DVN/42MVDX/MFU99O, Harvard Dataverse, V5
+
+potus <- read_delim(
+    file = mit_url,
+    delim = "\t",
+    escape_double = FALSE,
+    escape_backslash = TRUE
+  )
+```
+
+``` r
+states_sd <- potus %>%
+  filter(candidatevotes > 1000) %>% 
+  filter(party %in% c("democrat")) %>%
+  mutate(prop = candidatevotes/totalvotes,) %>%
+  select(year, state = state_po, prop) %>%
+  group_by(state) %>%
+  summarize(sd = sd(prop))
+```
+
+Standard deviation is the variation in election results. A state with
+little change year to year will have a lower standard deviation,
+increasing our confidence and decreasing uncertainty in the next
+election/.
+
+``` r
+left_join(usa_map, states_sd) %>%
+  filter(state != "DC") %>% 
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", mapping = aes(fill = sd)) +
+  coord_quickmap() +
+  scale_fill_distiller(
+    type = "seq", palette = 5, direction = 1
+  ) +
+  theme(
+    legend.position = c(0.9, 0.35),
+    panel.background = element_blank(),
+    panel.grid = element_blank(),
+    plot.title = element_text(hjust = 0.5),
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(
+    title = "Variation in Presidential Elections 1976-2016",
+    fill = "Standard\nDeviation"
+    )
+```
+
+![](sim_college_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+Using this standard deviation, we can generate 10,000 values from this
+random normal distribution. We can think of each of these values as a
+simulated election. The percentage of simulated elections won is the
+same as the *probability* of winning.
+
+``` r
+past_results <- past_results %>% 
+  left_join(states_sd) %>%
+  rowwise() %>% 
+  mutate(prob = mean(rnorm(10000, past, sd) > 0.50))
+```
+
+If we visualize this process, we can see how the 2016 result and a
+standard deviation is used to simulate many elections and calculate a
+probability.
+
+Below you can see the results of 1,000 simulated elections in Maryland,
+where 64.0% of votes were cast for the Democratic candidate in the last
+election. The area under the curve past 50% is the *probability* of a
+democrat winning again in the next election.
 
 ![](sim_college_files/figure-gfm/example_range_md-1.png)<!-- -->
 
@@ -185,27 +269,16 @@ by simulating the Connecticut election 30 times.
 ``` r
 (ex_past <- past_results$past[past_results$state == "CT"])
 #> [1] 0.5714155
-(ex_sims <- round(x = rnorm(n = 30, mean = ex_past, sd = 0.05), digits = 4))
-#>  [1] 0.6491 0.5383 0.5766 0.5286 0.5049 0.4915 0.5976 0.6158 0.6076 0.5793 0.4978 0.6854 0.6533
-#> [14] 0.5576 0.5244 0.6229 0.5843 0.5950 0.5569 0.5935 0.5326 0.4771 0.5352 0.5523 0.5018 0.6710
-#> [27] 0.6084 0.5719 0.6707 0.6144
+(ex_sd <- past_results$sd[past_results$state == "CT"])
+#> [1] 0.07728929
+(ex_sims <- round(x = rnorm(n = 30, mean = ex_past, sd = ex_sd), digits = 2))
+#>  [1] 0.56 0.62 0.63 0.62 0.53 0.59 0.55 0.60 0.43 0.62 0.54 0.58 0.61 0.62 0.48 0.63 0.58 0.64 0.62
+#> [20] 0.70 0.50 0.59 0.41 0.58 0.63 0.55 0.50 0.72 0.57 0.49
 (ex_wins <- ex_sims > 0.5)
-#>  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
-#> [16]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+#> [16]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
 mean(ex_wins)
-#> [1] 0.9
-```
-
-We can perform such random normal simulations for *every* state. We’ll
-generate *10,000* simulated elections and calculate the percent of those
-simulated elections where the democrat won.
-
-``` r
-past_results <- mutate(past_results, prob = NA)
-for (i in seq_along(past_results$state)) {
-  sims <- rnorm(n = 10000, mean = past_results$past[i], sd = 0.05)
-  past_results$prob[i] <- mean(sims > 0.5)
-}
+#> [1] 0.8
 ```
 
 Below, you can see how the 2016 vote results result in more extreme
@@ -276,13 +349,13 @@ sim1_result <- if_else(
 )
 ```
 
-In the above election, .
+In the above election, the Democrats did not win.
 
 To best understand the *range* of possible outcomes, we can perform the
 same simulation many times.
 
 ``` r
-n <- 10000
+n <- 100000
 sims <- rep(NA, n)
 for (i in seq(1, n)) {
   state_outcomes <- map_lgl(ec$dem, sim_race)
@@ -292,16 +365,16 @@ for (i in seq(1, n)) {
 ```
 
 From the summary below, you can see a picture of a very close race with
-the Democrats holding a slight lead. Of our 10,000 simulations, the
-Democrats won 75.7% with the modal outcome being a victory of 281
+the Democrats holding a slight lead. Of our 100,000 simulations, the
+Democrats won 68.7% with the modal outcome being a victory of 279
 electoral college votes.
 
 ``` r
 summary(sims)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   193.0   270.0   290.0   291.4   312.0   405.0
+#>   127.0   263.0   285.0   285.3   307.0   414.0
 mean(sims > 269)
-#> [1] 0.757
+#> [1] 0.6869
 ```
 
 ![](sim_college_files/figure-gfm/sim_hist-1.png)<!-- -->
