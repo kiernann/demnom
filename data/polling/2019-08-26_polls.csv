@@ -1,0 +1,625 @@
+name,poll,points,start,end,length
+biden,ABC News/Wash PostABC/WP,30,2019-06-28,2019-07-01,3
+sanders,ABC News/Wash PostABC/WP,19,2019-06-28,2019-07-01,3
+warren,ABC News/Wash PostABC/WP,12,2019-06-28,2019-07-01,3
+harris,ABC News/Wash PostABC/WP,13,2019-06-28,2019-07-01,3
+buttigieg,ABC News/Wash PostABC/WP,4,2019-06-28,2019-07-01,3
+o_rourke,ABC News/Wash PostABC/WP,2,2019-06-28,2019-07-01,3
+booker,ABC News/Wash PostABC/WP,1,2019-06-28,2019-07-01,3
+yang,ABC News/Wash PostABC/WP,0,2019-06-28,2019-07-01,3
+castro,ABC News/Wash PostABC/WP,3,2019-06-28,2019-07-01,3
+gabbard,ABC News/Wash PostABC/WP,1,2019-06-28,2019-07-01,3
+klobuchar,ABC News/Wash PostABC/WP,2,2019-06-28,2019-07-01,3
+williamson,ABC News/Wash PostABC/WP,1,2019-06-28,2019-07-01,3
+steyer,ABC News/Wash PostABC/WP,NA,2019-06-28,2019-07-01,3
+biden,CNNCNN,22,2019-06-28,2019-06-30,2
+sanders,CNNCNN,14,2019-06-28,2019-06-30,2
+warren,CNNCNN,15,2019-06-28,2019-06-30,2
+harris,CNNCNN,17,2019-06-28,2019-06-30,2
+buttigieg,CNNCNN,4,2019-06-28,2019-06-30,2
+o_rourke,CNNCNN,3,2019-06-28,2019-06-30,2
+booker,CNNCNN,3,2019-06-28,2019-06-30,2
+yang,CNNCNN,1,2019-06-28,2019-06-30,2
+castro,CNNCNN,1,2019-06-28,2019-06-30,2
+gabbard,CNNCNN,1,2019-06-28,2019-06-30,2
+klobuchar,CNNCNN,2,2019-06-28,2019-06-30,2
+williamson,CNNCNN,0,2019-06-28,2019-06-30,2
+steyer,CNNCNN,NA,2019-06-28,2019-06-30,2
+biden,CNNCNN,29,2019-08-15,2019-08-18,3
+sanders,CNNCNN,15,2019-08-15,2019-08-18,3
+warren,CNNCNN,14,2019-08-15,2019-08-18,3
+harris,CNNCNN,5,2019-08-15,2019-08-18,3
+buttigieg,CNNCNN,5,2019-08-15,2019-08-18,3
+o_rourke,CNNCNN,3,2019-08-15,2019-08-18,3
+booker,CNNCNN,2,2019-08-15,2019-08-18,3
+yang,CNNCNN,1,2019-08-15,2019-08-18,3
+castro,CNNCNN,2,2019-08-15,2019-08-18,3
+gabbard,CNNCNN,2,2019-08-15,2019-08-18,3
+klobuchar,CNNCNN,1,2019-08-15,2019-08-18,3
+williamson,CNNCNN,0,2019-08-15,2019-08-18,3
+steyer,CNNCNN,1,2019-08-15,2019-08-18,3
+biden,Economist/YouGovEconomist,26,2019-06-16,2019-06-18,2
+sanders,Economist/YouGovEconomist,12,2019-06-16,2019-06-18,2
+warren,Economist/YouGovEconomist,16,2019-06-16,2019-06-18,2
+harris,Economist/YouGovEconomist,7,2019-06-16,2019-06-18,2
+buttigieg,Economist/YouGovEconomist,9,2019-06-16,2019-06-18,2
+o_rourke,Economist/YouGovEconomist,3,2019-06-16,2019-06-18,2
+booker,Economist/YouGovEconomist,2,2019-06-16,2019-06-18,2
+yang,Economist/YouGovEconomist,1,2019-06-16,2019-06-18,2
+castro,Economist/YouGovEconomist,1,2019-06-16,2019-06-18,2
+gabbard,Economist/YouGovEconomist,1,2019-06-16,2019-06-18,2
+klobuchar,Economist/YouGovEconomist,1,2019-06-16,2019-06-18,2
+williamson,Economist/YouGovEconomist,0,2019-06-16,2019-06-18,2
+steyer,Economist/YouGovEconomist,NA,2019-06-16,2019-06-18,2
+biden,Economist/YouGovEconomist,25,2019-06-22,2019-06-25,3
+sanders,Economist/YouGovEconomist,15,2019-06-22,2019-06-25,3
+warren,Economist/YouGovEconomist,19,2019-06-22,2019-06-25,3
+harris,Economist/YouGovEconomist,7,2019-06-22,2019-06-25,3
+buttigieg,Economist/YouGovEconomist,6,2019-06-22,2019-06-25,3
+o_rourke,Economist/YouGovEconomist,3,2019-06-22,2019-06-25,3
+booker,Economist/YouGovEconomist,1,2019-06-22,2019-06-25,3
+yang,Economist/YouGovEconomist,1,2019-06-22,2019-06-25,3
+castro,Economist/YouGovEconomist,1,2019-06-22,2019-06-25,3
+gabbard,Economist/YouGovEconomist,3,2019-06-22,2019-06-25,3
+klobuchar,Economist/YouGovEconomist,0,2019-06-22,2019-06-25,3
+williamson,Economist/YouGovEconomist,0,2019-06-22,2019-06-25,3
+steyer,Economist/YouGovEconomist,NA,2019-06-22,2019-06-25,3
+biden,Economist/YouGovEconomist,23,2019-06-30,2019-07-02,2
+sanders,Economist/YouGovEconomist,9,2019-06-30,2019-07-02,2
+warren,Economist/YouGovEconomist,19,2019-06-30,2019-07-02,2
+harris,Economist/YouGovEconomist,15,2019-06-30,2019-07-02,2
+buttigieg,Economist/YouGovEconomist,8,2019-06-30,2019-07-02,2
+o_rourke,Economist/YouGovEconomist,2,2019-06-30,2019-07-02,2
+booker,Economist/YouGovEconomist,2,2019-06-30,2019-07-02,2
+yang,Economist/YouGovEconomist,1,2019-06-30,2019-07-02,2
+castro,Economist/YouGovEconomist,1,2019-06-30,2019-07-02,2
+gabbard,Economist/YouGovEconomist,1,2019-06-30,2019-07-02,2
+klobuchar,Economist/YouGovEconomist,0,2019-06-30,2019-07-02,2
+williamson,Economist/YouGovEconomist,0,2019-06-30,2019-07-02,2
+steyer,Economist/YouGovEconomist,NA,2019-06-30,2019-07-02,2
+biden,Economist/YouGovEconomist,22,2019-07-07,2019-07-09,2
+sanders,Economist/YouGovEconomist,12,2019-07-07,2019-07-09,2
+warren,Economist/YouGovEconomist,18,2019-07-07,2019-07-09,2
+harris,Economist/YouGovEconomist,15,2019-07-07,2019-07-09,2
+buttigieg,Economist/YouGovEconomist,6,2019-07-07,2019-07-09,2
+o_rourke,Economist/YouGovEconomist,1,2019-07-07,2019-07-09,2
+booker,Economist/YouGovEconomist,2,2019-07-07,2019-07-09,2
+yang,Economist/YouGovEconomist,1,2019-07-07,2019-07-09,2
+castro,Economist/YouGovEconomist,2,2019-07-07,2019-07-09,2
+gabbard,Economist/YouGovEconomist,3,2019-07-07,2019-07-09,2
+klobuchar,Economist/YouGovEconomist,1,2019-07-07,2019-07-09,2
+williamson,Economist/YouGovEconomist,0,2019-07-07,2019-07-09,2
+steyer,Economist/YouGovEconomist,NA,2019-07-07,2019-07-09,2
+biden,Economist/YouGovEconomist,25,2019-07-14,2019-07-16,2
+sanders,Economist/YouGovEconomist,12,2019-07-14,2019-07-16,2
+warren,Economist/YouGovEconomist,16,2019-07-14,2019-07-16,2
+harris,Economist/YouGovEconomist,11,2019-07-14,2019-07-16,2
+buttigieg,Economist/YouGovEconomist,6,2019-07-14,2019-07-16,2
+o_rourke,Economist/YouGovEconomist,2,2019-07-14,2019-07-16,2
+booker,Economist/YouGovEconomist,3,2019-07-14,2019-07-16,2
+yang,Economist/YouGovEconomist,0,2019-07-14,2019-07-16,2
+castro,Economist/YouGovEconomist,0,2019-07-14,2019-07-16,2
+gabbard,Economist/YouGovEconomist,1,2019-07-14,2019-07-16,2
+klobuchar,Economist/YouGovEconomist,1,2019-07-14,2019-07-16,2
+williamson,Economist/YouGovEconomist,0,2019-07-14,2019-07-16,2
+steyer,Economist/YouGovEconomist,1,2019-07-14,2019-07-16,2
+biden,Economist/YouGovEconomist,25,2019-07-21,2019-07-23,2
+sanders,Economist/YouGovEconomist,13,2019-07-21,2019-07-23,2
+warren,Economist/YouGovEconomist,18,2019-07-21,2019-07-23,2
+harris,Economist/YouGovEconomist,9,2019-07-21,2019-07-23,2
+buttigieg,Economist/YouGovEconomist,7,2019-07-21,2019-07-23,2
+o_rourke,Economist/YouGovEconomist,2,2019-07-21,2019-07-23,2
+booker,Economist/YouGovEconomist,2,2019-07-21,2019-07-23,2
+yang,Economist/YouGovEconomist,2,2019-07-21,2019-07-23,2
+castro,Economist/YouGovEconomist,2,2019-07-21,2019-07-23,2
+gabbard,Economist/YouGovEconomist,2,2019-07-21,2019-07-23,2
+klobuchar,Economist/YouGovEconomist,1,2019-07-21,2019-07-23,2
+williamson,Economist/YouGovEconomist,0,2019-07-21,2019-07-23,2
+steyer,Economist/YouGovEconomist,1,2019-07-21,2019-07-23,2
+biden,Economist/YouGovEconomist,26,2019-07-27,2019-07-30,3
+sanders,Economist/YouGovEconomist,13,2019-07-27,2019-07-30,3
+warren,Economist/YouGovEconomist,20,2019-07-27,2019-07-30,3
+harris,Economist/YouGovEconomist,11,2019-07-27,2019-07-30,3
+buttigieg,Economist/YouGovEconomist,6,2019-07-27,2019-07-30,3
+o_rourke,Economist/YouGovEconomist,2,2019-07-27,2019-07-30,3
+booker,Economist/YouGovEconomist,3,2019-07-27,2019-07-30,3
+yang,Economist/YouGovEconomist,1,2019-07-27,2019-07-30,3
+castro,Economist/YouGovEconomist,2,2019-07-27,2019-07-30,3
+gabbard,Economist/YouGovEconomist,2,2019-07-27,2019-07-30,3
+klobuchar,Economist/YouGovEconomist,0,2019-07-27,2019-07-30,3
+williamson,Economist/YouGovEconomist,0,2019-07-27,2019-07-30,3
+steyer,Economist/YouGovEconomist,0,2019-07-27,2019-07-30,3
+biden,Economist/YouGovEconomist,25,2019-08-03,2019-08-06,3
+sanders,Economist/YouGovEconomist,13,2019-08-03,2019-08-06,3
+warren,Economist/YouGovEconomist,18,2019-08-03,2019-08-06,3
+harris,Economist/YouGovEconomist,8,2019-08-03,2019-08-06,3
+buttigieg,Economist/YouGovEconomist,7,2019-08-03,2019-08-06,3
+o_rourke,Economist/YouGovEconomist,2,2019-08-03,2019-08-06,3
+booker,Economist/YouGovEconomist,2,2019-08-03,2019-08-06,3
+yang,Economist/YouGovEconomist,2,2019-08-03,2019-08-06,3
+castro,Economist/YouGovEconomist,1,2019-08-03,2019-08-06,3
+gabbard,Economist/YouGovEconomist,3,2019-08-03,2019-08-06,3
+klobuchar,Economist/YouGovEconomist,1,2019-08-03,2019-08-06,3
+williamson,Economist/YouGovEconomist,0,2019-08-03,2019-08-06,3
+steyer,Economist/YouGovEconomist,1,2019-08-03,2019-08-06,3
+biden,Economist/YouGovEconomist,23,2019-08-10,2019-08-13,3
+sanders,Economist/YouGovEconomist,16,2019-08-10,2019-08-13,3
+warren,Economist/YouGovEconomist,20,2019-08-10,2019-08-13,3
+harris,Economist/YouGovEconomist,8,2019-08-10,2019-08-13,3
+buttigieg,Economist/YouGovEconomist,6,2019-08-10,2019-08-13,3
+o_rourke,Economist/YouGovEconomist,5,2019-08-10,2019-08-13,3
+booker,Economist/YouGovEconomist,2,2019-08-10,2019-08-13,3
+yang,Economist/YouGovEconomist,2,2019-08-10,2019-08-13,3
+castro,Economist/YouGovEconomist,1,2019-08-10,2019-08-13,3
+gabbard,Economist/YouGovEconomist,2,2019-08-10,2019-08-13,3
+klobuchar,Economist/YouGovEconomist,1,2019-08-10,2019-08-13,3
+williamson,Economist/YouGovEconomist,1,2019-08-10,2019-08-13,3
+steyer,Economist/YouGovEconomist,1,2019-08-10,2019-08-13,3
+biden,Economist/YouGovEconomist,22,2019-08-17,2019-08-20,3
+sanders,Economist/YouGovEconomist,19,2019-08-17,2019-08-20,3
+warren,Economist/YouGovEconomist,18,2019-08-17,2019-08-20,3
+harris,Economist/YouGovEconomist,8,2019-08-17,2019-08-20,3
+buttigieg,Economist/YouGovEconomist,8,2019-08-17,2019-08-20,3
+o_rourke,Economist/YouGovEconomist,3,2019-08-17,2019-08-20,3
+booker,Economist/YouGovEconomist,2,2019-08-17,2019-08-20,3
+yang,Economist/YouGovEconomist,1,2019-08-17,2019-08-20,3
+castro,Economist/YouGovEconomist,1,2019-08-17,2019-08-20,3
+gabbard,Economist/YouGovEconomist,2,2019-08-17,2019-08-20,3
+klobuchar,Economist/YouGovEconomist,0,2019-08-17,2019-08-20,3
+williamson,Economist/YouGovEconomist,0,2019-08-17,2019-08-20,3
+steyer,Economist/YouGovEconomist,0,2019-08-17,2019-08-20,3
+biden,EmersonEmerson,34,2019-06-21,2019-06-24,3
+sanders,EmersonEmerson,27,2019-06-21,2019-06-24,3
+warren,EmersonEmerson,14,2019-06-21,2019-06-24,3
+harris,EmersonEmerson,7,2019-06-21,2019-06-24,3
+buttigieg,EmersonEmerson,6,2019-06-21,2019-06-24,3
+o_rourke,EmersonEmerson,1,2019-06-21,2019-06-24,3
+booker,EmersonEmerson,3,2019-06-21,2019-06-24,3
+yang,EmersonEmerson,1,2019-06-21,2019-06-24,3
+castro,EmersonEmerson,0,2019-06-21,2019-06-24,3
+gabbard,EmersonEmerson,0,2019-06-21,2019-06-24,3
+klobuchar,EmersonEmerson,1,2019-06-21,2019-06-24,3
+williamson,EmersonEmerson,0,2019-06-21,2019-06-24,3
+steyer,EmersonEmerson,NA,2019-06-21,2019-06-24,3
+biden,EmersonEmerson,30,2019-07-06,2019-07-08,2
+sanders,EmersonEmerson,15,2019-07-06,2019-07-08,2
+warren,EmersonEmerson,15,2019-07-06,2019-07-08,2
+harris,EmersonEmerson,15,2019-07-06,2019-07-08,2
+buttigieg,EmersonEmerson,5,2019-07-06,2019-07-08,2
+o_rourke,EmersonEmerson,4,2019-07-06,2019-07-08,2
+booker,EmersonEmerson,2,2019-07-06,2019-07-08,2
+yang,EmersonEmerson,3,2019-07-06,2019-07-08,2
+castro,EmersonEmerson,0,2019-07-06,2019-07-08,2
+gabbard,EmersonEmerson,2,2019-07-06,2019-07-08,2
+klobuchar,EmersonEmerson,1,2019-07-06,2019-07-08,2
+williamson,EmersonEmerson,0,2019-07-06,2019-07-08,2
+steyer,EmersonEmerson,NA,2019-07-06,2019-07-08,2
+biden,EmersonEmerson,33,2019-07-27,2019-07-29,2
+sanders,EmersonEmerson,20,2019-07-27,2019-07-29,2
+warren,EmersonEmerson,14,2019-07-27,2019-07-29,2
+harris,EmersonEmerson,11,2019-07-27,2019-07-29,2
+buttigieg,EmersonEmerson,6,2019-07-27,2019-07-29,2
+o_rourke,EmersonEmerson,4,2019-07-27,2019-07-29,2
+booker,EmersonEmerson,0,2019-07-27,2019-07-29,2
+yang,EmersonEmerson,2,2019-07-27,2019-07-29,2
+castro,EmersonEmerson,1,2019-07-27,2019-07-29,2
+gabbard,EmersonEmerson,1,2019-07-27,2019-07-29,2
+klobuchar,EmersonEmerson,0,2019-07-27,2019-07-29,2
+williamson,EmersonEmerson,0,2019-07-27,2019-07-29,2
+steyer,EmersonEmerson,2,2019-07-27,2019-07-29,2
+biden,FOX NewsFOX News,33,2019-07-21,2019-07-23,2
+sanders,FOX NewsFOX News,15,2019-07-21,2019-07-23,2
+warren,FOX NewsFOX News,12,2019-07-21,2019-07-23,2
+harris,FOX NewsFOX News,10,2019-07-21,2019-07-23,2
+buttigieg,FOX NewsFOX News,5,2019-07-21,2019-07-23,2
+o_rourke,FOX NewsFOX News,2,2019-07-21,2019-07-23,2
+booker,FOX NewsFOX News,2,2019-07-21,2019-07-23,2
+yang,FOX NewsFOX News,3,2019-07-21,2019-07-23,2
+castro,FOX NewsFOX News,1,2019-07-21,2019-07-23,2
+gabbard,FOX NewsFOX News,0,2019-07-21,2019-07-23,2
+klobuchar,FOX NewsFOX News,3,2019-07-21,2019-07-23,2
+williamson,FOX NewsFOX News,0,2019-07-21,2019-07-23,2
+steyer,FOX NewsFOX News,1,2019-07-21,2019-07-23,2
+biden,FOX NewsFOX News,31,2019-08-11,2019-08-13,2
+sanders,FOX NewsFOX News,10,2019-08-11,2019-08-13,2
+warren,FOX NewsFOX News,20,2019-08-11,2019-08-13,2
+harris,FOX NewsFOX News,8,2019-08-11,2019-08-13,2
+buttigieg,FOX NewsFOX News,3,2019-08-11,2019-08-13,2
+o_rourke,FOX NewsFOX News,2,2019-08-11,2019-08-13,2
+booker,FOX NewsFOX News,3,2019-08-11,2019-08-13,2
+yang,FOX NewsFOX News,3,2019-08-11,2019-08-13,2
+castro,FOX NewsFOX News,1,2019-08-11,2019-08-13,2
+gabbard,FOX NewsFOX News,1,2019-08-11,2019-08-13,2
+klobuchar,FOX NewsFOX News,2,2019-08-11,2019-08-13,2
+williamson,FOX NewsFOX News,1,2019-08-11,2019-08-13,2
+steyer,FOX NewsFOX News,1,2019-08-11,2019-08-13,2
+biden,Harvard-HarrisHarris,34,2019-06-26,2019-06-29,3
+sanders,Harvard-HarrisHarris,15,2019-06-26,2019-06-29,3
+warren,Harvard-HarrisHarris,11,2019-06-26,2019-06-29,3
+harris,Harvard-HarrisHarris,9,2019-06-26,2019-06-29,3
+buttigieg,Harvard-HarrisHarris,3,2019-06-26,2019-06-29,3
+o_rourke,Harvard-HarrisHarris,2,2019-06-26,2019-06-29,3
+booker,Harvard-HarrisHarris,3,2019-06-26,2019-06-29,3
+yang,Harvard-HarrisHarris,1,2019-06-26,2019-06-29,3
+castro,Harvard-HarrisHarris,1,2019-06-26,2019-06-29,3
+gabbard,Harvard-HarrisHarris,2,2019-06-26,2019-06-29,3
+klobuchar,Harvard-HarrisHarris,1,2019-06-26,2019-06-29,3
+williamson,Harvard-HarrisHarris,0,2019-06-26,2019-06-29,3
+steyer,Harvard-HarrisHarris,NA,2019-06-26,2019-06-29,3
+biden,Harvard-HarrisHarris,34,2019-07-31,2019-08-01,1
+sanders,Harvard-HarrisHarris,17,2019-07-31,2019-08-01,1
+warren,Harvard-HarrisHarris,8,2019-07-31,2019-08-01,1
+harris,Harvard-HarrisHarris,9,2019-07-31,2019-08-01,1
+buttigieg,Harvard-HarrisHarris,4,2019-07-31,2019-08-01,1
+o_rourke,Harvard-HarrisHarris,3,2019-07-31,2019-08-01,1
+booker,Harvard-HarrisHarris,2,2019-07-31,2019-08-01,1
+yang,Harvard-HarrisHarris,1,2019-07-31,2019-08-01,1
+castro,Harvard-HarrisHarris,1,2019-07-31,2019-08-01,1
+gabbard,Harvard-HarrisHarris,0,2019-07-31,2019-08-01,1
+klobuchar,Harvard-HarrisHarris,1,2019-07-31,2019-08-01,1
+williamson,Harvard-HarrisHarris,0,2019-07-31,2019-08-01,1
+steyer,Harvard-HarrisHarris,1,2019-07-31,2019-08-01,1
+biden,IBD/TIPPIBD/TIPP,30,2019-07-25,2019-08-01,7
+sanders,IBD/TIPPIBD/TIPP,12,2019-07-25,2019-08-01,7
+warren,IBD/TIPPIBD/TIPP,17,2019-07-25,2019-08-01,7
+harris,IBD/TIPPIBD/TIPP,11,2019-07-25,2019-08-01,7
+buttigieg,IBD/TIPPIBD/TIPP,6,2019-07-25,2019-08-01,7
+o_rourke,IBD/TIPPIBD/TIPP,1,2019-07-25,2019-08-01,7
+booker,IBD/TIPPIBD/TIPP,2,2019-07-25,2019-08-01,7
+yang,IBD/TIPPIBD/TIPP,0,2019-07-25,2019-08-01,7
+castro,IBD/TIPPIBD/TIPP,0,2019-07-25,2019-08-01,7
+gabbard,IBD/TIPPIBD/TIPP,1,2019-07-25,2019-08-01,7
+klobuchar,IBD/TIPPIBD/TIPP,1,2019-07-25,2019-08-01,7
+williamson,IBD/TIPPIBD/TIPP,0,2019-07-25,2019-08-01,7
+steyer,IBD/TIPPIBD/TIPP,NA,2019-07-25,2019-08-01,7
+biden,LA Times/USCLA Times/USC,28,2019-07-12,2019-07-25,13
+sanders,LA Times/USCLA Times/USC,11,2019-07-12,2019-07-25,13
+warren,LA Times/USCLA Times/USC,10,2019-07-12,2019-07-25,13
+harris,LA Times/USCLA Times/USC,10,2019-07-12,2019-07-25,13
+buttigieg,LA Times/USCLA Times/USC,5,2019-07-12,2019-07-25,13
+o_rourke,LA Times/USCLA Times/USC,3,2019-07-12,2019-07-25,13
+booker,LA Times/USCLA Times/USC,1,2019-07-12,2019-07-25,13
+yang,LA Times/USCLA Times/USC,1,2019-07-12,2019-07-25,13
+castro,LA Times/USCLA Times/USC,1,2019-07-12,2019-07-25,13
+gabbard,LA Times/USCLA Times/USC,0,2019-07-12,2019-07-25,13
+klobuchar,LA Times/USCLA Times/USC,1,2019-07-12,2019-07-25,13
+williamson,LA Times/USCLA Times/USC,0,2019-07-12,2019-07-25,13
+steyer,LA Times/USCLA Times/USC,0,2019-07-12,2019-07-25,13
+biden,MonmouthMonmouth,32,2019-06-12,2019-06-17,5
+sanders,MonmouthMonmouth,14,2019-06-12,2019-06-17,5
+warren,MonmouthMonmouth,15,2019-06-12,2019-06-17,5
+harris,MonmouthMonmouth,8,2019-06-12,2019-06-17,5
+buttigieg,MonmouthMonmouth,5,2019-06-12,2019-06-17,5
+o_rourke,MonmouthMonmouth,3,2019-06-12,2019-06-17,5
+booker,MonmouthMonmouth,2,2019-06-12,2019-06-17,5
+yang,MonmouthMonmouth,2,2019-06-12,2019-06-17,5
+castro,MonmouthMonmouth,0,2019-06-12,2019-06-17,5
+gabbard,MonmouthMonmouth,1,2019-06-12,2019-06-17,5
+klobuchar,MonmouthMonmouth,1,2019-06-12,2019-06-17,5
+williamson,MonmouthMonmouth,1,2019-06-12,2019-06-17,5
+steyer,MonmouthMonmouth,NA,2019-06-12,2019-06-17,5
+biden,MonmouthMonmouth,19,2019-08-16,2019-08-20,4
+sanders,MonmouthMonmouth,20,2019-08-16,2019-08-20,4
+warren,MonmouthMonmouth,20,2019-08-16,2019-08-20,4
+harris,MonmouthMonmouth,8,2019-08-16,2019-08-20,4
+buttigieg,MonmouthMonmouth,4,2019-08-16,2019-08-20,4
+o_rourke,MonmouthMonmouth,2,2019-08-16,2019-08-20,4
+booker,MonmouthMonmouth,4,2019-08-16,2019-08-20,4
+yang,MonmouthMonmouth,3,2019-08-16,2019-08-20,4
+castro,MonmouthMonmouth,2,2019-08-16,2019-08-20,4
+gabbard,MonmouthMonmouth,1,2019-08-16,2019-08-20,4
+klobuchar,MonmouthMonmouth,1,2019-08-16,2019-08-20,4
+williamson,MonmouthMonmouth,2,2019-08-16,2019-08-20,4
+steyer,MonmouthMonmouth,0,2019-08-16,2019-08-20,4
+biden,NBC News/Wall St. JrnlNBC/WSJ,26,2019-07-07,2019-07-09,2
+sanders,NBC News/Wall St. JrnlNBC/WSJ,13,2019-07-07,2019-07-09,2
+warren,NBC News/Wall St. JrnlNBC/WSJ,19,2019-07-07,2019-07-09,2
+harris,NBC News/Wall St. JrnlNBC/WSJ,13,2019-07-07,2019-07-09,2
+buttigieg,NBC News/Wall St. JrnlNBC/WSJ,7,2019-07-07,2019-07-09,2
+o_rourke,NBC News/Wall St. JrnlNBC/WSJ,2,2019-07-07,2019-07-09,2
+booker,NBC News/Wall St. JrnlNBC/WSJ,1,2019-07-07,2019-07-09,2
+yang,NBC News/Wall St. JrnlNBC/WSJ,2,2019-07-07,2019-07-09,2
+castro,NBC News/Wall St. JrnlNBC/WSJ,1,2019-07-07,2019-07-09,2
+gabbard,NBC News/Wall St. JrnlNBC/WSJ,0,2019-07-07,2019-07-09,2
+klobuchar,NBC News/Wall St. JrnlNBC/WSJ,1,2019-07-07,2019-07-09,2
+williamson,NBC News/Wall St. JrnlNBC/WSJ,1,2019-07-07,2019-07-09,2
+steyer,NBC News/Wall St. JrnlNBC/WSJ,NA,2019-07-07,2019-07-09,2
+biden,Politico/Morning ConsultPolitico,38,2019-06-10,2019-06-16,6
+sanders,Politico/Morning ConsultPolitico,19,2019-06-10,2019-06-16,6
+warren,Politico/Morning ConsultPolitico,11,2019-06-10,2019-06-16,6
+harris,Politico/Morning ConsultPolitico,7,2019-06-10,2019-06-16,6
+buttigieg,Politico/Morning ConsultPolitico,7,2019-06-10,2019-06-16,6
+o_rourke,Politico/Morning ConsultPolitico,4,2019-06-10,2019-06-16,6
+booker,Politico/Morning ConsultPolitico,3,2019-06-10,2019-06-16,6
+yang,Politico/Morning ConsultPolitico,1,2019-06-10,2019-06-16,6
+castro,Politico/Morning ConsultPolitico,1,2019-06-10,2019-06-16,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-06-10,2019-06-16,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-06-10,2019-06-16,6
+williamson,Politico/Morning ConsultPolitico,1,2019-06-10,2019-06-16,6
+steyer,Politico/Morning ConsultPolitico,NA,2019-06-10,2019-06-16,6
+biden,Politico/Morning ConsultPolitico,38,2019-06-17,2019-06-23,6
+sanders,Politico/Morning ConsultPolitico,19,2019-06-17,2019-06-23,6
+warren,Politico/Morning ConsultPolitico,13,2019-06-17,2019-06-23,6
+harris,Politico/Morning ConsultPolitico,6,2019-06-17,2019-06-23,6
+buttigieg,Politico/Morning ConsultPolitico,7,2019-06-17,2019-06-23,6
+o_rourke,Politico/Morning ConsultPolitico,4,2019-06-17,2019-06-23,6
+booker,Politico/Morning ConsultPolitico,3,2019-06-17,2019-06-23,6
+yang,Politico/Morning ConsultPolitico,2,2019-06-17,2019-06-23,6
+castro,Politico/Morning ConsultPolitico,1,2019-06-17,2019-06-23,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-06-17,2019-06-23,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-06-17,2019-06-23,6
+williamson,Politico/Morning ConsultPolitico,0,2019-06-17,2019-06-23,6
+steyer,Politico/Morning ConsultPolitico,NA,2019-06-17,2019-06-23,6
+biden,Politico/Morning ConsultPolitico,33,2019-06-27,2019-06-28,1
+sanders,Politico/Morning ConsultPolitico,19,2019-06-27,2019-06-28,1
+warren,Politico/Morning ConsultPolitico,12,2019-06-27,2019-06-28,1
+harris,Politico/Morning ConsultPolitico,12,2019-06-27,2019-06-28,1
+buttigieg,Politico/Morning ConsultPolitico,6,2019-06-27,2019-06-28,1
+o_rourke,Politico/Morning ConsultPolitico,2,2019-06-27,2019-06-28,1
+booker,Politico/Morning ConsultPolitico,3,2019-06-27,2019-06-28,1
+yang,Politico/Morning ConsultPolitico,2,2019-06-27,2019-06-28,1
+castro,Politico/Morning ConsultPolitico,1,2019-06-27,2019-06-28,1
+gabbard,Politico/Morning ConsultPolitico,1,2019-06-27,2019-06-28,1
+klobuchar,Politico/Morning ConsultPolitico,1,2019-06-27,2019-06-28,1
+williamson,Politico/Morning ConsultPolitico,0,2019-06-27,2019-06-28,1
+steyer,Politico/Morning ConsultPolitico,NA,2019-06-27,2019-06-28,1
+biden,Politico/Morning ConsultPolitico,31,2019-07-01,2019-07-07,6
+sanders,Politico/Morning ConsultPolitico,19,2019-07-01,2019-07-07,6
+warren,Politico/Morning ConsultPolitico,13,2019-07-01,2019-07-07,6
+harris,Politico/Morning ConsultPolitico,14,2019-07-01,2019-07-07,6
+buttigieg,Politico/Morning ConsultPolitico,6,2019-07-01,2019-07-07,6
+o_rourke,Politico/Morning ConsultPolitico,3,2019-07-01,2019-07-07,6
+booker,Politico/Morning ConsultPolitico,2,2019-07-01,2019-07-07,6
+yang,Politico/Morning ConsultPolitico,1,2019-07-01,2019-07-07,6
+castro,Politico/Morning ConsultPolitico,1,2019-07-01,2019-07-07,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-07-01,2019-07-07,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-07-01,2019-07-07,6
+williamson,Politico/Morning ConsultPolitico,1,2019-07-01,2019-07-07,6
+steyer,Politico/Morning ConsultPolitico,NA,2019-07-01,2019-07-07,6
+biden,Politico/Morning ConsultPolitico,32,2019-07-08,2019-07-14,6
+sanders,Politico/Morning ConsultPolitico,19,2019-07-08,2019-07-14,6
+warren,Politico/Morning ConsultPolitico,14,2019-07-08,2019-07-14,6
+harris,Politico/Morning ConsultPolitico,13,2019-07-08,2019-07-14,6
+buttigieg,Politico/Morning ConsultPolitico,5,2019-07-08,2019-07-14,6
+o_rourke,Politico/Morning ConsultPolitico,3,2019-07-08,2019-07-14,6
+booker,Politico/Morning ConsultPolitico,2,2019-07-08,2019-07-14,6
+yang,Politico/Morning ConsultPolitico,2,2019-07-08,2019-07-14,6
+castro,Politico/Morning ConsultPolitico,1,2019-07-08,2019-07-14,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-07-08,2019-07-14,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-07-08,2019-07-14,6
+williamson,Politico/Morning ConsultPolitico,0,2019-07-08,2019-07-14,6
+steyer,Politico/Morning ConsultPolitico,NA,2019-07-08,2019-07-14,6
+biden,Politico/Morning ConsultPolitico,33,2019-07-15,2019-07-21,6
+sanders,Politico/Morning ConsultPolitico,18,2019-07-15,2019-07-21,6
+warren,Politico/Morning ConsultPolitico,14,2019-07-15,2019-07-21,6
+harris,Politico/Morning ConsultPolitico,13,2019-07-15,2019-07-21,6
+buttigieg,Politico/Morning ConsultPolitico,5,2019-07-15,2019-07-21,6
+o_rourke,Politico/Morning ConsultPolitico,3,2019-07-15,2019-07-21,6
+booker,Politico/Morning ConsultPolitico,2,2019-07-15,2019-07-21,6
+yang,Politico/Morning ConsultPolitico,2,2019-07-15,2019-07-21,6
+castro,Politico/Morning ConsultPolitico,1,2019-07-15,2019-07-21,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-07-15,2019-07-21,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-07-15,2019-07-21,6
+williamson,Politico/Morning ConsultPolitico,1,2019-07-15,2019-07-21,6
+steyer,Politico/Morning ConsultPolitico,1,2019-07-15,2019-07-21,6
+biden,Politico/Morning ConsultPolitico,33,2019-07-22,2019-07-28,6
+sanders,Politico/Morning ConsultPolitico,18,2019-07-22,2019-07-28,6
+warren,Politico/Morning ConsultPolitico,13,2019-07-22,2019-07-28,6
+harris,Politico/Morning ConsultPolitico,12,2019-07-22,2019-07-28,6
+buttigieg,Politico/Morning ConsultPolitico,5,2019-07-22,2019-07-28,6
+o_rourke,Politico/Morning ConsultPolitico,3,2019-07-22,2019-07-28,6
+booker,Politico/Morning ConsultPolitico,3,2019-07-22,2019-07-28,6
+yang,Politico/Morning ConsultPolitico,2,2019-07-22,2019-07-28,6
+castro,Politico/Morning ConsultPolitico,1,2019-07-22,2019-07-28,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-07-22,2019-07-28,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-07-22,2019-07-28,6
+williamson,Politico/Morning ConsultPolitico,1,2019-07-22,2019-07-28,6
+steyer,Politico/Morning ConsultPolitico,1,2019-07-22,2019-07-28,6
+biden,Politico/Morning ConsultPolitico,33,2019-08-01,2019-08-04,3
+biden,Politico/Morning ConsultPolitico,32,2019-08-01,2019-08-01,0
+sanders,Politico/Morning ConsultPolitico,19,2019-08-01,2019-08-04,3
+sanders,Politico/Morning ConsultPolitico,18,2019-08-01,2019-08-01,0
+warren,Politico/Morning ConsultPolitico,15,2019-08-01,2019-08-04,3
+warren,Politico/Morning ConsultPolitico,15,2019-08-01,2019-08-01,0
+harris,Politico/Morning ConsultPolitico,9,2019-08-01,2019-08-04,3
+harris,Politico/Morning ConsultPolitico,10,2019-08-01,2019-08-01,0
+buttigieg,Politico/Morning ConsultPolitico,6,2019-08-01,2019-08-04,3
+buttigieg,Politico/Morning ConsultPolitico,6,2019-08-01,2019-08-01,0
+o_rourke,Politico/Morning ConsultPolitico,3,2019-08-01,2019-08-04,3
+o_rourke,Politico/Morning ConsultPolitico,3,2019-08-01,2019-08-01,0
+booker,Politico/Morning ConsultPolitico,3,2019-08-01,2019-08-04,3
+booker,Politico/Morning ConsultPolitico,3,2019-08-01,2019-08-01,0
+yang,Politico/Morning ConsultPolitico,2,2019-08-01,2019-08-04,3
+yang,Politico/Morning ConsultPolitico,2,2019-08-01,2019-08-01,0
+castro,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-04,3
+castro,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-01,0
+gabbard,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-04,3
+gabbard,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-01,0
+klobuchar,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-04,3
+klobuchar,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-01,0
+williamson,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-04,3
+williamson,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-01,0
+steyer,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-04,3
+steyer,Politico/Morning ConsultPolitico,1,2019-08-01,2019-08-01,0
+biden,Politico/Morning ConsultPolitico,33,2019-08-05,2019-08-11,6
+sanders,Politico/Morning ConsultPolitico,20,2019-08-05,2019-08-11,6
+warren,Politico/Morning ConsultPolitico,14,2019-08-05,2019-08-11,6
+harris,Politico/Morning ConsultPolitico,9,2019-08-05,2019-08-11,6
+buttigieg,Politico/Morning ConsultPolitico,5,2019-08-05,2019-08-11,6
+o_rourke,Politico/Morning ConsultPolitico,3,2019-08-05,2019-08-11,6
+booker,Politico/Morning ConsultPolitico,3,2019-08-05,2019-08-11,6
+yang,Politico/Morning ConsultPolitico,2,2019-08-05,2019-08-11,6
+castro,Politico/Morning ConsultPolitico,1,2019-08-05,2019-08-11,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-08-05,2019-08-11,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-08-05,2019-08-11,6
+williamson,Politico/Morning ConsultPolitico,1,2019-08-05,2019-08-11,6
+steyer,Politico/Morning ConsultPolitico,1,2019-08-05,2019-08-11,6
+biden,Politico/Morning ConsultPolitico,31,2019-08-12,2019-08-18,6
+sanders,Politico/Morning ConsultPolitico,20,2019-08-12,2019-08-18,6
+warren,Politico/Morning ConsultPolitico,15,2019-08-12,2019-08-18,6
+harris,Politico/Morning ConsultPolitico,9,2019-08-12,2019-08-18,6
+buttigieg,Politico/Morning ConsultPolitico,5,2019-08-12,2019-08-18,6
+o_rourke,Politico/Morning ConsultPolitico,3,2019-08-12,2019-08-18,6
+booker,Politico/Morning ConsultPolitico,3,2019-08-12,2019-08-18,6
+yang,Politico/Morning ConsultPolitico,3,2019-08-12,2019-08-18,6
+castro,Politico/Morning ConsultPolitico,1,2019-08-12,2019-08-18,6
+gabbard,Politico/Morning ConsultPolitico,1,2019-08-12,2019-08-18,6
+klobuchar,Politico/Morning ConsultPolitico,1,2019-08-12,2019-08-18,6
+williamson,Politico/Morning ConsultPolitico,1,2019-08-12,2019-08-18,6
+steyer,Politico/Morning ConsultPolitico,1,2019-08-12,2019-08-18,6
+biden,QuinnipiacQuinnipiac,22,2019-06-28,2019-07-01,3
+sanders,QuinnipiacQuinnipiac,13,2019-06-28,2019-07-01,3
+warren,QuinnipiacQuinnipiac,14,2019-06-28,2019-07-01,3
+harris,QuinnipiacQuinnipiac,20,2019-06-28,2019-07-01,3
+buttigieg,QuinnipiacQuinnipiac,4,2019-06-28,2019-07-01,3
+o_rourke,QuinnipiacQuinnipiac,1,2019-06-28,2019-07-01,3
+booker,QuinnipiacQuinnipiac,3,2019-06-28,2019-07-01,3
+yang,QuinnipiacQuinnipiac,1,2019-06-28,2019-07-01,3
+castro,QuinnipiacQuinnipiac,1,2019-06-28,2019-07-01,3
+gabbard,QuinnipiacQuinnipiac,1,2019-06-28,2019-07-01,3
+klobuchar,QuinnipiacQuinnipiac,1,2019-06-28,2019-07-01,3
+williamson,QuinnipiacQuinnipiac,0,2019-06-28,2019-07-01,3
+steyer,QuinnipiacQuinnipiac,NA,2019-06-28,2019-07-01,3
+biden,QuinnipiacQuinnipiac,34,2019-07-25,2019-07-28,3
+sanders,QuinnipiacQuinnipiac,11,2019-07-25,2019-07-28,3
+warren,QuinnipiacQuinnipiac,15,2019-07-25,2019-07-28,3
+harris,QuinnipiacQuinnipiac,12,2019-07-25,2019-07-28,3
+buttigieg,QuinnipiacQuinnipiac,6,2019-07-25,2019-07-28,3
+o_rourke,QuinnipiacQuinnipiac,2,2019-07-25,2019-07-28,3
+booker,QuinnipiacQuinnipiac,1,2019-07-25,2019-07-28,3
+yang,QuinnipiacQuinnipiac,2,2019-07-25,2019-07-28,3
+castro,QuinnipiacQuinnipiac,0,2019-07-25,2019-07-28,3
+gabbard,QuinnipiacQuinnipiac,1,2019-07-25,2019-07-28,3
+klobuchar,QuinnipiacQuinnipiac,1,2019-07-25,2019-07-28,3
+williamson,QuinnipiacQuinnipiac,1,2019-07-25,2019-07-28,3
+steyer,QuinnipiacQuinnipiac,0,2019-07-25,2019-07-28,3
+biden,QuinnipiacQuinnipiac,32,2019-08-01,2019-08-05,4
+sanders,QuinnipiacQuinnipiac,14,2019-08-01,2019-08-05,4
+warren,QuinnipiacQuinnipiac,21,2019-08-01,2019-08-05,4
+harris,QuinnipiacQuinnipiac,7,2019-08-01,2019-08-05,4
+buttigieg,QuinnipiacQuinnipiac,5,2019-08-01,2019-08-05,4
+o_rourke,QuinnipiacQuinnipiac,2,2019-08-01,2019-08-05,4
+booker,QuinnipiacQuinnipiac,2,2019-08-01,2019-08-05,4
+yang,QuinnipiacQuinnipiac,1,2019-08-01,2019-08-05,4
+castro,QuinnipiacQuinnipiac,1,2019-08-01,2019-08-05,4
+gabbard,QuinnipiacQuinnipiac,1,2019-08-01,2019-08-05,4
+klobuchar,QuinnipiacQuinnipiac,1,2019-08-01,2019-08-05,4
+williamson,QuinnipiacQuinnipiac,0,2019-08-01,2019-08-05,4
+steyer,QuinnipiacQuinnipiac,0,2019-08-01,2019-08-05,4
+biden,Reuters/IpsosReuters,24,2019-06-28,2019-07-02,4
+sanders,Reuters/IpsosReuters,17,2019-06-28,2019-07-02,4
+warren,Reuters/IpsosReuters,11,2019-06-28,2019-07-02,4
+harris,Reuters/IpsosReuters,11,2019-06-28,2019-07-02,4
+buttigieg,Reuters/IpsosReuters,4,2019-06-28,2019-07-02,4
+o_rourke,Reuters/IpsosReuters,3,2019-06-28,2019-07-02,4
+booker,Reuters/IpsosReuters,1,2019-06-28,2019-07-02,4
+yang,Reuters/IpsosReuters,3,2019-06-28,2019-07-02,4
+castro,Reuters/IpsosReuters,1,2019-06-28,2019-07-02,4
+gabbard,Reuters/IpsosReuters,0,2019-06-28,2019-07-02,4
+klobuchar,Reuters/IpsosReuters,1,2019-06-28,2019-07-02,4
+williamson,Reuters/IpsosReuters,0,2019-06-28,2019-07-02,4
+steyer,Reuters/IpsosReuters,NA,2019-06-28,2019-07-02,4
+biden,Reuters/IpsosReuters,25,2019-08-01,2019-08-05,4
+sanders,Reuters/IpsosReuters,20,2019-08-01,2019-08-05,4
+warren,Reuters/IpsosReuters,10,2019-08-01,2019-08-05,4
+harris,Reuters/IpsosReuters,7,2019-08-01,2019-08-05,4
+buttigieg,Reuters/IpsosReuters,5,2019-08-01,2019-08-05,4
+o_rourke,Reuters/IpsosReuters,2,2019-08-01,2019-08-05,4
+booker,Reuters/IpsosReuters,3,2019-08-01,2019-08-05,4
+yang,Reuters/IpsosReuters,2,2019-08-01,2019-08-05,4
+castro,Reuters/IpsosReuters,1,2019-08-01,2019-08-05,4
+gabbard,Reuters/IpsosReuters,1,2019-08-01,2019-08-05,4
+klobuchar,Reuters/IpsosReuters,1,2019-08-01,2019-08-05,4
+williamson,Reuters/IpsosReuters,0,2019-08-01,2019-08-05,4
+steyer,Reuters/IpsosReuters,0,2019-08-01,2019-08-05,4
+biden,SurveyUSASUSA,33,2019-08-01,2019-08-05,4
+sanders,SurveyUSASUSA,20,2019-08-01,2019-08-05,4
+warren,SurveyUSASUSA,19,2019-08-01,2019-08-05,4
+harris,SurveyUSASUSA,9,2019-08-01,2019-08-05,4
+buttigieg,SurveyUSASUSA,8,2019-08-01,2019-08-05,4
+o_rourke,SurveyUSASUSA,1,2019-08-01,2019-08-05,4
+booker,SurveyUSASUSA,1,2019-08-01,2019-08-05,4
+yang,SurveyUSASUSA,0,2019-08-01,2019-08-05,4
+castro,SurveyUSASUSA,0,2019-08-01,2019-08-05,4
+gabbard,SurveyUSASUSA,0,2019-08-01,2019-08-05,4
+klobuchar,SurveyUSASUSA,1,2019-08-01,2019-08-05,4
+williamson,SurveyUSASUSA,0,2019-08-01,2019-08-05,4
+steyer,SurveyUSASUSA,0,2019-08-01,2019-08-05,4
+biden,The Hill/HarrisXThe Hill,35,2019-06-14,2019-06-15,1
+sanders,The Hill/HarrisXThe Hill,13,2019-06-14,2019-06-15,1
+warren,The Hill/HarrisXThe Hill,7,2019-06-14,2019-06-15,1
+harris,The Hill/HarrisXThe Hill,5,2019-06-14,2019-06-15,1
+buttigieg,The Hill/HarrisXThe Hill,4,2019-06-14,2019-06-15,1
+o_rourke,The Hill/HarrisXThe Hill,6,2019-06-14,2019-06-15,1
+booker,The Hill/HarrisXThe Hill,3,2019-06-14,2019-06-15,1
+yang,The Hill/HarrisXThe Hill,0,2019-06-14,2019-06-15,1
+castro,The Hill/HarrisXThe Hill,2,2019-06-14,2019-06-15,1
+gabbard,The Hill/HarrisXThe Hill,0,2019-06-14,2019-06-15,1
+klobuchar,The Hill/HarrisXThe Hill,1,2019-06-14,2019-06-15,1
+williamson,The Hill/HarrisXThe Hill,0,2019-06-14,2019-06-15,1
+steyer,The Hill/HarrisXThe Hill,NA,2019-06-14,2019-06-15,1
+biden,The Hill/HarrisXThe Hill,33,2019-06-29,2019-06-30,1
+sanders,The Hill/HarrisXThe Hill,15,2019-06-29,2019-06-30,1
+warren,The Hill/HarrisXThe Hill,9,2019-06-29,2019-06-30,1
+harris,The Hill/HarrisXThe Hill,11,2019-06-29,2019-06-30,1
+buttigieg,The Hill/HarrisXThe Hill,6,2019-06-29,2019-06-30,1
+o_rourke,The Hill/HarrisXThe Hill,4,2019-06-29,2019-06-30,1
+booker,The Hill/HarrisXThe Hill,2,2019-06-29,2019-06-30,1
+yang,The Hill/HarrisXThe Hill,1,2019-06-29,2019-06-30,1
+castro,The Hill/HarrisXThe Hill,1,2019-06-29,2019-06-30,1
+gabbard,The Hill/HarrisXThe Hill,1,2019-06-29,2019-06-30,1
+klobuchar,The Hill/HarrisXThe Hill,0,2019-06-29,2019-06-30,1
+williamson,The Hill/HarrisXThe Hill,0,2019-06-29,2019-06-30,1
+steyer,The Hill/HarrisXThe Hill,NA,2019-06-29,2019-06-30,1
+biden,The Hill/HarrisXThe Hill,29,2019-07-12,2019-07-13,1
+sanders,The Hill/HarrisXThe Hill,16,2019-07-12,2019-07-13,1
+warren,The Hill/HarrisXThe Hill,9,2019-07-12,2019-07-13,1
+harris,The Hill/HarrisXThe Hill,11,2019-07-12,2019-07-13,1
+buttigieg,The Hill/HarrisXThe Hill,1,2019-07-12,2019-07-13,1
+o_rourke,The Hill/HarrisXThe Hill,3,2019-07-12,2019-07-13,1
+booker,The Hill/HarrisXThe Hill,1,2019-07-12,2019-07-13,1
+yang,The Hill/HarrisXThe Hill,0,2019-07-12,2019-07-13,1
+castro,The Hill/HarrisXThe Hill,1,2019-07-12,2019-07-13,1
+gabbard,The Hill/HarrisXThe Hill,1,2019-07-12,2019-07-13,1
+klobuchar,The Hill/HarrisXThe Hill,1,2019-07-12,2019-07-13,1
+williamson,The Hill/HarrisXThe Hill,0,2019-07-12,2019-07-13,1
+steyer,The Hill/HarrisXThe Hill,0,2019-07-12,2019-07-13,1
+biden,The Hill/HarrisXThe Hill,34,2019-07-27,2019-07-28,1
+sanders,The Hill/HarrisXThe Hill,20,2019-07-27,2019-07-28,1
+warren,The Hill/HarrisXThe Hill,12,2019-07-27,2019-07-28,1
+harris,The Hill/HarrisXThe Hill,9,2019-07-27,2019-07-28,1
+buttigieg,The Hill/HarrisXThe Hill,5,2019-07-27,2019-07-28,1
+o_rourke,The Hill/HarrisXThe Hill,4,2019-07-27,2019-07-28,1
+booker,The Hill/HarrisXThe Hill,1,2019-07-27,2019-07-28,1
+yang,The Hill/HarrisXThe Hill,1,2019-07-27,2019-07-28,1
+castro,The Hill/HarrisXThe Hill,1,2019-07-27,2019-07-28,1
+gabbard,The Hill/HarrisXThe Hill,0,2019-07-27,2019-07-28,1
+klobuchar,The Hill/HarrisXThe Hill,1,2019-07-27,2019-07-28,1
+williamson,The Hill/HarrisXThe Hill,0,2019-07-27,2019-07-28,1
+steyer,The Hill/HarrisXThe Hill,1,2019-07-27,2019-07-28,1
+biden,The Hill/HarrisXThe Hill,31,2019-08-09,2019-08-10,1
+sanders,The Hill/HarrisXThe Hill,16,2019-08-09,2019-08-10,1
+warren,The Hill/HarrisXThe Hill,10,2019-08-09,2019-08-10,1
+harris,The Hill/HarrisXThe Hill,7,2019-08-09,2019-08-10,1
+buttigieg,The Hill/HarrisXThe Hill,4,2019-08-09,2019-08-10,1
+o_rourke,The Hill/HarrisXThe Hill,4,2019-08-09,2019-08-10,1
+booker,The Hill/HarrisXThe Hill,1,2019-08-09,2019-08-10,1
+yang,The Hill/HarrisXThe Hill,1,2019-08-09,2019-08-10,1
+castro,The Hill/HarrisXThe Hill,2,2019-08-09,2019-08-10,1
+gabbard,The Hill/HarrisXThe Hill,1,2019-08-09,2019-08-10,1
+klobuchar,The Hill/HarrisXThe Hill,2,2019-08-09,2019-08-10,1
+williamson,The Hill/HarrisXThe Hill,2,2019-08-09,2019-08-10,1
+steyer,The Hill/HarrisXThe Hill,1,2019-08-09,2019-08-10,1
+biden,USA Today/SuffolkUSA Today,30,2019-06-11,2019-06-15,4
+sanders,USA Today/SuffolkUSA Today,15,2019-06-11,2019-06-15,4
+warren,USA Today/SuffolkUSA Today,10,2019-06-11,2019-06-15,4
+harris,USA Today/SuffolkUSA Today,8,2019-06-11,2019-06-15,4
+buttigieg,USA Today/SuffolkUSA Today,9,2019-06-11,2019-06-15,4
+o_rourke,USA Today/SuffolkUSA Today,2,2019-06-11,2019-06-15,4
+booker,USA Today/SuffolkUSA Today,2,2019-06-11,2019-06-15,4
+yang,USA Today/SuffolkUSA Today,1,2019-06-11,2019-06-15,4
+castro,USA Today/SuffolkUSA Today,1,2019-06-11,2019-06-15,4
+gabbard,USA Today/SuffolkUSA Today,0,2019-06-11,2019-06-15,4
+klobuchar,USA Today/SuffolkUSA Today,0,2019-06-11,2019-06-15,4
+williamson,USA Today/SuffolkUSA Today,0,2019-06-11,2019-06-15,4
+steyer,USA Today/SuffolkUSA Today,NA,2019-06-11,2019-06-15,4
