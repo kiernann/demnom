@@ -40,7 +40,9 @@ FiveThirtyEight. I found no statistical difference in the two method’s
 ability to make [skilled
 predictions](https://en.wikipedia.org/wiki/Brier_score) over the course
 of the Midterm elections. In fact, the markets showed reasonable
-skepticism in a number of upset elections.
+skepticism in a number of upset elections. Below, you can see how
+competitive Congressonal races were predicted by both the markets and
+model.
 
 ![](https://raw.githubusercontent.com/kiernann/models-markets/master/plots/plot_cartesian.png)
 
@@ -218,16 +220,17 @@ left_join(usa_map, states_sd) %>%
   ) +
   theme(
     legend.position = c(0.9, 0.35),
-    panel.background = element_blank(),
     panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5),
     axis.text  = element_blank(),
     axis.title = element_blank(),
-    axis.ticks = element_blank()
+    axis.ticks = element_blank(),
+    legend.background = element_blank()
   ) +
   labs(
-    title = "Variation in Presidential Elections 1976-2016",
-    fill = "Standard\nDeviation"
+    title = "Variation in Democratic Share",
+    subtitle = "Presidential Elections 1976-2016",
+    fill = "Standard\nDeviation",
+    caption = "Source: MIT Election Data and Science Lab"
     )
 ```
 
@@ -366,15 +369,15 @@ for (i in seq(1, n)) {
 
 From the summary below, you can see a picture of a very close race with
 the Democrats holding a slight lead. Of our 100,000 simulations, the
-Democrats won 68.7% with the modal outcome being a victory of 279
+Democrats won 66.4% with the modal outcome being a victory of 279
 electoral college votes.
 
 ``` r
 summary(sims)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   127.0   263.0   285.0   285.3   307.0   414.0
+#>   117.0   261.0   283.0   283.2   305.0   401.0
 mean(sims > 269)
-#> [1] 0.6869
+#> [1] 0.66445
 ```
 
 ![](sim_college_files/figure-gfm/sim_hist-1.png)<!-- -->

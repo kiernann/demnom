@@ -46,7 +46,7 @@ Following the 2018 Midterm elections, [I wrote a paper][04] comparing these mark
 congressional model published by the data journalists at FiveThirtyEight. I found no statistical
 difference in the two method's ability to make [skilled predictions][05] over the course of the
 Midterm elections. In fact, the markets showed reasonable skepticism in a number of upset
-elections.
+elections. Below, you can see how competitive Congressonal races were predicted by both the markets and model.
 
 ![](https://raw.githubusercontent.com/kiernann/models-markets/master/plots/plot_cartesian.png)
 
@@ -121,14 +121,17 @@ states_ec_map %>%
   ) +
   theme(
     legend.position = c(0.9, 0.35),
-    panel.background = element_blank(),
     panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5),
     axis.text  = element_blank(),
     axis.title = element_blank(),
-    axis.ticks = element_blank()
+    axis.ticks = element_blank(),
+    legend.background = element_blank()
   ) +
-  ggtitle("2020 Prediction Markets")
+  labs(
+    title = "Battleground Market Prices",
+    subtitle = "Closing price of democratic candidate futures contract",
+    caption = "Source: PredictIt"
+  )
 ```
 
 These states alone aren't enough to simulate the electoral college in 2020. To predict the
@@ -190,17 +193,17 @@ left_join(usa_map, past_results) %>%
   ) +
   theme(
     legend.position = c(0.9, 0.35),
-    panel.background = element_blank(),
     panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5),
     axis.text  = element_blank(),
     axis.title = element_blank(),
-    axis.ticks = element_blank()
+    axis.ticks = element_blank(),
+    legend.background = element_blank()
   ) +
   labs(
     title = "2016 Popular Vote",
-    fill = "Dem. Share"
-    )
+    subtitle = "Democratic share of major party votes",
+    caption = "Source: PredictIt"
+  )
 ```
 
 ## Probabilities
@@ -298,16 +301,17 @@ left_join(usa_map, states_sd) %>%
   ) +
   theme(
     legend.position = c(0.9, 0.35),
-    panel.background = element_blank(),
     panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5),
     axis.text  = element_blank(),
     axis.title = element_blank(),
-    axis.ticks = element_blank()
+    axis.ticks = element_blank(),
+    legend.background = element_blank()
   ) +
   labs(
-    title = "Variation in Presidential Elections 1976-2016",
-    fill = "Standard\nDeviation"
+    title = "Variation in Democratic Share",
+    subtitle = "Presidential Elections 1976-2016",
+    fill = "Standard\nDeviation",
+    caption = "Source: MIT Election Data and Science Lab"
     )
 ```
 
@@ -502,18 +506,22 @@ left_join(usa_map, ec) %>%
     high = brewer_rdbu[5],
     mid = "white",
     midpoint = 0.50,
-    labels = scales::dollar
+    labels = scales::percent
   ) +
   theme(
     legend.position = c(0.9, 0.35),
-    panel.background = element_blank(),
     panel.grid = element_blank(),
-    plot.title = element_text(hjust = 0.5),
     axis.text  = element_blank(),
     axis.title = element_blank(),
-    axis.ticks = element_blank()
+    axis.ticks = element_blank(),
+    legend.background = element_blank()
   ) +
-  ggtitle("2016 Popular Vote")
+  labs(
+    title = "Probability of Democratic Victory",
+    subtitle = "Simulated and Market Prices",
+    fill = "Probability",
+    caption = "Source: Wikipedia, MIT, & PredictIt"
+    )
 ```
 
 ## Electoral College
