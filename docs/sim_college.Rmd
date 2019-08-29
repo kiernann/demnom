@@ -65,7 +65,7 @@ pitfalls of 2016. This far from the General Election, what little polling we hav
 prediction markets to generate a useful probabilistic simulation of the electoral college? today 
 I'll try and use data from the PredictIt exchange to answer this question.
 
-## Code
+## Process
 
 I'll be using the open source [language R][07] and packages from the [Tidyverse ecosystem][08].
 
@@ -75,19 +75,20 @@ pacman::p_load_current_gh("kiernann/campfin")
 pacman::p_load(tidyverse, dataverse, magrittr, jsonlite, scales, rvest)
 ```
 
+Throughout this simulation, I'll be using only the Democratic party market prices, popular vote,
+and probability. It's difficult to determine the winner of an election from a single party's 
+share of the popular vote, as only a plurality and not a majority of votes is required. This means
+we can't directly test if a party recieves >50% of the vote to determine if they've won, as some
+winners recieve less than 50% of the vote. We can get around this by looking at only votes cast for
+the major parties (Democrats and Republicans); if a party wins >50% of the major party vote, we can 
+pretty safely assume they've won the plurality of votes. This is a reductive, but makes this quick
+and dirty simulation a lot easier. A more professional model would fully incorperate third-party
+voters, which [can affect elections][09].
+
 ## Battleground Data
 
 PredictIt hosts markets for most of the competitive battleground states. We can scrape these
 markets using their API and the `jsonlite::fromJSON()` function. 
-
-Throughout this simulation, I'll be using only the Democratic party market prices, popular vote,
-and probability. This is a little reductive, as it assumes this number alone can be used to
-calculate the Republican party numbers, both of which will cover 100% of the population. While
-third parties can be a real factor affecting American politics, I will ignore them for now. A good
-forecasting method would incorperate them. What we care most about here is the _plurality_ of votes
-in each state. The easiest way to calculate this is to find the democratic share of the major party
-votes. If that share is greater than 50% then the democratic candidate likely won the plurality of
-votes.
 
 ```{r scrape_markets, warning=FALSE, error=FALSE}
 market_prices <-
@@ -137,6 +138,78 @@ left_join(usa_map, market_prices) %>%
     subtitle = sprintf("Market price of democratic contract on %s", date()),
     caption = "Source: PredictIt",
     fill = "Market\nPrice"
+  )
+```
+
+We should note the trading volume of each market. Higher volume is typically associated with a more
+accurate price equilibrium. That is, the more people trade on the market the more accurate the 
+prediction will be. We can get this data by downloading the 90 day history of each market.
+
+```{r market_volume, echo=FALSE}
+college_markets <-
+  fromJSON(txt = "https://www.predictit.org/api/marketdata/all/") %>%
+  use_series(markets) %>%
+  filter(str_detect(name, "Which party will win (.*) in the 2020 presidential election?"))
+
+college_states <- str_extract(college_markets$shortName, "[:upper:]{2}")
+
+college_urls <- glue("https://www.predictit.org/Resource/DownloadMarketChartData?marketid={college_markets$id}&timespan=90d")
+
+map(
+  college_urls,
+  read_csv,
+  col_types = cols(
+    ContractName = col_character(),
+    Date = col_date("%m/%d/%Y %H:%M:%S %p"),
+    OpenSharePrice = col_number(),
+    HighSharePrice = col_number(),
+    LowSharePrice = col_number(),
+    CloseSharePrice = col_number(),
+    TradeVolume = col_double()
+  )
+) %>%
+  set_names(value = college_states) %>%
+  bind_rows(.id = "state") %>%
+  rename(
+    name   = ContractName,
+    date   = Date,
+    open   = OpenSharePrice,
+    high   = HighSharePrice,
+    low    = LowSharePrice,
+    close  = CloseSharePrice,
+    volume = TradeVolume
+  ) %>% 
+  group_by(state) %>% 
+  arrange(date) %>% 
+  mutate(vol_cum = cumsum(volume)) %>% 
+  filter(
+    date == max(college_data$date),
+    name == "Democratic"
+  ) %>% 
+  right_join(usa_map) %>%
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", mapping = aes(fill = vol_cum)) +
+  coord_quickmap() +
+  scale_fill_distiller(
+    type = "seq",
+    palette = "YlOrBr",
+    direction = 1,
+    label = comma
+  ) +
+  theme(
+    legend.position = c(0.9, 0.35),
+    panel.grid = element_blank(),
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    legend.background = element_blank(),
+    plot.caption = element_text(size = 11)
+  ) +
+  labs(
+    title = "Cumulative Democratic Contracts Traded",
+    subtitle = "Increased market volume associated with more accurate price equilibrium",
+    caption = "Source: PredictIt",
+    fill = "Cumulative\nVolume"
   )
 ```
 
