@@ -213,15 +213,13 @@ map(
   )
 ```
 
-## Safe States
+## Past Elections
 
 These states alone aren't enough to simulate the 2020 electoral college. To predict the
 remaining states, we have a few options. The easiest route is to simply assume the party which won
-in 2016 will win again in 2020. This isn't a terrible idea, as the majority of states rarely flip,
-especially not the `r 50-nrow(market_prices)` states without a prediction market. We can start from
-this assumption and improve upon it very easily.
-
-### Past Elections
+in 2016 will win again in 2020. This isn't neccesarily a terrible idea, as the majority of states
+rarely flip, especially not the `r 50-nrow(market_prices)` states without a prediction market. We
+can start from this assumption and improve upon it very easily.
 
 To calculate some simple probablistic predictions for the remaining states, we will use data from
 the MIT Election Data and Science Lab, which has a database of popular vote results in each state
@@ -251,19 +249,63 @@ past_elections <-
 # https://doi.org/10.7910/DVN/42MVDX/MFU99O, Harvard Dataverse, V5
 ```
 
-This historical data provides two statistics needed to finish our probablistic simulation. First,
-we have the democratic share of the vote in the last election. Second, we can calculate the
-variation in the party's share of the vote in the last `r n_distinct(past_elections$year)`
-elections.
+This historical data provides the two statistics needed to finish our probablistic simulation.
+
+First, we have the democratic share of the vote in the last election. This statistic is the default
+assumption for our 2020 simulation.
+
+```{r last_election}
+last_election <- past_elections %>%
+  # keep only last election
+  filter(year == 2016)
+```
+
+```{r 2016_map, echo=FALSE}
+last_election$share[last_election$state %in% c("WY", "WV")] <- 
+  last_election$share[last_election$state == "ND"]
+left_join(usa_map, last_election, by = "state") %>%
+  filter(state != "DC") %>% 
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", mapping = aes(fill = share)) +
+  coord_quickmap() +
+  scale_fill_distiller(
+    type = "div",
+    palette = "RdBu",
+    direction = 1,
+    label = dollar
+  ) +
+  theme(
+    legend.position = c(0.9, 0.35),
+    panel.grid = element_blank(),
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    plot.caption = element_text(size = 11),
+    legend.background = element_blank()
+  ) +
+  labs(
+    title = "Democratic Share of Major Party Vote",
+    subtitle = "Presidential Election, 2016",
+    fill = "2016\nShare",
+    caption = "Source: MIT Election Data and Science Lab"
+  )
+
+last_election <- filter(past_elections, year == 2016)
+```
+
+Second, we can calculate the variation in the party's share of the vote in the last 
+`r n_distinct(past_elections$year)` elections. This statistic allows us to introduce uncertainty
+to our assumption. The greater the historical variation, the less certain we can be that the winner
+of the _last_ election will win the _next_ election.
 
 ```{r summarize_sd}
 state_sd <- past_elections %>% 
-  # calculate std dev
+  # calculate state std dev
   group_by(state) %>% 
   summarize(sd = sd(share))
 ```
 
-```{r map_sd}
+```{r map_sd, echo=FALSE}
 left_join(usa_map, state_sd, by = "state") %>%
   filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
@@ -288,47 +330,11 @@ left_join(usa_map, state_sd, by = "state") %>%
     )
 ```
 
-```{r last_election}
-last_election <- past_elections %>%
-  # keep only last election
-  filter(year == 2016)
-```
-
-```{r 2016_map, echo=FALSE}
-left_join(usa_map, last_election, by = "state") %>%
-  filter(state != "DC") %>% 
-  ggplot(mapping = aes(x = long, y = lat, group = group)) +
-  geom_polygon(color = "black", mapping = aes(fill = share)) +
-  coord_quickmap() +
-  scale_fill_gradient2(
-    low = brewer_rdbu[1],
-    high = brewer_rdbu[5],
-    mid = brewer_rdbu[3],
-    midpoint = 0.50,
-    labels = scales::percent
-  ) +
-  theme(
-    legend.position = c(0.9, 0.35),
-    panel.grid = element_blank(),
-    axis.text  = element_blank(),
-    axis.title = element_blank(),
-    axis.ticks = element_blank(),
-    plot.caption = element_text(size = 11),
-    legend.background = element_blank()
-  ) +
-  labs(
-    title = "Democratic Share of Major Party Vote",
-    subtitle = "Presidential Election, 2016",
-    fill = "2016\nShare",
-    caption = "Source: MIT Election Data and Science Lab"
-  )
-```
-
 ## Probabilities
 
 Any good election forecast needs to be _probabilistic_. Professional forecasts take this division
 of votes (usually from an aggregate of polls) then calculate the probability distribution around
-that range with a series of other factors.
+that division using a series of other factors.
 
 For this simulation, we already have probabilities for `r nrow(market_prices)` states. PredictIt
 only hosts markets for the most competitive states. The reality is, the other 
@@ -338,19 +344,12 @@ see how the 2016 popular vote differed for those states _with_ 2020 markets and 
 ```{r vote_range, echo=FALSE}
 last_election %>%
   filter(state != "DC") %>%
-  mutate(
-    market = if_else(
-      condition = state %in% market_prices$state,
-      true = "No Market",
-      false = "Market Exists"
-    )
-  ) %>% 
+  mutate(market = state %in% market_prices$state) %>% 
   ggplot(aes(x = share)) + 
-  geom_density(aes(fill = market)) +
-  facet_wrap(~market, ncol = 1, scales = "free_y") +
+  geom_histogram(aes(fill = market), bins = 9) +
   scale_x_continuous(labels = scales::percent) +
+  scale_y_continuous(breaks = seq(1, 10, 2)) +
   scale_fill_manual(
-    guide = FALSE,
     values = c(
       RColorBrewer::brewer.pal(3, "Dark2")[1],
       RColorBrewer::brewer.pal(3, "Dark2")[2]
@@ -358,11 +357,22 @@ last_election %>%
   ) +
   labs(
     title = "Popular Vote Difference for Battleground States",
+    subtitle = "Markets exist for most competitive states",
+    caption = "Source: PredictIt",
     x = "2016 Popular Vote",
-    y = "Number of States"
+    y = "Number of States",
+    fill = "Market Exists"
   ) +
-  theme(strip.text = element_text(size = 12))
+  theme(
+    legend.position = "bottom",
+    plot.caption = element_text(size = 11)
+  )
 ```
+
+To turn these Democratic share statistics for less competitive states into probabilities of
+Democratic victory, we simply have to add our calculated historical standard deviation and
+generate 10,000 random observations from a normal distribution using `rnorm()` with our mean
+set to the 2016 share.
 
 ```{r add_sd_rnorm}
 last_election <- last_election %>%
@@ -377,56 +387,60 @@ last_election <- last_election %>%
 If we visualize this process, we can see how the 2016 result and a standard deviation is used
 to simulate many elections and calculate a probability.
 
-Below you can see the results of 1,000 simulated elections in Maryland, where
-`r scales::percent(last_election$past[last_election$state == "MD"])` of votes were cast for the
-Democratic candidate in the last election. The area under the curve past 50% is the _probability_
-of a democrat winning again in the next election.
+Below you can see the results of 1,000 simulated elections in Vermont, which saw
+`r percent(last_election$share[last_election$state == "VT"])` of votes were cast for the 
+Democratic candidate in the last election, but has a historical standard deviation of
+`r round(last_election$sd[last_election$state == "VT"], 3)`, we can generate 1000 new elections
+from our random normal distribution. Any simulated election with a share of the major party vote
+greater than 50% is considered a Democratic victory. The percentage of those simulated elections
+won is the _probability_ of a Democrat winning the next election.
 
 ```{r example_range_md, echo=FALSE}
-ex_share <- last_election$share[last_election$state == "MD"]
-ex_sd <- last_election$sd[last_election$state == "MD"]
+ex_share <- last_election$share[last_election$state == "VT"]
+ex_sd <- last_election$sd[last_election$state == "VT"]
 n <- 1000
-ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_share, sd = ex_sd))) + 
-  geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[3]) +
-  geom_vline(xintercept = 0.5, size = 1) +
-  geom_vline(xintercept = ex_share, linetype = 2, size = 1) +
+x <- rnorm(n = n, mean = ex_share, sd = ex_sd)
+ggplot(data = NULL, mapping = aes(x = x)) + 
+  geom_histogram(aes(fill = x > 0.5), binwidth = 0.02) +
   scale_x_continuous(labels = scales::percent) +
+  coord_cartesian(xlim = c(0, 1), ylim = c(0, 250)) +
+  scale_fill_manual(
+    values = brewer_rdbu[c(1, 5)],
+    guide = FALSE
+  ) +
   labs(
-    title = sprintf("Maryland 2020 Simulated %s Times", comma(n)),
+    title = sprintf("Vermont 2020 Simulated %s Times", comma(n)),
+    subtitle = sprintf("Mean = %s, Standard Deviation = %s", round(ex_share, 3), round(ex_sd, 3)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
-  ) +
-  coord_cartesian(xlim = c(0.2, 0.8)) +
-  geom_label(aes(x = ex_share, y = 5, label = "2016 Result")) +
-  theme(
-    axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank()
   )
 ```
 
-Now, lets see the distribution of 1,000 simulated elections in Florida, a much closer election with
-only `r scales::percent(last_election$past[last_election$state == "FL"])` of voters supporting the
-democratic candidate.
+Now, lets see the distribution of 1,000 simulated elections in Pennsylvania, a much closer 
+election, where only `r scales::percent(last_election$share[last_election$state == "FL"])` of 
+voters supported the democratic candidate but where the historical standard deviation is much 
+lower at `r round(last_election$sd[last_election$state == "PA"], 3)`. You can see how the number of
+elections below and above 50% is more equal, meaning our simulated probability is much closer to
+50%. This is a state where we will use a prediction market.
 
 ```{r example_range_fl, echo=FALSE}
-ex_share <- last_election$share[last_election$state == "FL"]
-ex_sd <- last_election$sd[last_election$state == "FL"]
+ex_share <- last_election$share[last_election$state == "PA"]
+ex_sd <- last_election$sd[last_election$state == "PA"]
 n <- 1000
-ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_share, sd = ex_sd))) + 
-  geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[2]) +
-  geom_vline(xintercept = 0.5, size = 1) +
-  geom_vline(xintercept = ex_share, linetype = 2, size = 1) +
+x <- rnorm(n = n, mean = ex_share, sd = ex_sd)
+ggplot(data = NULL, mapping = aes(x = x)) + 
+  geom_histogram(aes(fill = x > 0.5), binwidth = 0.02) +
   scale_x_continuous(labels = scales::percent) +
+  coord_cartesian(xlim = c(0, 1), ylim = c(0, 250)) +
+  scale_fill_manual(
+    values = brewer_rdbu[c(1, 5)],
+    guide = FALSE
+  ) +
   labs(
-    title = sprintf("Folrida 2020 Simulated %s Times", comma(n)),
+    title = sprintf("Pennsylvania 2020 Simulated %s Times", comma(n)),
+    subtitle = sprintf("Mean = %s, Standard Deviation = %s", round(ex_share, 3), round(ex_sd, 3)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
-  ) +
-  coord_cartesian(xlim = c(0.2, 0.8)) +
-  geom_label(aes(x = ex_share, y = 5, label = "2016 Result")) +
-  theme(
-    axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank()
   )
 ```
 
@@ -434,12 +448,13 @@ We can generate this probability by calculating the average number of simulated 
 the democrat. Below, we see how this is done by simulating the Connecticut election 60 times.
 
 ```{r example_process}
+# find std dev
+(ex_past <- round(past_elections$share[past_elections$state == "CT"], digits = 3))
+(ex_sd <- sd(ex_past))
 # find last share
 (ex_share <- last_election$share[last_election$state == "CT"])
-# find std dev
-(ex_sd <- last_election$sd[last_election$state == "CT"])
 # simulate 60 elections
-(ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 2))
+(ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 3))
 # check for win each each
 (ex_wins <- ex_sims > 0.5)
 # calculate percent of wins
