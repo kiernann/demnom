@@ -464,11 +464,12 @@ mean(ex_wins)
 Below, you can see how the 2016 vote results result in more extreme probabilities.
 
 ```{r last_election_hist, echo=FALSE}
-last_election %>% 
-  mutate(dem = share > 0.5) %>% 
-  ggplot(aes(x = share)) +
-  geom_histogram(bins = 10, mapping = aes(fill = dem)) +
-  geom_vline(xintercept = 0.5, size = 1) +
+last_election %>%
+  rename(`Last Election`= share, `Simulated Probability` = prob) %>% 
+  gather(`Last Election`, `Simulated Probability`, key = "stat", value = "val") %>% 
+  mutate(dem = val > 0.5) %>% 
+  ggplot(aes(x = val)) +
+  geom_histogram(binwidth = 0.1, mapping = aes(fill = dem)) +
   labs(
     title = "Distribution of Democratic Shares in 2016",
     subtitle = "Percentage of Majory Party Vote",
@@ -480,31 +481,13 @@ last_election %>%
   scale_fill_manual(
     values = brewer_rdbu[c(1, 5)],
     guide = FALSE
-  )
-```
-
-```{r sim_prob_hist, echo=FALSE}
-last_election %>% 
-  mutate(dem = share > 0.5) %>% 
-  ggplot(aes(x = prob)) +
-  geom_histogram(bins = 10, mapping = aes(fill = dem)) +
-  geom_vline(xintercept = 0.5, size = 1) +
-  labs(
-    title = "Distribution of Simulated Democratic Probability for 2020",
-    subtitle = "Mean of 10,000 Random Normally Distributed Simulations",
-    x = "Democratic Probability (2020)",
-    y = "Number of States"
-  ) +
-  coord_cartesian(xlim = c(0, 1)) +
-  scale_x_continuous(labels = scales::percent) +
-  scale_fill_manual(
-    values = brewer_rdbu[c(1, 5)],
-    guide = FALSE
-  )
+  ) + 
+  facet_wrap(~stat, ncol = 1)
 ```
 
 This relationship depends entirely on our chosen standard deviation. Again, since we are only
-simulating probabilities for those states _without_ markets, these probabilities tend to be extreme.
+simulating probabilities for those states _without_ markets, these probabilities tend to be
+extreme.
 
 ```{r sim_relationship, echo=FALSE}
 last_election %>% 
