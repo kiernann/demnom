@@ -70,7 +70,15 @@ college_data <- map(
 college_data <- college_data %>%
   set_names(value = college_states) %>%
   bind_rows(.id = "state") %>%
-  clean_names(case = "snake")
+  rename(
+    name   = ContractName,
+    date   = Date,
+    open   = OpenSharePrice,
+    high   = HighSharePrice,
+    low    = LowSharePrice,
+    close  = CloseSharePrice,
+    volume = TradeVolume
+  )
 
 write_csv(
   x = college_data,
