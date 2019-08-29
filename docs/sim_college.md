@@ -97,12 +97,19 @@ democratic share of the major party votes. If that share is greater than
 
 ``` r
 market_prices <-
+  # query predictit api
   fromJSON(txt = "https://www.predictit.org/api/marketdata/all/") %>%
+  # use markets tree
   use_series(markets) %>%
+  # keep only battleground markets
   filter(str_detect(name, "Which party will win (.*) in the 2020 presidential election?")) %>%
+  # expose contracts nests has new rows
   unnest(contracts, names_repair = "unique") %>%
+  # keep only dem contracts
   filter(shortName...11 == "Democratic") %>%
+  # select state and latest price
   select(state = shortName...3, price = lastTradePrice) %>%
+  # extract state abbreviation from question
   mutate(state = str_extract(state, "[:upper:]{2}")) %>% 
   arrange(price)
 ```
@@ -129,17 +136,24 @@ Presidential election since 1976. This file can be read using
 `dataverse::get_file()`.
 
 ``` r
-past_elections <- get_file(
+past_elections <-
+  # get MIT dataverse file
+  get_file(
     file = "1976-2016-president.tab", 
     dataset = "doi:10.7910/DVN/42MVDX",
-  ) %>% 
+  ) %>%
+  # parse raw as data frame
   read_csv(col_types = cols()) %>% 
-  rename(votes = candidatevotes) %>% 
-  filter(party %in% c("democrat", "republican"), writein == FALSE) %>% 
+  rename(votes = candidatevotes) %>%
+  # keep only major candidates
+  filter(writein == FALSE) %>% 
+  filter(party %in% c("democrat", "republican")) %>% 
+  # calculate dem share of major vote
   group_by(year, state_po) %>% 
-  mutate(prop = votes/sum(votes)) %>%
+  mutate(share = votes/sum(votes)) %>%
+  # keep only dems
   filter(party == "democrat") %>% 
-  select(year, state = state_po, prop)
+  select(year, state = state_po, share)
 
 # MIT Election Data and Science Lab, 2017, "1976-2016-president.tab"
 # https://doi.org/10.7910/DVN/42MVDX/MFU99O, Harvard Dataverse, V5
@@ -152,12 +166,13 @@ party’s share of the vote in the last 11 elections.
 
 ``` r
 state_sd <- past_elections %>% 
+  # calculate std dev
   group_by(state) %>% 
-  summarize(sd = sd(prop))
+  summarize(sd = sd(share))
 ```
 
 ``` r
-left_join(usa_map, state_sd) %>%
+left_join(usa_map, state_sd, by = "state") %>%
   filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = sd)) +
@@ -184,7 +199,8 @@ left_join(usa_map, state_sd) %>%
 ![](sim_college_files/figure-gfm/map_sd-1.png)<!-- -->
 
 ``` r
-last_election <- past_elections %>% 
+last_election <- past_elections %>%
+  # keep only last election
   filter(year == 2016)
 ```
 
@@ -206,10 +222,13 @@ those states *with* 2020 markets and those without.
 ![](sim_college_files/figure-gfm/vote_range-1.png)<!-- -->
 
 ``` r
-last_election <- last_election %>% 
+last_election <- last_election %>%
+  # add state std devs
   left_join(state_sd) %>%
-  rowwise() %>% 
-  mutate(prob = mean(rnorm(10000, prop, sd) > 0.50))
+  rowwise() %>%
+  # calculate win rate of simulations
+  mutate(prob = mean(rnorm(10000, share, sd) > 0.50)) %>% 
+  ungroup()
 ```
 
 If we visualize this process, we can see how the 2016 result and a
@@ -234,20 +253,25 @@ simulated elections won by the democrat. Below, we see how this is done
 by simulating the Connecticut election 60 times.
 
 ``` r
-(ex_prop <- last_election$prop[last_election$state == "CT"])
+# find last share
+(ex_share <- last_election$share[last_election$state == "CT"])
 #> [1] 0.5714155
+# find std dev
 (ex_sd <- last_election$sd[last_election$state == "CT"])
 #> [1] 0.07423502
-(ex_sims <- round(x = rnorm(n = 60, mean = ex_prop, sd = ex_sd), digits = 2))
+# simulate 60 elections
+(ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 2))
 #>  [1] 0.56 0.62 0.63 0.62 0.53 0.59 0.55 0.60 0.43 0.62 0.54 0.58 0.61 0.62 0.48 0.63 0.58 0.64 0.62
 #> [20] 0.69 0.50 0.59 0.42 0.58 0.63 0.55 0.50 0.71 0.57 0.49 0.66 0.52 0.56 0.46 0.60 0.59 0.58 0.55
 #> [39] 0.46 0.69 0.54 0.63 0.67 0.52 0.58 0.65 0.55 0.68 0.56 0.50 0.57 0.48 0.54 0.59 0.49 0.76 0.71
 #> [58] 0.54 0.51 0.55
+# check for win each each
 (ex_wins <- ex_sims > 0.5)
 #>  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
 #> [16]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
 #> [31]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 #> [46]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+# calculate percent of wins
 mean(ex_wins)
 #> [1] 0.8166667
 ```
@@ -272,13 +296,15 @@ accurate method to generate probabilistic predictions. We will uses
 these market prices over our simulated elections where we have them.
 
 ``` r
-ec <- last_election %>% 
-  left_join(market_prices, by = "state") %>% 
+state_probs <- last_election %>%
+  # add market prices
+  left_join(market_prices, by = "state") %>%
+  # combine probabilities
   mutate(
-    dem = coalesce(price, prob),
+    prob = coalesce(price, prob),
     market = !is.na(price)
-  ) %>% 
-  select(state, dem, market)
+  ) %>%
+  select(state, share, sd, prob, market)
 ```
 
 ![](sim_college_files/figure-gfm/sim_relationship_market-1.png)<!-- -->
@@ -287,18 +313,43 @@ ec <- last_election %>%
 
 ## Electoral College
 
+To simulate the election we of course need to know how many electoral
+votes are up for grabs in each state. We can get this number directly
+from the National Archive and Records Administration, the federal agency
+tasked with overseeing the electoral college.
+
 ``` r
 college_votes <- 
+  # read archive.gov website
   read_html("https://www.archives.gov/federal-register/electoral-college/allocation.html") %>% 
   html_nodes("table") %>% 
+  # extract table as tibble
   html_table(fill = TRUE) %>% 
-  extract2(5) %>% as_tibble() %>% 
+  extract2(5) %>% as_tibble() %>%
+  # format for join
   set_names(c("state", "votes")) %>% 
   mutate(state = abrev_state(state))
 ```
 
+We can then add these votes to our data frame of probabilities.
+
 ``` r
-ec <- left_join(ec, college_votes)
+college_probs <- left_join(state_probs, college_votes, by = "state")
+arrange(college_probs, desc(votes))
+#> # A tibble: 51 x 6
+#>    state share     sd  prob market votes
+#>    <chr> <dbl>  <dbl> <dbl> <lgl>  <int>
+#>  1 CA    0.661 0.0838 0.974 FALSE     55
+#>  2 TX    0.453 0.0450 0.22  TRUE      38
+#>  3 FL    0.494 0.0614 0.43  TRUE      29
+#>  4 NY    0.634 0.0701 0.973 FALSE     29
+#>  5 IL    0.590 0.0640 0.924 FALSE     20
+#>  6 PA    0.496 0.0334 0.63  TRUE      20
+#>  7 OH    0.457 0.0405 0.36  TRUE      18
+#>  8 GA    0.473 0.0809 0.26  TRUE      16
+#>  9 MI    0.499 0.0545 0.7   TRUE      16
+#> 10 NC    0.481 0.0479 0.45  TRUE      15
+#> # … with 41 more rows
 ```
 
 To simulate the entire electoral college, we simple have to perform the
@@ -317,24 +368,36 @@ sim_race <- function(dem = 1-rep, rep = 1-dem) {
 }
 ```
 
-With this function, we can simulate every state in the country and count
-the number of electoral college votes won by each party.
+If we call this function 100 times on a race with a Democratic
+probability of 75% then we should get 75 democratic victories. The more
+times we run this function, the closer to 75% of the races the Democrat
+will win.
 
 ``` r
-sim1 <- map_lgl(ec$dem, sim_race)
-sum(ec$votes[sim1])
-#> [1] 284
+ex_sim <- rep(NA, 100)
+for (i in 1:100) {
+  ex_sim[i] <- sim_race(dem = 0.75)
+}
+ex_sim
+#>   [1] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [16]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
+#>  [31]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [46] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+#>  [61]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+#>  [76]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [91]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+mean(ex_sim)
+#> [1] 0.83
 ```
+
+With this function, we can also simulate every state in the country at
+once and count the number of electoral college votes won by each party.
 
 ``` r
-sim1_result <- if_else(
-  condition = sum(ec$votes[sim1]) > 269,
-  true = "the Democrats did win",
-  false = "the Democrats did not win"
-)
+ex_sim <- map_lgl(college_probs$prob, sim_race)
+sum(college_probs$votes[ex_sim])
+#> [1] 292
 ```
-
-In the above election, the Democrats did win.
 
 To best understand the *range* of possible outcomes, we can perform the
 same simulation many times.
@@ -343,23 +406,25 @@ same simulation many times.
 n <- 10000
 sims <- rep(NA, n)
 for (i in seq(1, n)) {
-  state_outcomes <- map_lgl(ec$dem, sim_race)
-  dem_total <- sum(ec$votes[state_outcomes])
+  state_outcomes <- map_lgl(college_probs$prob, sim_race)
+  dem_total <- sum(college_probs$votes[state_outcomes])
   sims[i] <- dem_total
 }
 ```
 
 From the summary below, you can see a picture of a very close race with
 the Democrats holding a slight lead. Of our 10,000 simulations, the
-Democrats won 74.2% with the modal outcome being a victory of 289
+Democrats won 73.6% with the modal outcome being a victory of 308
 electoral college votes.
 
 ``` r
+# summary of simulations
 summary(sims)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   151.0   269.0   291.0   290.8   313.0   411.0
+#>     136     268     291     291     313     420
+# probability of dem victory
 mean(sims > 269)
-#> [1] 0.7416
+#> [1] 0.736
 ```
 
 ![](sim_college_files/figure-gfm/sim_hist-1.png)<!-- -->

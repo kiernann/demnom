@@ -91,12 +91,19 @@ votes.
 
 ```{r scrape_markets, warning=FALSE, error=FALSE}
 market_prices <-
+  # query predictit api
   fromJSON(txt = "https://www.predictit.org/api/marketdata/all/") %>%
+  # use markets tree
   use_series(markets) %>%
+  # keep only battleground markets
   filter(str_detect(name, "Which party will win (.*) in the 2020 presidential election?")) %>%
+  # expose contracts nests has new rows
   unnest(contracts, names_repair = "unique") %>%
+  # keep only dem contracts
   filter(shortName...11 == "Democratic") %>%
+  # select state and latest price
   select(state = shortName...3, price = lastTradePrice) %>%
+  # extract state abbreviation from question
   mutate(state = str_extract(state, "[:upper:]{2}")) %>% 
   arrange(price)
 ```
@@ -104,18 +111,17 @@ market_prices <-
 From this API, we get probability data for `r nrow(market_prices)` battleground states.
 
 ```{r map_markets, echo=FALSE}
-brewer_rdbu <- RColorBrewer::brewer.pal(n = 7, name = "RdBu")
+brewer_rdbu <- RColorBrewer::brewer.pal(n = 5, name = "RdBu")
 usa_map <- map_data("state") %>% mutate(state = abrev_state(region))
 left_join(usa_map, market_prices) %>%
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = price)) +
   coord_quickmap() +
-  scale_fill_gradient2(
-    low = brewer_rdbu[1],
-    high = brewer_rdbu[7],
-    mid = brewer_rdbu[5],
-    midpoint = 0.50,
-    labels = scales::dollar
+  scale_fill_distiller(
+    type = "div",
+    palette = "RdBu",
+    direction = 1,
+    label = dollar
   ) +
   theme(
     legend.position = c(0.9, 0.35),
@@ -149,17 +155,24 @@ the MIT Election Data and Science Lab, which has a database of popular vote resu
 for every Presidential election since 1976. This file can be read using `dataverse::get_file()`.
 
 ```{r read_mit}
-past_elections <- get_file(
+past_elections <-
+  # get MIT dataverse file
+  get_file(
     file = "1976-2016-president.tab", 
     dataset = "doi:10.7910/DVN/42MVDX",
-  ) %>% 
+  ) %>%
+  # parse raw as data frame
   read_csv(col_types = cols()) %>% 
-  rename(votes = candidatevotes) %>% 
-  filter(party %in% c("democrat", "republican"), writein == FALSE) %>% 
+  rename(votes = candidatevotes) %>%
+  # keep only major candidates
+  filter(writein == FALSE) %>% 
+  filter(party %in% c("democrat", "republican")) %>% 
+  # calculate dem share of major vote
   group_by(year, state_po) %>% 
-  mutate(prop = votes/sum(votes)) %>%
+  mutate(share = votes/sum(votes)) %>%
+  # keep only dems
   filter(party == "democrat") %>% 
-  select(year, state = state_po, prop)
+  select(year, state = state_po, share)
 
 # MIT Election Data and Science Lab, 2017, "1976-2016-president.tab"
 # https://doi.org/10.7910/DVN/42MVDX/MFU99O, Harvard Dataverse, V5
@@ -172,12 +185,13 @@ elections.
 
 ```{r summarize_sd}
 state_sd <- past_elections %>% 
+  # calculate std dev
   group_by(state) %>% 
-  summarize(sd = sd(prop))
+  summarize(sd = sd(share))
 ```
 
 ```{r map_sd}
-left_join(usa_map, state_sd) %>%
+left_join(usa_map, state_sd, by = "state") %>%
   filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = sd)) +
@@ -202,15 +216,16 @@ left_join(usa_map, state_sd) %>%
 ```
 
 ```{r last_election}
-last_election <- past_elections %>% 
+last_election <- past_elections %>%
+  # keep only last election
   filter(year == 2016)
 ```
 
 ```{r 2016_map, echo=FALSE}
-left_join(usa_map, last_election) %>%
+left_join(usa_map, last_election, by = "state") %>%
   filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
-  geom_polygon(color = "black", mapping = aes(fill = prop)) +
+  geom_polygon(color = "black", mapping = aes(fill = share)) +
   coord_quickmap() +
   scale_fill_gradient2(
     low = brewer_rdbu[1],
@@ -225,7 +240,8 @@ left_join(usa_map, last_election) %>%
     axis.text  = element_blank(),
     axis.title = element_blank(),
     axis.ticks = element_blank(),
-    plot.caption = element_text(size = 11)
+    plot.caption = element_text(size = 11),
+    legend.background = element_blank()
   ) +
   labs(
     title = "Democratic Share of Major Party Vote",
@@ -256,7 +272,7 @@ last_election %>%
       false = "Market Exists"
     )
   ) %>% 
-  ggplot(aes(x = prop)) + 
+  ggplot(aes(x = share)) + 
   geom_density(aes(fill = market)) +
   facet_wrap(~market, ncol = 1, scales = "free_y") +
   scale_x_continuous(labels = scales::percent) +
@@ -276,10 +292,13 @@ last_election %>%
 ```
 
 ```{r add_sd_rnorm}
-last_election <- last_election %>% 
+last_election <- last_election %>%
+  # add state std devs
   left_join(state_sd) %>%
-  rowwise() %>% 
-  mutate(prob = mean(rnorm(10000, prop, sd) > 0.50))
+  rowwise() %>%
+  # calculate win rate of simulations
+  mutate(prob = mean(rnorm(10000, share, sd) > 0.50)) %>% 
+  ungroup()
 ```
 
 If we visualize this process, we can see how the 2016 result and a standard deviation is used
@@ -291,23 +310,22 @@ Democratic candidate in the last election. The area under the curve past 50% is 
 of a democrat winning again in the next election.
 
 ```{r example_range_md, echo=FALSE}
-ex_prop <- last_election$prop[last_election$state == "MD"]
+ex_share <- last_election$share[last_election$state == "MD"]
 ex_sd <- last_election$sd[last_election$state == "MD"]
 n <- 1000
-ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_prop, sd = ex_sd))) + 
+ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_share, sd = ex_sd))) + 
   geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[3]) +
   geom_vline(xintercept = 0.5, size = 1) +
-  geom_vline(xintercept = ex_prop, linetype = 2, size = 1) +
+  geom_vline(xintercept = ex_share, linetype = 2, size = 1) +
   scale_x_continuous(labels = scales::percent) +
   labs(
     title = sprintf("Maryland 2020 Simulated %s Times", comma(n)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
   ) +
-  geom_label(aes(x = 0.5, y = 4, label = "Winning Threshold")) +
-  geom_label(aes(x = ex_prop, y = 5, label = "2016 Result")) +
+  coord_cartesian(xlim = c(0.2, 0.8)) +
+  geom_label(aes(x = ex_share, y = 5, label = "2016 Result")) +
   theme(
-    plot.title = element_text(hjust = 0.50),
     axis.text.y.left = element_blank(),
     axis.ticks.y.left = element_blank()
   )
@@ -318,23 +336,22 @@ only `r scales::percent(last_election$past[last_election$state == "FL"])` of vot
 democratic candidate.
 
 ```{r example_range_fl, echo=FALSE}
-ex_prop <- last_election$prop[last_election$state == "FL"]
+ex_share <- last_election$share[last_election$state == "FL"]
 ex_sd <- last_election$sd[last_election$state == "FL"]
 n <- 1000
-ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_prop, sd = ex_sd))) + 
+ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_share, sd = ex_sd))) + 
   geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[2]) +
   geom_vline(xintercept = 0.5, size = 1) +
-  geom_vline(xintercept = ex_prop, linetype = 2, size = 1) +
+  geom_vline(xintercept = ex_share, linetype = 2, size = 1) +
   scale_x_continuous(labels = scales::percent) +
   labs(
     title = sprintf("Folrida 2020 Simulated %s Times", comma(n)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
   ) +
-  geom_label(aes(x = 0.5, y = 4, label = "Winning Threshold")) +
-  geom_label(aes(x = ex_prop, y = 5, label = "2016 Result")) +
+  coord_cartesian(xlim = c(0.2, 0.8)) +
+  geom_label(aes(x = ex_share, y = 5, label = "2016 Result")) +
   theme(
-    plot.title = element_text(hjust = 0.50),
     axis.text.y.left = element_blank(),
     axis.ticks.y.left = element_blank()
   )
@@ -344,10 +361,15 @@ We can generate this probability by calculating the average number of simulated 
 the democrat. Below, we see how this is done by simulating the Connecticut election 60 times.
 
 ```{r example_process}
-(ex_prop <- last_election$prop[last_election$state == "CT"])
+# find last share
+(ex_share <- last_election$share[last_election$state == "CT"])
+# find std dev
 (ex_sd <- last_election$sd[last_election$state == "CT"])
-(ex_sims <- round(x = rnorm(n = 60, mean = ex_prop, sd = ex_sd), digits = 2))
+# simulate 60 elections
+(ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 2))
+# check for win each each
 (ex_wins <- ex_sims > 0.5)
+# calculate percent of wins
 mean(ex_wins)
 ```
 
@@ -355,42 +377,42 @@ Below, you can see how the 2016 vote results result in more extreme probabilitie
 
 ```{r last_election_hist, echo=FALSE}
 last_election %>% 
-  filter(state %out% market_prices$state) %>% 
-  mutate(dem = prop > 0.5) %>% 
-  ggplot(aes(x = prop)) +
+  mutate(dem = share > 0.5) %>% 
+  ggplot(aes(x = share)) +
   geom_histogram(bins = 10, mapping = aes(fill = dem)) +
   geom_vline(xintercept = 0.5, size = 1) +
   labs(
-    title = "Popular Vote Distribution",
-    x = "Popular Vote",
-    y = "2016 States"
+    title = "Distribution of Democratic Shares in 2016",
+    subtitle = "Percentage of Majory Party Vote",
+    x = "Democratic Share (2016)",
+    y = "Number of States"
   ) +
+  coord_cartesian(xlim = c(0, 1)) +
   scale_x_continuous(labels = scales::percent) +
   scale_fill_manual(
-    values = brewer_rdbu[c(1, 7)],
+    values = brewer_rdbu[c(1, 5)],
     guide = FALSE
-  ) +
-  theme(plot.title = element_text(hjust = 0.50))
+  )
 ```
 
 ```{r sim_prob_hist, echo=FALSE}
 last_election %>% 
-  filter(state %out% market_prices$state) %>% 
-  mutate(dem = prop > 0.5) %>% 
+  mutate(dem = share > 0.5) %>% 
   ggplot(aes(x = prob)) +
   geom_histogram(bins = 10, mapping = aes(fill = dem)) +
   geom_vline(xintercept = 0.5, size = 1) +
   labs(
-    title = "Simulated Probability Distribution",
-    x = "Popular Vote",
-    y = "2016 States"
+    title = "Distribution of Simulated Democratic Probability for 2020",
+    subtitle = "Mean of 10,000 Random Normally Distributed Simulations",
+    x = "Democratic Probability (2020)",
+    y = "Number of States"
   ) +
+  coord_cartesian(xlim = c(0, 1)) +
   scale_x_continuous(labels = scales::percent) +
   scale_fill_manual(
-    values = brewer_rdbu[c(1, 7)],
+    values = brewer_rdbu[c(1, 5)],
     guide = FALSE
-  ) +
-  theme(plot.title = element_text(hjust = 0.50))
+  )
 ```
 
 This relationship depends entirely on our chosen standard deviation. Again, since we are only
@@ -399,14 +421,14 @@ simulating probabilities for those states _without_ markets, these probabilities
 ```{r sim_relationship, echo=FALSE}
 last_election %>% 
   filter(state %out% market_prices$state) %>% 
-  ggplot(aes(x = prop, y = prob)) +
+  ggplot(aes(x = share, y = prob)) +
   geom_hline(yintercept = 0.5, size = 1) +
   geom_vline(xintercept = 0.5, linetype = 2, size = 1) +
   geom_label(aes(label = state, fill = prob > 0.5)) +
   scale_x_continuous(labels = scales::percent) +
   scale_y_continuous(labels = scales::percent) +
   scale_size_continuous(range = c(2, 10), guide = FALSE) +
-  scale_fill_manual(values = RColorBrewer::brewer.pal(8, "RdBu")[c(1, 8)], guide = FALSE) +
+  scale_fill_manual(values = brewer_rdbu[c(1, 5)], guide = FALSE) +
   labs(
     title = "Popular Vote Relationship to Simulated Probability",
     x = "2016 Democratic Vote",
@@ -421,23 +443,20 @@ probabilistic predictions. We will uses these market prices over our simulated e
 have them.
 
 ```{r join_past_price}
-ec <- last_election %>% 
-  left_join(market_prices, by = "state") %>% 
+state_probs <- last_election %>%
+  # add market prices
+  left_join(market_prices, by = "state") %>%
+  # combine probabilities
   mutate(
-    dem = coalesce(price, prob),
+    prob = coalesce(price, prob),
     market = !is.na(price)
-  ) %>% 
-  select(state, dem, market)
+  ) %>%
+  select(state, share, sd, prob, market)
 ```
 
 ```{r sim_relationship_market, echo=FALSE}
-last_election %>% 
-  left_join(market_prices, by = "state") %>% 
-  mutate(
-    dem = coalesce(price, prob),
-    market = !is.na(price)
-  ) %>% 
-  ggplot(aes(x = prop, y = dem)) +
+state_probs %>% 
+  ggplot(aes(x = share, y = prob)) +
   geom_hline(yintercept = 0.5, size = 1) +
   geom_vline(xintercept = 0.5, linetype = 2, size = 1) +
   geom_label(aes(label = state, fill = market)) +
@@ -455,16 +474,15 @@ last_election %>%
 ```
 
 ```{r 2020_map, echo=FALSE}
-left_join(usa_map, ec) %>%
+left_join(usa_map, state_probs, by = "state") %>%
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
-  geom_polygon(color = "black", mapping = aes(fill = dem)) +
+  geom_polygon(color = "black", mapping = aes(fill = prob)) +
   coord_quickmap() +
-  scale_fill_gradient2(
-    low = brewer_rdbu[1],
-    high = brewer_rdbu[7],
-    mid = "white",
-    midpoint = 0.50,
-    labels = scales::percent
+  scale_fill_distiller(
+    type = "div",
+    palette = "RdBu",
+    direction = 1,
+    label = dollar
   ) +
   theme(
     legend.position = c(0.9, 0.35),
@@ -484,18 +502,28 @@ left_join(usa_map, ec) %>%
 
 ## Electoral College
 
+To simulate the election we of course need to know how many electoral votes are up for grabs in 
+each state. We can get this number directly from the National Archive and Records Administration,
+the federal agency tasked with overseeing the electoral college.
+
 ```{r college_votes}
 college_votes <- 
+  # read archive.gov website
   read_html("https://www.archives.gov/federal-register/electoral-college/allocation.html") %>% 
   html_nodes("table") %>% 
+  # extract table as tibble
   html_table(fill = TRUE) %>% 
-  extract2(5) %>% as_tibble() %>% 
+  extract2(5) %>% as_tibble() %>%
+  # format for join
   set_names(c("state", "votes")) %>% 
   mutate(state = abrev_state(state))
 ```
 
+We can then add these votes to our data frame of probabilities.
+
 ```{r join_votes}
-ec <- left_join(ec, college_votes)
+college_probs <- left_join(state_probs, college_votes, by = "state")
+arrange(college_probs, desc(votes))
 ```
 
 To simulate the entire electoral college, we simple have to perform the same `sample()` process as
@@ -513,43 +541,48 @@ sim_race <- function(dem = 1-rep, rep = 1-dem) {
 }
 ```
 
-With this function, we can simulate every state in the country and count the number of electoral
-college votes won by each party.
+If we call this function 100 times on a race with a Democratic probability of 75% then we should
+get 75 democratic victories. The more times we run this function, the closer to 75% of the races
+the Democrat will win.
 
-```{r sim1}
-sim1 <- map_lgl(ec$dem, sim_race)
-sum(ec$votes[sim1])
+```{r example_function}
+ex_sim <- rep(NA, 100)
+for (i in 1:100) {
+  ex_sim[i] <- sim_race(dem = 0.75)
+}
+ex_sim
+mean(ex_sim)
 ```
 
-```{r}
-sim1_result <- if_else(
-  condition = sum(ec$votes[sim1]) > 269,
-  true = "the Democrats did win",
-  false = "the Democrats did not win"
-)
-```
+With this function, we can also simulate every state in the country at once and count the number of
+electoral college votes won by each party.
 
-In the above election, `r sim1_result`. 
+```{r one_simulation}
+ex_sim <- map_lgl(college_probs$prob, sim_race)
+sum(college_probs$votes[ex_sim])
+```
 
 To best understand the _range_ of possible outcomes, we can perform the same simulation many times.
 
-```{r}
+```{r many_simulations}
 n <- 10000
 sims <- rep(NA, n)
 for (i in seq(1, n)) {
-  state_outcomes <- map_lgl(ec$dem, sim_race)
-  dem_total <- sum(ec$votes[state_outcomes])
+  state_outcomes <- map_lgl(college_probs$prob, sim_race)
+  dem_total <- sum(college_probs$votes[state_outcomes])
   sims[i] <- dem_total
 }
 ```
 
 From the summary below, you can see a picture of a very close race with the Democrats holding a 
-slight lead. Of our `r scales::comma(n)` simulations, the Democrats won 
-`r scales::percent(mean(sims > 269))` with the modal outcome being a victory of 
-`r names(sort(table(sims), decreasing = TRUE)[1])` electoral college votes.
+slight lead. Of our `r comma(n)` simulations, the Democrats won  `r percent(mean(sims > 269))` 
+with the modal outcome being a victory of  `r names(sort(table(sims), decreasing = TRUE)[1])` 
+electoral college votes.
 
 ```{r summary_sims}
+# summary of simulations
 summary(sims)
+# probability of dem victory
 mean(sims > 269)
 ```
 
@@ -557,7 +590,7 @@ mean(sims > 269)
 ggplot(data = NULL) +
   geom_histogram(mapping = aes(x = sims, fill = sims > 270)) +
   geom_vline(xintercept = 270, size = 1) +
-  scale_fill_manual(values = RColorBrewer::brewer.pal(8, "RdBu")[c(1, 8)], guide = FALSE) +
+  scale_fill_manual(values = brewer_rdbu[c(1, 5)], guide = FALSE) +
   labs(
     title = sprintf("%s Simulated Electoral College Outcomes", scales::comma(n)),
     x = "Simulated Democratic Votes",
