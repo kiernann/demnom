@@ -153,7 +153,10 @@ college_markets <-
 
 college_states <- str_extract(college_markets$shortName, "[:upper:]{2}")
 
-college_urls <- glue("https://www.predictit.org/Resource/DownloadMarketChartData?marketid={college_markets$id}&timespan=90d")
+college_urls <- sprintf(
+  "https://www.predictit.org/Resource/DownloadMarketChartData?marketid=%s&timespan=90d",
+  college_markets$id
+)
 
 map(
   college_urls,
@@ -183,7 +186,7 @@ map(
   arrange(date) %>% 
   mutate(vol_cum = cumsum(volume)) %>% 
   filter(
-    date == max(college_data$date),
+    date == max(date),
     name == "Democratic"
   ) %>% 
   right_join(usa_map) %>%
@@ -544,8 +547,11 @@ state_probs %>%
   theme(legend.position = "bottom")
 ```
 
+We now have probabilities for all 51 electoral contests!
+
 ```{r 2020_map, echo=FALSE}
 left_join(usa_map, state_probs, by = "state") %>%
+  filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = prob)) +
   coord_quickmap() +
@@ -553,7 +559,7 @@ left_join(usa_map, state_probs, by = "state") %>%
     type = "div",
     palette = "RdBu",
     direction = 1,
-    label = dollar
+    label = percent
   ) +
   theme(
     legend.position = c(0.9, 0.35),
@@ -571,11 +577,15 @@ left_join(usa_map, state_probs, by = "state") %>%
     )
 ```
 
+However, this map does not paint the most accurate picture of the election. Presidential elections
+are of course conducted with the electoral college, where each state's value is different.
+
 ## Electoral College
 
-To simulate the election we of course need to know how many electoral votes are up for grabs in 
-each state. We can get this number directly from the National Archive and Records Administration,
-the federal agency tasked with overseeing the electoral college.
+To simulate the electoral college from these probabilities, we of course still need to know how
+many electoral votes are up for grabs in each state. We can get this number directly from the
+National Archive and Records Administration, the federal agency tasked with overseeing the
+electoral college.
 
 ```{r college_votes}
 college_votes <- 
@@ -598,9 +608,9 @@ arrange(college_probs, desc(votes))
 ```
 
 To simulate the entire electoral college, we simple have to perform the same `sample()` process as
-we did with Connecticut, above. To simplify this process, we can create a new `sim_race()` function
-that takes a probability and returns a `TRUE` or `FALSE` indicating whether or not the democrat
-has won.
+we did with Connecticut above. To simplify this process, we can create a new `sim_race()` function
+that takes a probability and returns `TRUE` or `FALSE` indicating whether or not the democrat has
+won.
 
 ```{r sim_fun}
 sim_race <- function(dem = 1-rep, rep = 1-dem) {
@@ -621,7 +631,7 @@ ex_sim <- rep(NA, 100)
 for (i in 1:100) {
   ex_sim[i] <- sim_race(dem = 0.75)
 }
-ex_sim
+print(ex_sim)
 mean(ex_sim)
 ```
 
@@ -645,8 +655,8 @@ for (i in seq(1, n)) {
 }
 ```
 
-From the summary below, you can see a picture of a very close race with the Democrats holding a 
-slight lead. Of our `r comma(n)` simulations, the Democrats won  `r percent(mean(sims > 269))` 
+From the summary below, we see a picture of an election where the Democratic party holds a 
+significant lead. Of our `r comma(n)` simulations, the Democrats won  `r percent(mean(sims > 269))` 
 with the modal outcome being a victory of  `r names(sort(table(sims), decreasing = TRUE)[1])` 
 electoral college votes.
 
