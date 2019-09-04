@@ -1,13 +1,15 @@
-Simulating the 2020 Election With Markets
+Simulating the 2020 Electoral College With Prediction Markets
 ================
 
+  - [Background](#background)
   - [Process](#process)
   - [Battleground Data](#battleground-data)
   - [Past Elections](#past-elections)
   - [Probabilities](#probabilities)
   - [Combine Sources](#combine-sources)
   - [Electoral College](#electoral-college)
-  - [Resources](#resources)
+
+## Background
 
 Election prediction helps party officials, campaign operatives, and
 journalists interpret campaigns in a quantitative manner. Understanding
@@ -18,28 +20,120 @@ they can find. The [stock market](https://on.mktw.net/2Zd8QOU), [key
 incumbency factors](http://wapo.st/2eUm8cv), the [Washington
 Redskins](https://en.wikipedia.org/wiki/Redskins_Rule), [Halloween mask
 sales](https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election),
-and a [psychic Chinese monkeys](http://wapo.st/2fnlPr3). If we’re going
-to predict elections, we have a responsibility to make legitimate
-quatitative predictions from scientifically founded bases.
+and a [psychic Chinese monkeys](http://wapo.st/2fnlPr3).
 
-In the past few years, as big data has sought to supplant arbitrary
-punditry, the forecasting model has become a staple of political science
-and journalism. Popularized by the data journalist at
+In the past few years, as “[big
+data](https://en.wikipedia.org/wiki/Big_data)” has sought to supplant
+traditional arbitrary punditry, the statistical forecasting model has
+become a staple of electioneering. Popularized by the data journalist at
 [FiveThirtyEight](https://fivethirtyeight.com/), the forecasting model
 is a statistical tool used to incorporate a number of quantitative
 inputs and produce a *probabilistic* view of all possible outcomes.
 
-However, following the 2016 Presidential election, the public ([perhaps
-wrongly](https://www.r-project.org/)) felt betrayed by the promise of
-data to predict the future. This left political scientists and
-journalists alike reassessing other predictive tools. My favorite of
-these alternatives is the prediction market.
+However, following the 2016 Presidential election, much of the public
+felt betrayed by the promise of data to seemingly predict the future. As
+explained in [*An Evaluation of 2016 Election Polls in the
+U.S.*](https://www.aapor.org/Education-Resources/Reports/An-Evaluation-of-2016-Election-Polls-in-the-U-S.aspx)
+by the [American Association for Public Opinion
+Research’s](https://www.aapor.org/) (AAPOR) Ad Hoc Committee on 2016
+Election Polling:
+
+> The 2016 presidential election was a jarring event for polling in the
+> United States. Pre-election polls fueled high-profile predictions that
+> Hillary Clinton’s likelihood of winning the presidency was about 90
+> percent, with estimates ranging from 71 to over 99 percent. When
+> Donald Trump was declared the winner of the presidency in the early
+> hours of November 9th, it came as a shock even to his own pollsters
+> (Jacobs and House 2016). There was (and continues to be) widespread
+> consensus that the polls failed.
+
+This “widespread consensus” was expressed by the new President-elect,
+vindicated Republican voters, stunned Democratic voters, academics, and
+journalists alike. This doubt in the polls was a reasonable knee jerk
+reaction on election night, when it became clear Trump would win. Some
+even went as far as to [cast the suprise upset as the end of scientific
+polling in
+America](https://thehill.com/blogs/ballot-box/presidential-races/305133-pollsters-suffer-huge-embarrassment):
+
+> Pollsters and election modelers suffered an industry-shattering
+> embarrassment at the hands of Donald Trump on Tuesday night. Trump,
+> the Republican presidential nominee, had long said the polls were
+> biased against him. His claims — dismissed and mocked by the experts —
+> turned out to be true. “It’s going to put the polling industry out of
+> business,” said CNN anchor Jake Tapper. “It’s going to put the voter
+> projection industry out of business.” Going into Election Day, a
+> strong majority of pollsters and election modelers forecast that
+> Democrat Hillary Clinton would coast to victory, with many predicting
+> she would sweep the battlegrounds and win north of 300 electoral
+> votes… Whatever the reason, pollsters will have to reassess after a
+> dismal showing in 2016 that produced a result almost no one foresaw.
+
+The ad hoc committee was formed by the industry to explore and respond
+to do exactly this: reasses the roll modern polling techniques and
+forecasting will play in American election prediction. The report did
+not attempt to explain the victory, only examine the reasons why it was
+unpredicted. to answer this question, they studied polling datasets
+supplimented with sample size and source, target population, survey
+mode, and weighting technique for 23 polling organizations. In the
+execitve summary of the report, the committee outline its findings:
+
+> **National polls were generally correct and accurate by historical
+> standards.** National polls were among the most accurate in estimating
+> the popular vote since 1936. Collectively, they indicated that Clinton
+> had about a 3 percentage point lead, and they were basically correct;
+> she ultimately won the popular vote by 2 percentage points…
+
+However, as Americans have been come astutely aware, the national
+popular vote does not determine the winner of a Presidential election.
+In *two* of the last Presidential elections, the winner has not been the
+candidate which recieved the greatest number of overall votes but the
+one who recieved a majority of the votes cast by the 538 members of the
+Electoral College. This essentially results in *fifty-one* separate
+Presidential contests, each varying in their predictability and
+importance in deciding the next leader of the free world. This fact
+undermines the confidence the AAPOR expressed in national polling, a
+reality the fully acklowedge:
+
+> **State-level polls showed a competitive, uncertain contest…** In the
+> contest that actually mattered, the Electoral College, state-level
+> polls showed a competitive race in which Clinton appeared to have a
+> slim advantage. Eight states with more than a third of the electoral
+> votes needed to win the presidency had polls showing a lead of three
+> points or less (Trende 2016).\[2\] As Sean Trende noted, “The final
+> RealClearPolitics Poll Averages in the battleground states had Clinton
+> leading by the slimmest of margins in the Electoral College, 272-266.”
+> The polls on average indicated that Trump was one state away from
+> winning the election.
+
+And while the report is clear in it’s rebuke of any indiscriminate
+dismissal of polling (“A spotty year for election polls is not an
+indictment of all survey research or even all polling.”) it still seems
+worthwhile to continue contemplation over the state of election
+forecasting. Importantly, the report was less decidently supportive over
+*probabilistic* forcasts, which incorperate opinon polling but generate
+a distinctly different product.
+
+> **About those predictions that Clinton was 90 percent likely to win…**
+> However well-intentioned these predictions may have been, they helped
+> crystalize the belief that Clinton was a shoo-in for president, with
+> unknown consequences for turnout. While a similar criticism can be
+> leveled against polls – i.e., they can indicate an election is
+> uncompetitive, perhaps reducing some people’s motivation to vote –
+> polls and forecasting models are not one and the same. As the late
+> pollster Andrew Kohut once noted (2006), “I’m not a handicapper, I’m a
+> measurer. There’s a difference.” Pollsters and astute poll reporters
+> are often careful to describe their findings as a snapshot in time,
+> measuring public opinion when they are fielded… Forecasting models do
+> something different – they attempt to predict a future event. As the
+> 2016 election proved, that can be a fraught exercise, and the net
+> benefit to the country is unclear.
 
 Prediction markets can be used to generate similarly probabilistic views
 of election outcomes by utilizing the economic forces of price discovery
 and risk aversion to overcome the ideological bias of self-interested
 traders on a binary options exchange. Traders use real money to buy
-shares of [futures contracts](https://www.tidyverse.org/) tied to an
+shares of [futures
+contracts](https://en.wikipedia.org/wiki/Futures_contract) tied to an
 outcome. The price of these shares fluctuates on the market as the
 underlying *likelihood* of that outcome changes.
 [PredictIt](https://www.predictit.org/) is an exchange for such
@@ -75,6 +169,33 @@ and packages from the [Tidyverse ecosystem](https://www.tidyverse.org/).
 ``` r
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load_current_gh("kiernann/campfin")
+#> 
+#>   
+   checking for file ‘/tmp/Rtmpuzc4Jj/remotes39753100999e/kiernann-campfin-07cbf64/DESCRIPTION’ ...
+  
+✔  checking for file ‘/tmp/Rtmpuzc4Jj/remotes39753100999e/kiernann-campfin-07cbf64/DESCRIPTION’
+#> 
+  
+─  preparing ‘campfin’:
+#> 
+  
+   checking DESCRIPTION meta-information ...
+  
+✔  checking DESCRIPTION meta-information
+#> 
+  
+─  checking for LF line-endings in source and make files and shell scripts
+#> 
+  
+─  checking for empty or unneeded directories
+#> ─  looking to see if a ‘data/datalist’ file should be added
+#> 
+  
+─  building ‘campfin_0.0.0.9003.tar.gz’
+#> 
+  
+   
+#> 
 pacman::p_load(tidyverse, dataverse, magrittr, jsonlite, scales, rvest)
 ```
 
@@ -89,8 +210,7 @@ for the major parties (Democrats and Republicans); if a party wins \>50%
 of the major party vote, we can pretty safely assume they’ve won the
 plurality of votes. This is a reductive, but makes this quick and dirty
 simulation a lot easier. A more professional model would fully
-incorperate third-party voters, which [can affect
-elections](https://www.predictit.org/).
+incorperate third-party voters, which \[can affect elections\]\[09\].
 
 ## Battleground Data
 
@@ -268,19 +388,19 @@ by simulating the Connecticut election 60 times.
 #> [1] 0.5714155
 # simulate 60 elections
 (ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 3))
-#>  [1] 0.563 0.616 0.627 0.623 0.528 0.588 0.555 0.600 0.433 0.619 0.539 0.578 0.608 0.620 0.479
-#> [16] 0.632 0.583 0.635 0.619 0.693 0.499 0.585 0.417 0.579 0.627 0.553 0.503 0.712 0.573 0.492
-#> [31] 0.662 0.520 0.556 0.460 0.605 0.586 0.578 0.550 0.456 0.686 0.545 0.631 0.672 0.515 0.580
-#> [46] 0.650 0.548 0.683 0.562 0.498 0.571 0.477 0.536 0.591 0.487 0.762 0.712 0.543 0.512 0.554
+#>  [1] 0.538 0.626 0.534 0.585 0.491 0.596 0.549 0.486 0.458 0.596 0.508 0.471 0.536 0.602 0.518
+#> [16] 0.524 0.764 0.630 0.394 0.518 0.565 0.494 0.464 0.566 0.670 0.580 0.531 0.632 0.558 0.550
+#> [31] 0.648 0.603 0.590 0.543 0.481 0.616 0.614 0.608 0.680 0.509 0.559 0.523 0.575 0.454 0.499
+#> [46] 0.793 0.500 0.571 0.501 0.606 0.694 0.594 0.506 0.542 0.669 0.539 0.506 0.399 0.361 0.707
 # check for win each each
 (ex_wins <- ex_sims > 0.5)
-#>  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
-#> [16]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
-#> [31]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-#> [46]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [1]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
+#> [16]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#> [31]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE
+#> [46]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE
 # calculate percent of wins
 mean(ex_wins)
-#> [1] 0.8333333
+#> [1] 0.7833333
 ```
 
 Below, you can see how the 2016 vote results result in more extreme
@@ -340,7 +460,7 @@ college_votes <-
   extract2(5) %>% as_tibble() %>%
   # format for join
   set_names(c("state", "votes")) %>% 
-  mutate(state = abrev_state(state))
+  mutate(state = abbrev_state(state))
 ```
 
 We can then add these votes to our data frame of probabilities.
@@ -351,16 +471,16 @@ arrange(college_probs, desc(votes))
 #> # A tibble: 51 x 6
 #>    state share     sd  prob market votes
 #>    <chr> <dbl>  <dbl> <dbl> <lgl>  <int>
-#>  1 CA    0.661 0.0838 0.974 FALSE     55
-#>  2 TX    0.453 0.0450 0.22  TRUE      38
+#>  1 CA    0.661 0.0838 0.976 FALSE     55
+#>  2 TX    0.453 0.0450 0.24  TRUE      38
 #>  3 FL    0.494 0.0614 0.44  TRUE      29
 #>  4 NY    0.634 0.0701 0.973 FALSE     29
-#>  5 IL    0.590 0.0640 0.924 FALSE     20
-#>  6 PA    0.496 0.0334 0.63  TRUE      20
+#>  5 IL    0.590 0.0640 0.920 FALSE     20
+#>  6 PA    0.496 0.0334 0.66  TRUE      20
 #>  7 OH    0.457 0.0405 0.36  TRUE      18
-#>  8 GA    0.473 0.0809 0.26  TRUE      16
-#>  9 MI    0.499 0.0545 0.7   TRUE      16
-#> 10 NC    0.481 0.0479 0.45  TRUE      15
+#>  8 GA    0.473 0.0809 0.27  TRUE      16
+#>  9 MI    0.499 0.0545 0.66  TRUE      16
+#> 10 NC    0.481 0.0479 0.44  TRUE      15
 #> # … with 41 more rows
 ```
 
@@ -391,15 +511,15 @@ for (i in 1:100) {
   ex_sim[i] <- sim_race(dem = 0.75)
 }
 print(ex_sim)
-#>   [1] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-#>  [16]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
-#>  [31]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-#>  [46] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
-#>  [61]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
-#>  [76]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-#>  [91]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>   [1]  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
+#>  [16]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [31] FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE
+#>  [46]  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE
+#>  [61] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [76]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+#>  [91]  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
 mean(ex_sim)
-#> [1] 0.83
+#> [1] 0.7
 ```
 
 With this function, we can also simulate every state in the country at
@@ -408,7 +528,7 @@ once and count the number of electoral college votes won by each party.
 ``` r
 ex_sim <- map_lgl(college_probs$prob, sim_race)
 sum(college_probs$votes[ex_sim])
-#> [1] 292
+#> [1] 285
 ```
 
 To best understand the *range* of possible outcomes, we can perform the
@@ -426,34 +546,17 @@ for (i in seq(1, n)) {
 
 From the summary below, we see a picture of an election where the
 Democratic party holds a significant lead. Of our 10,000 simulations,
-the Democrats won 73.6% with the modal outcome being a victory of 308
+the Democrats won 73.8% with the modal outcome being a victory of 290
 electoral college votes.
 
 ``` r
 # summary of simulations
 summary(sims)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   136.0   268.0   291.0   291.2   313.0   420.0
+#>   150.0   268.0   291.0   291.4   314.0   408.0
 # probability of dem victory
 mean(sims > 269)
-#> [1] 0.7365
+#> [1] 0.7384
 ```
 
 ![](sim_college_files/figure-gfm/sim_hist-1.png)<!-- -->
-
-## Resources
-
-  - <https://on.mktw.net/2Zd8QOU>
-  - <http://wapo.st/2eUm8cv>
-  - <https://en.wikipedia.org/wiki/Redskins_Rule>
-  - <https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election>
-  - <http://wapo.st/2fnlPr3>
-  - <https://fivethirtyeight.com/>
-  - <http://53eig.ht/2fIYJK2>
-  - <https://en.wikipedia.org/wiki/Futures_contract>
-  - <https://www.predictit.org/>
-  - <https://github.com/kiernann/models-markets>
-  - <https://en.wikipedia.org/wiki/Brier_score>
-  - <https://53eig.ht/2IFHxVW>
-  - <https://www.r-project.org/>
-  - <https://www.tidyverse.org/>

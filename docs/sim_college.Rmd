@@ -1,5 +1,5 @@
 ---
-title: "Simulating the 2020 Election With Markets"
+title: "Simulating the 2020 Electoral College With Prediction Markets"
 output:
   github_document: 
     df_print: tibble
@@ -12,47 +12,111 @@ editor_options:
 ```{r setup, include=FALSE, purl=FALSE}
 library(knitr)
 opts_chunk$set(
+  dpi = 300,
   eval = TRUE,
   echo = TRUE,
-  collapse = TRUE,
+  error = FALSE,
   warning = FALSE,
   message = FALSE,
-  error = FALSE,
   comment = "#>",
+  collapse = TRUE,
   fig.width = 9,
-  fig.height = 5,
-  dpi = 300
+  fig.height = 5
 )
 options(width = 99)
-set.seed(seed = 05)
+set.seed(seed = 55)
 ```
+
+## Background
 
 Election prediction helps party officials, campaign operatives, and journalists interpret campaigns
 in a quantitative manner. Understanding trends, uncertainty, and likely outcomes is in invaluable
 political tool. For this reason, elections will always be predicted. In the absense of numbers, 
-people will latch on to whatever predictive tool they can find. The [stock market][01], 
-[key incumbency factors][02], the [Washington Redskins][03], [Halloween mask sales][04], and 
-a [psychic Chinese monkeys][05]. If we're going to predict elections, we have a responsibility to
-make legitimate quatitative predictions from scientifically founded bases. 
+people will latch on to whatever predictive tool they can find. The [stock market][sm], 
+[key incumbency factors][if], the [Washington Redskins][wr], [Halloween mask sales][hm], and 
+a [psychic Chinese monkeys][pm].
 
-In the past few years, as big data has sought to supplant arbitrary punditry, the forecasting model
-has become a staple of political science and journalism. Popularized by the data journalist at
-[FiveThirtyEight][06], the forecasting model is a statistical tool used to incorporate a number of
-quantitative inputs and produce a _probabilistic_ view of all possible outcomes.
+In the past few years, as "[big data][bd]" has sought to supplant traditional arbitrary punditry,
+the statistical forecasting model has become a staple of electioneering. Popularized by the data
+journalist at [FiveThirtyEight][fh], the forecasting model is a statistical tool used to
+incorporate a number of quantitative inputs and produce a _probabilistic_ view of all possible
+outcomes.
 
-However, following the 2016 Presidential election, the public ([perhaps wrongly][07]) felt betrayed
-by the promise of data to predict the future. This left political scientists and journalists alike
-reassessing other predictive tools. My favorite of these alternatives is the prediction market.
+However, following the 2016 Presidential election, much of the public felt betrayed
+by the promise of data to seemingly predict the future. As explained in 
+[_An Evaluation of 2016 Election Polls in the U.S._][eval] by the 
+[American Association for Public Opinion Research's][aapor] (AAPOR) Ad Hoc Committee on 2016
+Election Polling:
+
+> The 2016 presidential election was a jarring event for polling in the United States. Pre-election
+polls fueled high-profile predictions that Hillary Clinton’s likelihood of winning the presidency
+was about 90 percent, with estimates ranging from 71 to over 99 percent. When Donald Trump was
+declared the winner of the presidency in the early hours of November 9th, it came as a shock even
+to his own pollsters (Jacobs and House 2016). There was (and continues to be) widespread consensus
+that the polls failed.
+
+This "widespread consensus" was expressed by the new President-elect, vindicated Republican voters,
+stunned Democratic voters, academics, and journalists alike. This doubt in the polls was a
+reasonable knee jerk reaction on election night, when it became clear Trump would win. Some even
+went as far as to [cast the suprise upset as the end of scientific polling in America][tapper]:
+
+> Pollsters and election modelers suffered an industry-shattering embarrassment at the hands of
+Donald Trump on Tuesday night. Trump, the Republican presidential nominee, had long said the polls
+were biased against him. His claims — dismissed and mocked by the experts — turned out to be true.
+“It’s going to put the polling industry out of business,” said CNN anchor Jake Tapper. “It’s going
+to put the voter projection industry out of business.” Going into Election Day, a strong majority
+of pollsters and election modelers forecast that Democrat Hillary Clinton would coast to victory,
+with many predicting she would sweep the battlegrounds and win north of 300 electoral votes...
+Whatever the reason, pollsters will have to reassess after a dismal showing in 2016 that produced a
+result almost no one foresaw.
+
+The ad hoc committee was formed by the industry to explore and respond to do exactly this: reasses
+the roll modern polling techniques and forecasting will play in American election prediction. The
+report did not attempt to explain the victory, only examine the reasons why it was unpredicted. to
+answer this question, they studied polling datasets supplimented with sample size and source,
+target population, survey mode, and weighting technique for 23 polling organizations.  In the
+execitve summary of the report, the committee outline its findings:
+
+> **National polls were generally correct and accurate by historical standards.** National polls
+were among the most accurate in estimating the popular vote since 1936. Collectively, they
+indicated that Clinton had about a 3 percentage point lead, and they were basically correct; she
+ultimately won the popular vote by 2 percentage points...
+
+However, as Americans have been come astutely aware, the national popular vote does not determine
+the winner of a Presidential election. In _two_ of the last Presidential elections, the winner has
+not been the candidate which recieved the greatest number of overall votes but the one who recieved
+a majority of the votes cast by the 538 members of the Electoral College. This essentially results
+in _fifty-one_ separate Presidential contests, each varying in their predictability and importance
+in deciding the next leader of the free world. This fact undermines the confidence the AAPOR
+expressed in national polling, a reality the fully acklowedge:
+
+> **State-level polls showed a competitive, uncertain contest...** In the contest that actually
+mattered, the Electoral College, state-level polls showed a competitive race in which Clinton
+appeared to have a slim advantage. Eight states with more than a third of the electoral votes
+needed to win the presidency had polls showing a lead of three points or less (Trende 2016).[2] As
+Sean Trende noted, “The final RealClearPolitics Poll Averages in the battleground states had
+Clinton leading by the slimmest of margins in the Electoral College, 272-266.” The polls on average
+indicated that Trump was one state away from winning the election.
+
+And while the report is clear in it's rebuke of any indiscriminate dismissal of polling ("A spotty
+year for election polls is not an indictment of all survey research or even all polling.") it still
+seems worthwhile to continue contemplation over the state of election forecasting. Importantly, the
+report was less decidently supportive over _probabilistic_ forcasts, which incorperate opinon
+polling but generate a distinctly different product.
+
+> **About those predictions that Clinton was 90 percent likely to win...** However well-intentioned these predictions may have been, they helped crystalize the belief that Clinton was a shoo-in for president, with unknown consequences for turnout. While a similar criticism can be leveled against polls – i.e., they can indicate an election is uncompetitive, perhaps reducing some people’s motivation to vote – polls and forecasting models are not one and the same. As the late pollster Andrew Kohut once noted (2006), “I’m not a handicapper, I’m a measurer. There’s a difference.” Pollsters and astute poll reporters are often careful to describe their findings as a snapshot in time, measuring public opinion when they are fielded... Forecasting models do something different – they attempt to predict a future event. As the 2016 election proved, that can be a fraught exercise, and the net benefit to the country is unclear.
+
+
 
 Prediction markets can be used to generate similarly probabilistic views of election outcomes by
 utilizing the economic forces of price discovery and risk aversion to overcome the ideological
 bias of self-interested traders on a binary options exchange. Traders use real money to buy shares
-of [futures contracts][08] tied to an outcome. The price of these shares fluctuates on the market
-as the underlying _likelihood_ of that outcome changes. [PredictIt][09] is an exchange for such contracts, run by Victoria University of Wellington.
+of [futures contracts][fc] tied to an outcome. The price of these shares fluctuates on the market
+as the underlying _likelihood_ of that outcome changes. [PredictIt][pi] is an exchange for such contracts, run by Victoria University of Wellington.
 
-Following the 2018 Midterm elections, [I wrote a paper][10] comparing these markets to the
+Following the 2018 Midterm elections, [I wrote a paper][mm] comparing these markets to the
 congressional model published by the data journalists at FiveThirtyEight. I found no statistical
-difference in the two method's ability to make [skilled predictions][11] over the course of the
+difference in the two method's ability to make [skilled predictions][bs] over the course of the
 Midterm elections. In fact, the markets showed reasonable skepticism in a number of upset
 elections. Below, you can see how competitive Congressonal races were predicted by both the markets and model.
 
@@ -61,13 +125,17 @@ elections. Below, you can see how competitive Congressonal races were predicted 
 With the 2020 Presidential race well under way, the media, voters, campaigns, and political
 scientists alike are all looking for the best way to provide useful predictions and avoid the
 pitfalls of 2016. This far from the General Election, what little polling we have 
-[is less than useless][12]. In the absense of more quantitative data, can we possibly use
+[is less than useless][gp]. In the absense of more quantitative data, can we possibly use
 prediction markets to generate a useful probabilistic simulation of the electoral college? today 
 I'll try and use data from the PredictIt exchange to answer this question.
 
+[eval]: https://www.aapor.org/Education-Resources/Reports/An-Evaluation-of-2016-Election-Polls-in-the-U-S.aspx
+[aapor]: https://www.aapor.org/
+[tapper]: https://thehill.com/blogs/ballot-box/presidential-races/305133-pollsters-suffer-huge-embarrassment
+
 ## Process
 
-I'll be using the open source [language R][07] and packages from the [Tidyverse ecosystem][08].
+I'll be using the open source [language R][rp] and packages from the [Tidyverse ecosystem][tv].
 
 ```{r packages, warning=FALSE}
 if (!require("pacman")) install.packages("pacman")
@@ -113,7 +181,7 @@ From this API, we get probability data for `r nrow(market_prices)` battleground 
 
 ```{r map_markets, echo=FALSE}
 brewer_rdbu <- RColorBrewer::brewer.pal(n = 5, name = "RdBu")
-usa_map <- map_data("state") %>% mutate(state = abrev_state(region))
+usa_map <- map_data("state") %>% mutate(state = abbrev_state(region))
 left_join(usa_map, market_prices) %>%
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = price)) +
@@ -597,7 +665,7 @@ college_votes <-
   extract2(5) %>% as_tibble() %>%
   # format for join
   set_names(c("state", "votes")) %>% 
-  mutate(state = abrev_state(state))
+  mutate(state = abbrev_state(state))
 ```
 
 We can then add these votes to our data frame of probabilities.
@@ -679,34 +747,17 @@ ggplot(data = NULL) +
   ) 
 ```
 
-## Resources
-
-* https://on.mktw.net/2Zd8QOU
-* http://wapo.st/2eUm8cv
-* https://en.wikipedia.org/wiki/Redskins_Rule
-* https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
-* http://wapo.st/2fnlPr3
-* https://fivethirtyeight.com/
-* http://53eig.ht/2fIYJK2
-* https://en.wikipedia.org/wiki/Futures_contract
-* https://www.predictit.org/
-* https://github.com/kiernann/models-markets
-* https://en.wikipedia.org/wiki/Brier_score
-* https://53eig.ht/2IFHxVW
-* https://www.r-project.org/
-* https://www.tidyverse.org/
-
-[01]: https://on.mktw.net/2Zd8QOU
-[02]: http://wapo.st/2eUm8cv
-[03]: https://en.wikipedia.org/wiki/Redskins_Rule
-[04]: https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
-[05]: http://wapo.st/2fnlPr3
-[06]: https://fivethirtyeight.com/
-[07]: http://53eig.ht/2fIYJK2
-[08]: https://en.wikipedia.org/wiki/Futures_contract
-[09]: https://www.predictit.org/
-[10]: https://github.com/kiernann/models-markets
-[11]: https://en.wikipedia.org/wiki/Brier_score
-[12]: https://53eig.ht/2IFHxVW
-[07]: https://www.r-project.org/
-[08]: https://www.tidyverse.org/
+[bd]: https://en.wikipedia.org/wiki/Big_data
+[sm]: https://on.mktw.net/2Zd8QOU
+[if]: http://wapo.st/2eUm8cv
+[wr]: https://en.wikipedia.org/wiki/Redskins_Rule
+[hm]: https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
+[pm]: http://wapo.st/2fnlPr3
+[fh]: https://fivethirtyeight.com/
+[fc]: https://en.wikipedia.org/wiki/Futures_contract
+[pi]: https://www.predictit.org/
+[mm]: https://github.com/kiernann/models-markets
+[bs]: https://en.wikipedia.org/wiki/Brier_score
+[gp]: https://53eig.ht/2IFHxVW
+[rp]: https://www.r-project.org/
+[tv]: https://www.tidyverse.org/
