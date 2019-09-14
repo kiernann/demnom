@@ -1,5 +1,5 @@
 ---
-title: "Simulating the 2020 Election With Markets"
+title: "Simulating the 2020 Electoral College With Prediction Markets"
 output:
   github_document: 
     df_print: tibble
@@ -12,47 +12,111 @@ editor_options:
 ```{r setup, include=FALSE, purl=FALSE}
 library(knitr)
 opts_chunk$set(
+  dpi = 300,
   eval = TRUE,
   echo = TRUE,
-  collapse = TRUE,
+  error = FALSE,
   warning = FALSE,
   message = FALSE,
-  error = FALSE,
   comment = "#>",
+  collapse = TRUE,
   fig.width = 9,
-  fig.height = 5,
-  dpi = 300
+  fig.height = 5
 )
 options(width = 99)
-set.seed(seed = 05)
+set.seed(seed = 55)
 ```
+
+## Background
 
 Election prediction helps party officials, campaign operatives, and journalists interpret campaigns
 in a quantitative manner. Understanding trends, uncertainty, and likely outcomes is in invaluable
 political tool. For this reason, elections will always be predicted. In the absense of numbers, 
-people will latch on to whatever predictive tool they can find. The [stock market][01], 
-[key incumbency factors][02], the [Washington Redskins][03], [Halloween mask sales][04], and 
-a [psychic Chinese monkeys][05]. If we're going to predict elections, we have a responsibility to
-make legitimate quatitative predictions from scientifically founded bases. 
+people will latch on to whatever predictive tool they can find. The [stock market][sm], 
+[key incumbency factors][if], the [Washington Redskins][wr], [Halloween mask sales][hm], and 
+a [psychic Chinese monkeys][pm].
 
-In the past few years, as big data has sought to supplant arbitrary punditry, the forecasting model
-has become a staple of political science and journalism. Popularized by the data journalist at
-[FiveThirtyEight][06], the forecasting model is a statistical tool used to incorporate a number of
-quantitative inputs and produce a _probabilistic_ view of all possible outcomes.
+In the past few years, as "[big data][bd]" has sought to supplant traditional arbitrary punditry,
+the statistical forecasting model has become a staple of electioneering. Popularized by the data
+journalist at [FiveThirtyEight][fh], the forecasting model is a statistical tool used to
+incorporate a number of quantitative inputs and produce a _probabilistic_ view of all possible
+outcomes.
 
-However, following the 2016 Presidential election, the public ([perhaps wrongly][07]) felt betrayed
-by the promise of data to predict the future. This left political scientists and journalists alike
-reassessing other predictive tools. My favorite of these alternatives is the prediction market.
+However, following the 2016 Presidential election, much of the public felt betrayed
+by the promise of data to seemingly predict the future. As explained in 
+[_An Evaluation of 2016 Election Polls in the U.S._][eval] by the 
+[American Association for Public Opinion Research's][aapor] (AAPOR) Ad Hoc Committee on 2016
+Election Polling:
+
+> The 2016 presidential election was a jarring event for polling in the United States. Pre-election
+polls fueled high-profile predictions that Hillary Clinton’s likelihood of winning the presidency
+was about 90 percent, with estimates ranging from 71 to over 99 percent. When Donald Trump was
+declared the winner of the presidency in the early hours of November 9th, it came as a shock even
+to his own pollsters (Jacobs and House 2016). There was (and continues to be) widespread consensus
+that the polls failed.
+
+This "widespread consensus" was expressed by the new President-elect, vindicated Republican voters,
+stunned Democratic voters, academics, and journalists alike. This doubt in the polls was a
+reasonable knee jerk reaction on election night, when it became clear Trump would win. Some even
+went as far as to [cast the suprise upset as the end of scientific polling in America][tapper]:
+
+> Pollsters and election modelers suffered an industry-shattering embarrassment at the hands of
+Donald Trump on Tuesday night. Trump, the Republican presidential nominee, had long said the polls
+were biased against him. His claims — dismissed and mocked by the experts — turned out to be true.
+“It’s going to put the polling industry out of business,” said CNN anchor Jake Tapper. “It’s going
+to put the voter projection industry out of business.” Going into Election Day, a strong majority
+of pollsters and election modelers forecast that Democrat Hillary Clinton would coast to victory,
+with many predicting she would sweep the battlegrounds and win north of 300 electoral votes...
+Whatever the reason, pollsters will have to reassess after a dismal showing in 2016 that produced a
+result almost no one foresaw.
+
+The ad hoc committee was formed by the industry to explore and respond to do exactly this: reasses
+the roll modern polling techniques and forecasting will play in American election prediction. The
+report did not attempt to explain the victory, only examine the reasons why it was unpredicted. to
+answer this question, they studied polling datasets supplimented with sample size and source,
+target population, survey mode, and weighting technique for 23 polling organizations.  In the
+execitve summary of the report, the committee outline its findings:
+
+> **National polls were generally correct and accurate by historical standards.** National polls
+were among the most accurate in estimating the popular vote since 1936. Collectively, they
+indicated that Clinton had about a 3 percentage point lead, and they were basically correct; she
+ultimately won the popular vote by 2 percentage points...
+
+However, as Americans have been come astutely aware, the national popular vote does not determine
+the winner of a Presidential election. In _two_ of the last Presidential elections, the winner has
+not been the candidate which recieved the greatest number of overall votes but the one who recieved
+a majority of the votes cast by the 538 members of the Electoral College. This essentially results
+in _fifty-one_ separate Presidential contests, each varying in their predictability and importance
+in deciding the next leader of the free world. This fact undermines the confidence the AAPOR
+expressed in national polling, a reality the fully acklowedge:
+
+> **State-level polls showed a competitive, uncertain contest...** In the contest that actually
+mattered, the Electoral College, state-level polls showed a competitive race in which Clinton
+appeared to have a slim advantage. Eight states with more than a third of the electoral votes
+needed to win the presidency had polls showing a lead of three points or less (Trende 2016).[2] As
+Sean Trende noted, “The final RealClearPolitics Poll Averages in the battleground states had
+Clinton leading by the slimmest of margins in the Electoral College, 272-266.” The polls on average
+indicated that Trump was one state away from winning the election.
+
+And while the report is clear in it's rebuke of any indiscriminate dismissal of polling ("A spotty
+year for election polls is not an indictment of all survey research or even all polling.") it still
+seems worthwhile to continue contemplation over the state of election forecasting. Importantly, the
+report was less decidently supportive over _probabilistic_ forcasts, which incorperate opinon
+polling but generate a distinctly different product.
+
+> **About those predictions that Clinton was 90 percent likely to win...** However well-intentioned these predictions may have been, they helped crystalize the belief that Clinton was a shoo-in for president, with unknown consequences for turnout. While a similar criticism can be leveled against polls – i.e., they can indicate an election is uncompetitive, perhaps reducing some people’s motivation to vote – polls and forecasting models are not one and the same. As the late pollster Andrew Kohut once noted (2006), “I’m not a handicapper, I’m a measurer. There’s a difference.” Pollsters and astute poll reporters are often careful to describe their findings as a snapshot in time, measuring public opinion when they are fielded... Forecasting models do something different – they attempt to predict a future event. As the 2016 election proved, that can be a fraught exercise, and the net benefit to the country is unclear.
+
+
 
 Prediction markets can be used to generate similarly probabilistic views of election outcomes by
 utilizing the economic forces of price discovery and risk aversion to overcome the ideological
 bias of self-interested traders on a binary options exchange. Traders use real money to buy shares
-of [futures contracts][08] tied to an outcome. The price of these shares fluctuates on the market
-as the underlying _likelihood_ of that outcome changes. [PredictIt][09] is an exchange for such contracts, run by Victoria University of Wellington.
+of [futures contracts][fc] tied to an outcome. The price of these shares fluctuates on the market
+as the underlying _likelihood_ of that outcome changes. [PredictIt][pi] is an exchange for such contracts, run by Victoria University of Wellington.
 
-Following the 2018 Midterm elections, [I wrote a paper][10] comparing these markets to the
+Following the 2018 Midterm elections, [I wrote a paper][mm] comparing these markets to the
 congressional model published by the data journalists at FiveThirtyEight. I found no statistical
-difference in the two method's ability to make [skilled predictions][11] over the course of the
+difference in the two method's ability to make [skilled predictions][bs] over the course of the
 Midterm elections. In fact, the markets showed reasonable skepticism in a number of upset
 elections. Below, you can see how competitive Congressonal races were predicted by both the markets and model.
 
@@ -61,13 +125,17 @@ elections. Below, you can see how competitive Congressonal races were predicted 
 With the 2020 Presidential race well under way, the media, voters, campaigns, and political
 scientists alike are all looking for the best way to provide useful predictions and avoid the
 pitfalls of 2016. This far from the General Election, what little polling we have 
-[is less than useless][12]. In the absense of more quantitative data, can we possibly use
+[is less than useless][gp]. In the absense of more quantitative data, can we possibly use
 prediction markets to generate a useful probabilistic simulation of the electoral college? today 
 I'll try and use data from the PredictIt exchange to answer this question.
 
-## Code
+[eval]: https://www.aapor.org/Education-Resources/Reports/An-Evaluation-of-2016-Election-Polls-in-the-U-S.aspx
+[aapor]: https://www.aapor.org/
+[tapper]: https://thehill.com/blogs/ballot-box/presidential-races/305133-pollsters-suffer-huge-embarrassment
 
-I'll be using the open source [language R][07] and packages from the [Tidyverse ecosystem][08].
+## Process
+
+I'll be using the open source [language R][rp] and packages from the [Tidyverse ecosystem][tv].
 
 ```{r packages, warning=FALSE}
 if (!require("pacman")) install.packages("pacman")
@@ -75,19 +143,20 @@ pacman::p_load_current_gh("kiernann/campfin")
 pacman::p_load(tidyverse, dataverse, magrittr, jsonlite, scales, rvest)
 ```
 
+Throughout this simulation, I'll be using only the Democratic party market prices, popular vote,
+and probability. It's difficult to determine the winner of an election from a single party's 
+share of the popular vote, as only a plurality and not a majority of votes is required. This means
+we can't directly test if a party recieves >50% of the vote to determine if they've won, as some
+winners recieve less than 50% of the vote. We can get around this by looking at only votes cast for
+the major parties (Democrats and Republicans); if a party wins >50% of the major party vote, we can 
+pretty safely assume they've won the plurality of votes. This is a reductive, but makes this quick
+and dirty simulation a lot easier. A more professional model would fully incorperate third-party
+voters, which [can affect elections][09].
+
 ## Battleground Data
 
 PredictIt hosts markets for most of the competitive battleground states. We can scrape these
 markets using their API and the `jsonlite::fromJSON()` function. 
-
-Throughout this simulation, I'll be using only the Democratic party market prices, popular vote,
-and probability. This is a little reductive, as it assumes this number alone can be used to
-calculate the Republican party numbers, both of which will cover 100% of the population. While
-third parties can be a real factor affecting American politics, I will ignore them for now. A good
-forecasting method would incorperate them. What we care most about here is the _plurality_ of votes
-in each state. The easiest way to calculate this is to find the democratic share of the major party
-votes. If that share is greater than 50% then the democratic candidate likely won the plurality of
-votes.
 
 ```{r scrape_markets, warning=FALSE, error=FALSE}
 market_prices <-
@@ -112,7 +181,7 @@ From this API, we get probability data for `r nrow(market_prices)` battleground 
 
 ```{r map_markets, echo=FALSE}
 brewer_rdbu <- RColorBrewer::brewer.pal(n = 5, name = "RdBu")
-usa_map <- map_data("state") %>% mutate(state = abrev_state(region))
+usa_map <- map_data("state") %>% mutate(state = abbrev_state(region))
 left_join(usa_map, market_prices) %>%
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = price)) +
@@ -140,15 +209,88 @@ left_join(usa_map, market_prices) %>%
   )
 ```
 
-## Safe States
+We should note the trading volume of each market. Higher volume is typically associated with a more
+accurate price equilibrium. That is, the more people trade on the market the more accurate the 
+prediction will be. We can get this data by downloading the 90 day history of each market.
+
+```{r market_volume, echo=FALSE}
+college_markets <-
+  fromJSON(txt = "https://www.predictit.org/api/marketdata/all/") %>%
+  use_series(markets) %>%
+  filter(str_detect(name, "Which party will win (.*) in the 2020 presidential election?"))
+
+college_states <- str_extract(college_markets$shortName, "[:upper:]{2}")
+
+college_urls <- sprintf(
+  "https://www.predictit.org/Resource/DownloadMarketChartData?marketid=%s&timespan=90d",
+  college_markets$id
+)
+
+map(
+  college_urls,
+  read_csv,
+  col_types = cols(
+    ContractName = col_character(),
+    Date = col_date("%m/%d/%Y %H:%M:%S %p"),
+    OpenSharePrice = col_number(),
+    HighSharePrice = col_number(),
+    LowSharePrice = col_number(),
+    CloseSharePrice = col_number(),
+    TradeVolume = col_double()
+  )
+) %>%
+  set_names(value = college_states) %>%
+  bind_rows(.id = "state") %>%
+  rename(
+    name   = ContractName,
+    date   = Date,
+    open   = OpenSharePrice,
+    high   = HighSharePrice,
+    low    = LowSharePrice,
+    close  = CloseSharePrice,
+    volume = TradeVolume
+  ) %>% 
+  group_by(state) %>% 
+  arrange(date) %>% 
+  mutate(vol_cum = cumsum(volume)) %>% 
+  filter(
+    date == max(date),
+    name == "Democratic"
+  ) %>% 
+  right_join(usa_map) %>%
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", mapping = aes(fill = vol_cum)) +
+  coord_quickmap() +
+  scale_fill_distiller(
+    type = "seq",
+    palette = "YlOrBr",
+    direction = 1,
+    label = comma
+  ) +
+  theme(
+    legend.position = c(0.9, 0.35),
+    panel.grid = element_blank(),
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    legend.background = element_blank(),
+    plot.caption = element_text(size = 11)
+  ) +
+  labs(
+    title = "Cumulative Democratic Contracts Traded",
+    subtitle = "Increased market volume associated with more accurate price equilibrium",
+    caption = "Source: PredictIt",
+    fill = "Cumulative\nVolume"
+  )
+```
+
+## Past Elections
 
 These states alone aren't enough to simulate the 2020 electoral college. To predict the
 remaining states, we have a few options. The easiest route is to simply assume the party which won
-in 2016 will win again in 2020. This isn't a terrible idea, as the majority of states rarely flip,
-especially not the `r 50-nrow(market_prices)` states without a prediction market. We can start from
-this assumption and improve upon it very easily.
-
-### Past Elections
+in 2016 will win again in 2020. This isn't neccesarily a terrible idea, as the majority of states
+rarely flip, especially not the `r 50-nrow(market_prices)` states without a prediction market. We
+can start from this assumption and improve upon it very easily.
 
 To calculate some simple probablistic predictions for the remaining states, we will use data from
 the MIT Election Data and Science Lab, which has a database of popular vote results in each state
@@ -178,19 +320,63 @@ past_elections <-
 # https://doi.org/10.7910/DVN/42MVDX/MFU99O, Harvard Dataverse, V5
 ```
 
-This historical data provides two statistics needed to finish our probablistic simulation. First,
-we have the democratic share of the vote in the last election. Second, we can calculate the
-variation in the party's share of the vote in the last `r n_distinct(past_elections$year)`
-elections.
+This historical data provides the two statistics needed to finish our probablistic simulation.
+
+First, we have the democratic share of the vote in the last election. This statistic is the default
+assumption for our 2020 simulation.
+
+```{r last_election}
+last_election <- past_elections %>%
+  # keep only last election
+  filter(year == 2016)
+```
+
+```{r 2016_map, echo=FALSE}
+last_election$share[last_election$state %in% c("WY", "WV")] <- 
+  last_election$share[last_election$state == "ND"]
+left_join(usa_map, last_election, by = "state") %>%
+  filter(state != "DC") %>% 
+  ggplot(mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", mapping = aes(fill = share)) +
+  coord_quickmap() +
+  scale_fill_distiller(
+    type = "div",
+    palette = "RdBu",
+    direction = 1,
+    label = dollar
+  ) +
+  theme(
+    legend.position = c(0.9, 0.35),
+    panel.grid = element_blank(),
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    plot.caption = element_text(size = 11),
+    legend.background = element_blank()
+  ) +
+  labs(
+    title = "Democratic Share of Major Party Vote",
+    subtitle = "Presidential Election, 2016",
+    fill = "2016\nShare",
+    caption = "Source: MIT Election Data and Science Lab"
+  )
+
+last_election <- filter(past_elections, year == 2016)
+```
+
+Second, we can calculate the variation in the party's share of the vote in the last 
+`r n_distinct(past_elections$year)` elections. This statistic allows us to introduce uncertainty
+to our assumption. The greater the historical variation, the less certain we can be that the winner
+of the _last_ election will win the _next_ election.
 
 ```{r summarize_sd}
 state_sd <- past_elections %>% 
-  # calculate std dev
+  # calculate state std dev
   group_by(state) %>% 
   summarize(sd = sd(share))
 ```
 
-```{r map_sd}
+```{r map_sd, echo=FALSE}
 left_join(usa_map, state_sd, by = "state") %>%
   filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
@@ -215,47 +401,11 @@ left_join(usa_map, state_sd, by = "state") %>%
     )
 ```
 
-```{r last_election}
-last_election <- past_elections %>%
-  # keep only last election
-  filter(year == 2016)
-```
-
-```{r 2016_map, echo=FALSE}
-left_join(usa_map, last_election, by = "state") %>%
-  filter(state != "DC") %>% 
-  ggplot(mapping = aes(x = long, y = lat, group = group)) +
-  geom_polygon(color = "black", mapping = aes(fill = share)) +
-  coord_quickmap() +
-  scale_fill_gradient2(
-    low = brewer_rdbu[1],
-    high = brewer_rdbu[5],
-    mid = brewer_rdbu[3],
-    midpoint = 0.50,
-    labels = scales::percent
-  ) +
-  theme(
-    legend.position = c(0.9, 0.35),
-    panel.grid = element_blank(),
-    axis.text  = element_blank(),
-    axis.title = element_blank(),
-    axis.ticks = element_blank(),
-    plot.caption = element_text(size = 11),
-    legend.background = element_blank()
-  ) +
-  labs(
-    title = "Democratic Share of Major Party Vote",
-    subtitle = "Presidential Election, 2016",
-    fill = "2016\nShare",
-    caption = "Source: MIT Election Data and Science Lab"
-  )
-```
-
 ## Probabilities
 
 Any good election forecast needs to be _probabilistic_. Professional forecasts take this division
 of votes (usually from an aggregate of polls) then calculate the probability distribution around
-that range with a series of other factors.
+that division using a series of other factors.
 
 For this simulation, we already have probabilities for `r nrow(market_prices)` states. PredictIt
 only hosts markets for the most competitive states. The reality is, the other 
@@ -265,19 +415,12 @@ see how the 2016 popular vote differed for those states _with_ 2020 markets and 
 ```{r vote_range, echo=FALSE}
 last_election %>%
   filter(state != "DC") %>%
-  mutate(
-    market = if_else(
-      condition = state %in% market_prices$state,
-      true = "No Market",
-      false = "Market Exists"
-    )
-  ) %>% 
+  mutate(market = state %in% market_prices$state) %>% 
   ggplot(aes(x = share)) + 
-  geom_density(aes(fill = market)) +
-  facet_wrap(~market, ncol = 1, scales = "free_y") +
+  geom_histogram(aes(fill = market), bins = 9) +
   scale_x_continuous(labels = scales::percent) +
+  scale_y_continuous(breaks = seq(1, 10, 2)) +
   scale_fill_manual(
-    guide = FALSE,
     values = c(
       RColorBrewer::brewer.pal(3, "Dark2")[1],
       RColorBrewer::brewer.pal(3, "Dark2")[2]
@@ -285,11 +428,22 @@ last_election %>%
   ) +
   labs(
     title = "Popular Vote Difference for Battleground States",
+    subtitle = "Markets exist for most competitive states",
+    caption = "Source: PredictIt",
     x = "2016 Popular Vote",
-    y = "Number of States"
+    y = "Number of States",
+    fill = "Market Exists"
   ) +
-  theme(strip.text = element_text(size = 12))
+  theme(
+    legend.position = "bottom",
+    plot.caption = element_text(size = 11)
+  )
 ```
+
+To turn these Democratic share statistics for less competitive states into probabilities of
+Democratic victory, we simply have to add our calculated historical standard deviation and
+generate 10,000 random observations from a normal distribution using `rnorm()` with our mean
+set to the 2016 share.
 
 ```{r add_sd_rnorm}
 last_election <- last_election %>%
@@ -304,56 +458,60 @@ last_election <- last_election %>%
 If we visualize this process, we can see how the 2016 result and a standard deviation is used
 to simulate many elections and calculate a probability.
 
-Below you can see the results of 1,000 simulated elections in Maryland, where
-`r scales::percent(last_election$past[last_election$state == "MD"])` of votes were cast for the
-Democratic candidate in the last election. The area under the curve past 50% is the _probability_
-of a democrat winning again in the next election.
+Below you can see the results of 1,000 simulated elections in Vermont, which saw
+`r percent(last_election$share[last_election$state == "VT"])` of votes were cast for the 
+Democratic candidate in the last election, but has a historical standard deviation of
+`r round(last_election$sd[last_election$state == "VT"], 3)`, we can generate 1000 new elections
+from our random normal distribution. Any simulated election with a share of the major party vote
+greater than 50% is considered a Democratic victory. The percentage of those simulated elections
+won is the _probability_ of a Democrat winning the next election.
 
 ```{r example_range_md, echo=FALSE}
-ex_share <- last_election$share[last_election$state == "MD"]
-ex_sd <- last_election$sd[last_election$state == "MD"]
+ex_share <- last_election$share[last_election$state == "VT"]
+ex_sd <- last_election$sd[last_election$state == "VT"]
 n <- 1000
-ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_share, sd = ex_sd))) + 
-  geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[3]) +
-  geom_vline(xintercept = 0.5, size = 1) +
-  geom_vline(xintercept = ex_share, linetype = 2, size = 1) +
+x <- rnorm(n = n, mean = ex_share, sd = ex_sd)
+ggplot(data = NULL, mapping = aes(x = x)) + 
+  geom_histogram(aes(fill = x > 0.5), binwidth = 0.02) +
   scale_x_continuous(labels = scales::percent) +
+  coord_cartesian(xlim = c(0, 1), ylim = c(0, 250)) +
+  scale_fill_manual(
+    values = brewer_rdbu[c(1, 5)],
+    guide = FALSE
+  ) +
   labs(
-    title = sprintf("Maryland 2020 Simulated %s Times", comma(n)),
+    title = sprintf("Vermont 2020 Simulated %s Times", comma(n)),
+    subtitle = sprintf("Mean = %s, Standard Deviation = %s", round(ex_share, 3), round(ex_sd, 3)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
-  ) +
-  coord_cartesian(xlim = c(0.2, 0.8)) +
-  geom_label(aes(x = ex_share, y = 5, label = "2016 Result")) +
-  theme(
-    axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank()
   )
 ```
 
-Now, lets see the distribution of 1,000 simulated elections in Florida, a much closer election with
-only `r scales::percent(last_election$past[last_election$state == "FL"])` of voters supporting the
-democratic candidate.
+Now, lets see the distribution of 1,000 simulated elections in Pennsylvania, a much closer 
+election, where only `r scales::percent(last_election$share[last_election$state == "FL"])` of 
+voters supported the democratic candidate but where the historical standard deviation is much 
+lower at `r round(last_election$sd[last_election$state == "PA"], 3)`. You can see how the number of
+elections below and above 50% is more equal, meaning our simulated probability is much closer to
+50%. This is a state where we will use a prediction market.
 
 ```{r example_range_fl, echo=FALSE}
-ex_share <- last_election$share[last_election$state == "FL"]
-ex_sd <- last_election$sd[last_election$state == "FL"]
+ex_share <- last_election$share[last_election$state == "PA"]
+ex_sd <- last_election$sd[last_election$state == "PA"]
 n <- 1000
-ggplot(data = NULL, mapping = aes(x = rnorm(n = n, mean = ex_share, sd = ex_sd))) + 
-  geom_density(fill = RColorBrewer::brewer.pal(3, "Dark2")[2]) +
-  geom_vline(xintercept = 0.5, size = 1) +
-  geom_vline(xintercept = ex_share, linetype = 2, size = 1) +
+x <- rnorm(n = n, mean = ex_share, sd = ex_sd)
+ggplot(data = NULL, mapping = aes(x = x)) + 
+  geom_histogram(aes(fill = x > 0.5), binwidth = 0.02) +
   scale_x_continuous(labels = scales::percent) +
+  coord_cartesian(xlim = c(0, 1), ylim = c(0, 250)) +
+  scale_fill_manual(
+    values = brewer_rdbu[c(1, 5)],
+    guide = FALSE
+  ) +
   labs(
-    title = sprintf("Folrida 2020 Simulated %s Times", comma(n)),
+    title = sprintf("Pennsylvania 2020 Simulated %s Times", comma(n)),
+    subtitle = sprintf("Mean = %s, Standard Deviation = %s", round(ex_share, 3), round(ex_sd, 3)),
     x = "Popular Vote",
     y = "Simulated Occurrences"
-  ) +
-  coord_cartesian(xlim = c(0.2, 0.8)) +
-  geom_label(aes(x = ex_share, y = 5, label = "2016 Result")) +
-  theme(
-    axis.text.y.left = element_blank(),
-    axis.ticks.y.left = element_blank()
   )
 ```
 
@@ -361,12 +519,13 @@ We can generate this probability by calculating the average number of simulated 
 the democrat. Below, we see how this is done by simulating the Connecticut election 60 times.
 
 ```{r example_process}
+# find std dev
+(ex_past <- round(past_elections$share[past_elections$state == "CT"], digits = 3))
+(ex_sd <- sd(ex_past))
 # find last share
 (ex_share <- last_election$share[last_election$state == "CT"])
-# find std dev
-(ex_sd <- last_election$sd[last_election$state == "CT"])
 # simulate 60 elections
-(ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 2))
+(ex_sims <- round(x = rnorm(n = 60, mean = ex_share, sd = ex_sd), digits = 3))
 # check for win each each
 (ex_wins <- ex_sims > 0.5)
 # calculate percent of wins
@@ -376,11 +535,12 @@ mean(ex_wins)
 Below, you can see how the 2016 vote results result in more extreme probabilities.
 
 ```{r last_election_hist, echo=FALSE}
-last_election %>% 
-  mutate(dem = share > 0.5) %>% 
-  ggplot(aes(x = share)) +
-  geom_histogram(bins = 10, mapping = aes(fill = dem)) +
-  geom_vline(xintercept = 0.5, size = 1) +
+last_election %>%
+  rename(`Last Election`= share, `Simulated Probability` = prob) %>% 
+  gather(`Last Election`, `Simulated Probability`, key = "stat", value = "val") %>% 
+  mutate(dem = val > 0.5) %>% 
+  ggplot(aes(x = val)) +
+  geom_histogram(binwidth = 0.1, mapping = aes(fill = dem)) +
   labs(
     title = "Distribution of Democratic Shares in 2016",
     subtitle = "Percentage of Majory Party Vote",
@@ -392,31 +552,13 @@ last_election %>%
   scale_fill_manual(
     values = brewer_rdbu[c(1, 5)],
     guide = FALSE
-  )
-```
-
-```{r sim_prob_hist, echo=FALSE}
-last_election %>% 
-  mutate(dem = share > 0.5) %>% 
-  ggplot(aes(x = prob)) +
-  geom_histogram(bins = 10, mapping = aes(fill = dem)) +
-  geom_vline(xintercept = 0.5, size = 1) +
-  labs(
-    title = "Distribution of Simulated Democratic Probability for 2020",
-    subtitle = "Mean of 10,000 Random Normally Distributed Simulations",
-    x = "Democratic Probability (2020)",
-    y = "Number of States"
-  ) +
-  coord_cartesian(xlim = c(0, 1)) +
-  scale_x_continuous(labels = scales::percent) +
-  scale_fill_manual(
-    values = brewer_rdbu[c(1, 5)],
-    guide = FALSE
-  )
+  ) + 
+  facet_wrap(~stat, ncol = 1)
 ```
 
 This relationship depends entirely on our chosen standard deviation. Again, since we are only
-simulating probabilities for those states _without_ markets, these probabilities tend to be extreme.
+simulating probabilities for those states _without_ markets, these probabilities tend to be
+extreme.
 
 ```{r sim_relationship, echo=FALSE}
 last_election %>% 
@@ -473,8 +615,11 @@ state_probs %>%
   theme(legend.position = "bottom")
 ```
 
+We now have probabilities for all 51 electoral contests!
+
 ```{r 2020_map, echo=FALSE}
 left_join(usa_map, state_probs, by = "state") %>%
+  filter(state != "DC") %>% 
   ggplot(mapping = aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", mapping = aes(fill = prob)) +
   coord_quickmap() +
@@ -482,7 +627,7 @@ left_join(usa_map, state_probs, by = "state") %>%
     type = "div",
     palette = "RdBu",
     direction = 1,
-    label = dollar
+    label = percent
   ) +
   theme(
     legend.position = c(0.9, 0.35),
@@ -500,11 +645,15 @@ left_join(usa_map, state_probs, by = "state") %>%
     )
 ```
 
+However, this map does not paint the most accurate picture of the election. Presidential elections
+are of course conducted with the electoral college, where each state's value is different.
+
 ## Electoral College
 
-To simulate the election we of course need to know how many electoral votes are up for grabs in 
-each state. We can get this number directly from the National Archive and Records Administration,
-the federal agency tasked with overseeing the electoral college.
+To simulate the electoral college from these probabilities, we of course still need to know how
+many electoral votes are up for grabs in each state. We can get this number directly from the
+National Archive and Records Administration, the federal agency tasked with overseeing the
+electoral college.
 
 ```{r college_votes}
 college_votes <- 
@@ -516,7 +665,7 @@ college_votes <-
   extract2(5) %>% as_tibble() %>%
   # format for join
   set_names(c("state", "votes")) %>% 
-  mutate(state = abrev_state(state))
+  mutate(state = abbrev_state(state))
 ```
 
 We can then add these votes to our data frame of probabilities.
@@ -527,9 +676,9 @@ arrange(college_probs, desc(votes))
 ```
 
 To simulate the entire electoral college, we simple have to perform the same `sample()` process as
-we did with Connecticut, above. To simplify this process, we can create a new `sim_race()` function
-that takes a probability and returns a `TRUE` or `FALSE` indicating whether or not the democrat
-has won.
+we did with Connecticut above. To simplify this process, we can create a new `sim_race()` function
+that takes a probability and returns `TRUE` or `FALSE` indicating whether or not the democrat has
+won.
 
 ```{r sim_fun}
 sim_race <- function(dem = 1-rep, rep = 1-dem) {
@@ -550,7 +699,7 @@ ex_sim <- rep(NA, 100)
 for (i in 1:100) {
   ex_sim[i] <- sim_race(dem = 0.75)
 }
-ex_sim
+print(ex_sim)
 mean(ex_sim)
 ```
 
@@ -574,8 +723,8 @@ for (i in seq(1, n)) {
 }
 ```
 
-From the summary below, you can see a picture of a very close race with the Democrats holding a 
-slight lead. Of our `r comma(n)` simulations, the Democrats won  `r percent(mean(sims > 269))` 
+From the summary below, we see a picture of an election where the Democratic party holds a 
+significant lead. Of our `r comma(n)` simulations, the Democrats won  `r percent(mean(sims > 269))` 
 with the modal outcome being a victory of  `r names(sort(table(sims), decreasing = TRUE)[1])` 
 electoral college votes.
 
@@ -598,34 +747,17 @@ ggplot(data = NULL) +
   ) 
 ```
 
-## Resources
-
-* https://on.mktw.net/2Zd8QOU
-* http://wapo.st/2eUm8cv
-* https://en.wikipedia.org/wiki/Redskins_Rule
-* https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
-* http://wapo.st/2fnlPr3
-* https://fivethirtyeight.com/
-* http://53eig.ht/2fIYJK2
-* https://en.wikipedia.org/wiki/Futures_contract
-* https://www.predictit.org/
-* https://github.com/kiernann/models-markets
-* https://en.wikipedia.org/wiki/Brier_score
-* https://53eig.ht/2IFHxVW
-* https://www.r-project.org/
-* https://www.tidyverse.org/
-
-[01]: https://on.mktw.net/2Zd8QOU
-[02]: http://wapo.st/2eUm8cv
-[03]: https://en.wikipedia.org/wiki/Redskins_Rule
-[04]: https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
-[05]: http://wapo.st/2fnlPr3
-[06]: https://fivethirtyeight.com/
-[07]: http://53eig.ht/2fIYJK2
-[08]: https://en.wikipedia.org/wiki/Futures_contract
-[09]: https://www.predictit.org/
-[10]: https://github.com/kiernann/models-markets
-[11]: https://en.wikipedia.org/wiki/Brier_score
-[12]: https://53eig.ht/2IFHxVW
-[07]: https://www.r-project.org/
-[08]: https://www.tidyverse.org/
+[bd]: https://en.wikipedia.org/wiki/Big_data
+[sm]: https://on.mktw.net/2Zd8QOU
+[if]: http://wapo.st/2eUm8cv
+[wr]: https://en.wikipedia.org/wiki/Redskins_Rule
+[hm]: https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
+[pm]: http://wapo.st/2fnlPr3
+[fh]: https://fivethirtyeight.com/
+[fc]: https://en.wikipedia.org/wiki/Futures_contract
+[pi]: https://www.predictit.org/
+[mm]: https://github.com/kiernann/models-markets
+[bs]: https://en.wikipedia.org/wiki/Brier_score
+[gp]: https://53eig.ht/2IFHxVW
+[rp]: https://www.r-project.org/
+[tv]: https://www.tidyverse.org/
