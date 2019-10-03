@@ -125,7 +125,7 @@ calib_plot <- ggplot() +
     title = "Comparing Forecast Calibration"
   )
 
-calib_plot <- bind_rows(
+bind_rows(
   market_calib,
   model_calib
 ) %>%
@@ -133,20 +133,28 @@ calib_plot <- bind_rows(
   geom_abline(slope = 1, intercept = 0, linetype = 2) +
   geom_point(aes(color = source, size = n), alpha = 0.75) +
   scale_size_continuous(range = c(7, 12), guide = FALSE) +
+  geom_label(mapping = aes(label = "Underconfident", x = 0.25, y = 0.75),
+             label.size = 0,
+             fill = "#ebebeb",
+             size = 6) +
+  geom_label(mapping = aes(label = "Overconfident", x = 0.75, y = 0.25),
+             label.size = 0,
+             fill = "#ebebeb",
+             size = 6) +
   scale_color_manual(values = c("#07A0BB", "#ED713A")) +
-  scale_x_continuous(labels = scales::percent) +
-  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(labels = scales::percent, breaks = seq(0, 1, by = 0.1)) +
+  scale_y_continuous(labels = scales::percent,  breaks = seq(0, 1, by = 0.1)) +
   theme(legend.position = "bottom") +
   labs(
     title = "Comparing Forecast Calibrations",
     x = "Predicted Probability",
     y = "Actual Occurance",
-    color = "Prediction Source"
+    color = "Prediction five"
   )
 
 ggsave(
   filename = "docs/market_calib/calib.png",
-  plot = calib_plot,
+  plot = last_plot(),
   height = 5,
   width = 9,
   dpi = "retina"
