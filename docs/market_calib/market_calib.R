@@ -5,7 +5,7 @@ library(campfin)
 library(glue)
 
 closed_markets <- read_excel(
-  path = "~/Downloads/PI Closed Markets List.xlsx",
+  path = "~/Documents/PI Closed Markets List.xlsx",
   col_types = c(rep("text", 4), rep("date", 2)),
   skip = 1
 )
@@ -53,8 +53,6 @@ scrape_market <- function(mid = NULL, span = "90d") {
   return(market)
 }
 
-scrape_market(4444)
-
 market_history <- tibble()
 for (id in election_markets$id) {
   market_history <- bind_rows(
@@ -70,29 +68,11 @@ market_history <- right_join(
 
 write_csv(
   x = market_history,
-  path = "~/Downloads/election_market_history.csv",
+  path = "docs/market_calib/market_history.csv",
   na = ""
 )
 
-m <- read_csv(
-  file = "~/Downloads/election_market_history.csv",
-  col_types = cols(
-    .default = col_guess(),
-    id = col_character()
-  )
-)
-
-x <- m %>%
-  select(
-    id,
-    ticker,
-    contract,
-    date,
-    close,
-    vol
-  )
-
-outcomes <- x %>%
+outcomes <- market_history %>%
   group_by(id, contract) %>%
   arrange(desc(date)) %>%
   slice(1) %>%
@@ -102,30 +82,36 @@ outcomes <- x %>%
   ) %>%
   select(id, contract, yes)
 
-x <-
-  left_join(x, outcomes) %>%
+market_calib <-
+  left_join(market_history, outcomes) %>%
   mutate(bucket = round(close * 20) / 20) %>%
   group_by(bucket) %>%
-  summarise(prop = mean(yes), n = n())
+  summarise(prop = mean(yes), n = n()) %>%
+  mutate(source = "market") %>%
+  select(source, everything())
 
-download.file(
-  url = "https://github.com/fivethirtyeight/checking-our-work-data/raw/master/raw_forecasts.zip",
-  destfile = "~/Downloads/raw_forecasts.zip"
-)
+zip_file <- fs::file_temp()
+zip_url <- "https://github.com/fivethirtyeight/checking-our-work-data/raw/master/raw_forecasts.zip"
 
-unzip("~/Downloads/raw_forecasts.zip")
+download.file(zip_url, destfile = tmp_file)
+unzip(tmp_file, exdir = fs::path_temp())
+csv_file <- fs::dir_ls(fs::path_temp(), glob = "*raw_forecasts.csv")
 
 model <- read_csv(
-  file = "~/Downloads/raw_forecasts.csv",
+  file = csv_file,
   col_types = cols(
-    .default = col_guess(),
-    outcome = col_logical()
+    .default = col_guess()
   )
 )
 
-y <- model %>%
+model$outcome <- as.logical(model$outcome)
+
+model_calib <- model %>%
+  filter(topic == "politics") %>%
   group_by(bucket) %>%
-  summarize(prop = mean(outcome), n = n())
+  summarize(prop = mean(outcome), n = n()) %>%
+  mutate(source = "model") %>%
+  select(source, everything())
 
 color_model  <-  # 538 brand color
 color_market <-  # PredictIt brand color
@@ -139,8 +125,27 @@ calib_plot <- ggplot() +
     title = "Comparing Forecast Calibration"
   )
 
+calib_plot <- bind_rows(
+  market_calib,
+  model_calib
+) %>%
+  ggplot(aes(x = bucket, y = prop)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  geom_point(aes(color = source, size = n), alpha = 0.75) +
+  scale_size_continuous(range = c(7, 12), guide = FALSE) +
+  scale_color_manual(values = c("#07A0BB", "#ED713A")) +
+  scale_x_continuous(labels = scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "Comparing Forecast Calibrations",
+    x = "Predicted Probability",
+    y = "Actual Occurance",
+    color = "Prediction Source"
+  )
+
 ggsave(
-  filename = "~/Pictures/calib.png",
+  filename = "docs/market_calib/calib.png",
   plot = calib_plot,
   height = 5,
   width = 9,
