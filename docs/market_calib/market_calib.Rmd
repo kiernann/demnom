@@ -1,0 +1,323 @@
+---
+title: "Simulating the 2020 Electoral College With Prediction Markets"
+output:
+  github_document: 
+    df_print: tibble
+    toc: true
+    toc_dept: 2
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, purl=FALSE}
+library(knitr)
+opts_chunk$set(
+  dpi = 300,
+  eval = TRUE,
+  echo = TRUE,
+  error = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  comment = "#>",
+  collapse = TRUE,
+  fig.width = 9,
+  fig.height = 5
+)
+options(width = 99)
+set.seed(seed = 55)
+```
+
+## Background
+
+## Background
+
+Election prediction helps party officials, campaign operatives, and journalists interpret campaigns
+in a quantitative manner. Understanding trends, uncertainty, and likely outcomes is in invaluable
+political tool. For this reason, elections will always be predicted. In the absense of numbers, 
+people will latch on to whatever predictive tool they can find. The [stock market][sm], 
+[key incumbency factors][if], the [Washington Redskins][wr], [Halloween mask sales][hm], and 
+a [psychic Chinese monkeys][pm].
+
+In the past few years, as "[big data][bd]" has sought to supplant traditional arbitrary punditry,
+the statistical forecasting model has become a staple of electioneering. Popularized by the data
+journalist at [FiveThirtyEight][fh], the forecasting model is a statistical tool used to
+incorporate a number of quantitative inputs and produce a _probabilistic_ view of all possible
+outcomes.
+
+However, following the 2016 Presidential election, much of the public felt betrayed
+by the promise of data to seemingly predict the future. As explained in 
+[_An Evaluation of 2016 Election Polls in the U.S._][eval] by the 
+[American Association for Public Opinion Research's][aapor] (AAPOR) Ad Hoc Committee on 2016
+Election Polling:
+
+> The 2016 presidential election was a jarring event for polling in the United States. Pre-election
+polls fueled high-profile predictions that Hillary Clinton’s likelihood of winning the presidency
+was about 90 percent, with estimates ranging from 71 to over 99 percent. When Donald Trump was
+declared the winner of the presidency in the early hours of November 9th, it came as a shock even
+to his own pollsters (Jacobs and House 2016). There was (and continues to be) widespread consensus
+that the polls failed.
+
+This "widespread consensus" was expressed by the new President-elect, vindicated Republican voters,
+stunned Democratic voters, academics, and journalists alike. This doubt in the polls was a
+reasonable knee jerk reaction on election night, when it became clear Trump would win. Some even
+went as far as to [cast the suprise upset as the end of scientific polling in America][tap]:
+
+> Pollsters and election modelers suffered an industry-shattering embarrassment at the hands of
+Donald Trump on Tuesday night. Trump, the Republican presidential nominee, had long said the polls
+were biased against him. His claims — dismissed and mocked by the experts — turned out to be true.
+“It’s going to put the polling industry out of business,” said CNN anchor Jake Tapper. “It’s going
+to put the voter projection industry out of business.” Going into Election Day, a strong majority
+of pollsters and election modelers forecast that Democrat Hillary Clinton would coast to victory,
+with many predicting she would sweep the battlegrounds and win north of 300 electoral votes...
+Whatever the reason, pollsters will have to reassess after a dismal showing in 2016 that produced a
+result almost no one foresaw.
+
+And while the AAPOR report was ultimately quite dismissive of the general reaction to election
+forcasting, I think it's still worthwhile exploring the role probabalistic forecasting should play
+in American politics going forward. It's quite obvious to me that all forecasting should still be
+rooted in mathematics; it would be a shame to revert back towards reliance on pundits for our
+forecasting. Non-mathematic forecasts might do more harm than good. However, I am particuarly
+interested in exploring what _other_ types of mathematics might play a role in election
+forcasting. Today we are going to compare the mathematics of economics vs statistics in their
+ability to predict elections.
+
+Prediction markets can be used to generate similarly probabilistic views of election outcomes by
+utilizing the economic forces of price discovery and risk aversion to overcome the ideological
+bias of self-interested traders on a binary options exchange. Traders use real money to buy shares
+of [futures contracts][fc] tied to an outcome. The price of these shares fluctuates on the market
+as the underlying _likelihood_ of that outcome changes. [PredictIt][pi] is an exchange for such
+contracts, run by Victoria University of Wellington.
+
+Following the 2018 Midterm elections, [I wrote a paper][mm] comparing these markets to the
+congressional model published by the data journalists at FiveThirtyEight. I found no statistical
+difference in the two method's ability to make [skilled predictions][bs] over the course of the
+Midterm elections. In fact, the markets showed reasonable skepticism in a number of upset
+elections. Below, you can see how competitive Congressonal races were predicted by both the markets
+and model.
+
+This summer, [FiveThirtyEight released a comprehensive review][how] of all forecats made in the 
+last decade. In this article, they ask a fundamental question: How good are FiveThirtyEight
+forecasts?
+
+> Forecasts have always been a core part of FiveThirtyEight’s mission. They force us (and you) to
+think about the world probabilistically, rather than in absolutes. And making predictions, whether
+we’re modeling a candidate’s chance of being elected or a team’s odds of making the playoffs,
+improves our understanding of the world by testing our knowledge of how it works — what makes a
+team or a candidate win. But are those forecasts any good? This project seeks to answer that
+question.
+
+As a part of this project, FiveThirtyEight took the comendable step of releasing a public dataset
+containg daily predictions on over 1,500 different events. I will be comparing their comendable
+track record against the the available data from a leading prediction market.
+
+[eval]: https://www.aapor.org/Education-Resources/Reports/An-Evaluation-of-2016-Election-Polls-in-the-U-S.aspx
+[aapor]: https://www.aapor.org/
+[tap]: https://thehill.com/blogs/ballot-box/presidential-races/305133-pollsters-suffer-huge-embarrassment
+[how]: https://projects.fivethirtyeight.com/checking-our-work/
+[bd]: https://en.wikipedia.org/wiki/Big_data
+[sm]: https://on.mktw.net/2Zd8QOU
+[if]: http://wapo.st/2eUm8cv
+[wr]: https://en.wikipedia.org/wiki/Redskins_Rule
+[hm]: https://www.thrillist.com/news/nation/halloween-mask-sales-predict-the-presidential-election
+[pm]: http://wapo.st/2fnlPr3
+[fh]: https://fivethirtyeight.com/
+[fc]: https://en.wikipedia.org/wiki/Futures_contract
+[pi]: https://www.predictit.org/
+[mm]: https://github.com/kiernann/models-markets
+[bs]: https://en.wikipedia.org/wiki/Brier_score
+[gp]: https://53eig.ht/2IFHxVW
+[rp]: https://www.r-project.org/
+[tv]: https://www.tidyverse.org/
+[gh]: https://github.com/fivethirtyeight/checking-our-work-data
+
+## Process
+
+I'll be using the open source [language R][rp] and packages from the [Tidyverse ecosystem][tv].
+
+```{r packages, warning=FALSE}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load_gh("irworkshop/campfin", "kiernann/predictr")
+pacman::p_load(tidyverse, lubridate, magrittr, janitor, fs)
+```
+
+## Models
+
+We can download the FiveThirtyEight dataset directly from their [GitHub repository][gh].
+
+```{r download_model_history}
+zip_url <- "https://github.com/fivethirtyeight/checking-our-work-data/raw/master/raw_forecasts.zip"
+zip_file <- basename(zip_url)
+download.file(url = zip_url, destfile = zip_file)
+unzip(zipfile = zip_file)
+```
+
+Then, read the file into R with `readr::read_csv`. We'll then use `dplyr::filter()` to keep only
+political predictions.
+
+```{r read_model_history}
+model_history <- 
+  read_csv(
+    file = "raw_forecasts.csv",
+    col_types = cols(
+      .default = col_guess(),
+      forecast_date = col_character(),
+      outcome = col_character(),
+      live_info = col_character()
+    )
+  ) %>%
+  filter(
+    topic == "politics"
+  ) %>% 
+  mutate(
+    outcome = outcome %>% 
+      str_sub(end = 1) %>% 
+      parse_logical(),
+    forecast_date = forecast_date %>% 
+      str_sub(end = 10) %>% 
+      parse_date("%Y-%m-%d"),
+    diff_date = event_date %>% 
+      subtract(forecast_date)
+  ) 
+```
+
+```{r glimpse_model}
+glimpse(sample_frac(model_history))
+```
+
+## Markets
+
+To collected market history data, we first have to start with a list of closed markets, provided
+to me by PredictIt. Using this list, we can filter to keep only those markets containg "win" or
+"election" in the market question.
+
+```{r}
+election_markets <-
+  read_csv(
+    file = "closed_markets.csv",
+    col_types = cols(
+      .default = col_guess(),
+      id = col_character()
+    )
+  ) %>% 
+  filter(
+    str_detect(market, rx_break("win")) |
+    str_detect(market, rx_break("election"))
+  )
+```
+
+```{r sample_question, results='asis'}
+rng <- sample(seq(1, nrow(election_markets)), 10)
+paste("* ", election_markets$market[rng]) %>% cat(sep = "\n")
+```
+
+```{r}
+market_history <- tibble()
+for (id in election_markets$id) {
+  market_history <- bind_rows(
+    market_history,
+    market_history(id)
+  )
+}
+```
+
+```{r}
+market_history
+```
+
+```{r}
+market_history <- right_join(
+  x = election_markets,
+  y = market_history,
+  by = c("id" = "mid")
+)
+```
+
+```{r}
+market_outcomes <- market_history %>%
+  group_by(id, contract) %>%
+  arrange(desc(date)) %>%
+  slice(1) %>%
+  mutate(
+    yes = close >= 0.98,
+    no = close <= 0.2
+  ) %>%
+  select(id, contract, yes)
+```
+
+## Calibrate
+
+```{r}
+market_calib <-
+  left_join(market_history, market_outcomes) %>%
+  mutate(bucket = round(close * 20) / 20) %>%
+  group_by(bucket) %>%
+  summarise(prop = mean(yes), n = n()) %>%
+  mutate(source = "market") %>%
+  select(source, everything())
+```
+
+```{r}
+model_calib <- model_history %>%
+  filter(topic == "politics") %>%
+  group_by(bucket) %>%
+  summarize(prop = mean(outcome), n = n()) %>%
+  mutate(source = "model") %>%
+  select(source, everything())
+```
+
+```{r}
+bind_rows(
+  market_calib,
+  model_calib
+) %>%
+  ggplot(aes(x = bucket, y = prop)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  geom_point(aes(color = source, size = n), alpha = 0.75) +
+  scale_size_continuous(range = c(7, 12), guide = FALSE) +
+  geom_label(mapping = aes(label = "Underconfident", x = 0.25, y = 0.75),
+             label.size = 0,
+             fill = "#ebebeb",
+             size = 6) +
+  geom_label(mapping = aes(label = "Overconfident", x = 0.75, y = 0.25),
+             label.size = 0,
+             fill = "#ebebeb",
+             size = 6) +
+  scale_color_manual(values = c("#07A0BB", "#ED713A")) +
+  scale_x_continuous(labels = scales::percent, breaks = seq(0, 1, by = 0.1)) +
+  scale_y_continuous(labels = scales::percent,  breaks = seq(0, 1, by = 0.1)) +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "Comparing Forecast Calibrations",
+    x = "Predicted Probability",
+    y = "Actual Occurance",
+    color = "Prediction five"
+  )
+```
+
+```{r}
+x <- market_history %>% 
+  left_join(market_outcomes) %>% 
+  select(ticker, close, yes) %>% 
+  group_by(ticker) %>% 
+  summarise(brier = mean((close - yes)^2)) %>% 
+  mutate(source = "market") %>% 
+  select(source, event = ticker, brier)
+
+y <- model_history %>% 
+  group_by(event, year) %>% 
+  summarise(brier = mean((prob - outcome)^2)) %>% 
+  mutate(source = "model") %>% 
+  select(source, event, brier)
+
+bind_rows(x, y) %>% 
+  ggplot(aes(x = source, y = brier)) +
+  geom_jitter(aes(color = source)) +
+  scale_y_log10() +
+  scale_color_manual(values = c("#07A0BB", "#ED713A"), guide = FALSE) +
+  labs(
+    title = "Comparing Forecast Calibrations",
+    x = "Prediction Source",
+    y = "Brier Score"
+  )
+```
+
