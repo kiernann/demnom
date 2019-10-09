@@ -2,6 +2,8 @@ pacman::p_load(
   tidyverse,
   lubridate,
   snakecase,
+  magrittr,
+  jsonlite,
   janitor,
   here,
   glue,
