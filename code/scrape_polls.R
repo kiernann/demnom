@@ -8,40 +8,29 @@ pacman::p_load(
   fs
 )
 
-polls <-
-  read_html("http://bit.ly/2LdZIpm") %>%
-  html_node("table.data:nth-child(2)") %>%
-  html_table(fill = TRUE) %>%
-  as_tibble(.name_repair = make_clean_names) %>%
-  select(-spread) %>%
-  slice(-1)
-
-polls <- polls %>%
-  gather(
-    -poll, -date,
-    key = "name",
-    value = "points"
+market <-
+  read_csv(
+    file = "https://projects.fivethirtyeight.com/polls-page/president_primary_polls.csv",
+    col_types = cols(
+      ContractName = col_character(),
+      Date = col_date("%m/%d/%Y %H:%M:%S %p"),
+      OpenSharePrice = col_number(),
+      HighSharePrice = col_number(),
+      LowSharePrice = col_number(),
+      CloseSharePrice = col_number(),
+      TradeVolume = col_double()
+    )
   ) %>%
-  separate(
-    col = date,
-    into = c("start", "end"),
-    sep = "\\s-\\s"
+  rename(
+    name   = ContractName,
+    date   = Date,
+    open   = OpenSharePrice,
+    high   = HighSharePrice,
+    low    = LowSharePrice,
+    close  = CloseSharePrice,
+    volume = TradeVolume
   ) %>%
-  mutate(
-    points = as.double(na_if(points, "--")),
-    start = mdy(glue("{start}/19")),
-    end = mdy(glue("{end}/19")),
-    length = end - start
-  ) %>%
-  arrange(poll, start) %>%
-  select(
-    name,
-    poll,
-    points,
-    start,
-    end,
-    length
-  )
+  mutate(name = to_snake_case(name))
 
 write_csv(
   x = polls,
